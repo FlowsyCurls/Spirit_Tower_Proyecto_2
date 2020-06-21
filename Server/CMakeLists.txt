@@ -3,4 +3,4 @@ project(Server)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Server main.cpp A_Star.h)
+add_executable(Server main.cpp A_Star.h src/Bresenham.cpp src/Bresenham.h)

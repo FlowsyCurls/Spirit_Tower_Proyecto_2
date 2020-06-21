@@ -1,5 +1,6 @@
 #include <iostream>
 #include "A_Star.h"
+#include "src/Bresenham.h"
 
 int main() {
     /* Description of the Grid-
@@ -25,6 +26,10 @@ int main() {
     Pair dest = make_pair(0, 0);
 
     aStarSearch(grid, src, dest);
+
+    //Bresenham
+    Bresenham* b = new Bresenham;
+    b->bresenham(3,2, 15,5);
 
     return(0);
 }
