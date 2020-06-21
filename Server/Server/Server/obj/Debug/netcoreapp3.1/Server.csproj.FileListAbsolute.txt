@@ -1,0 +1,13 @@
+C:\Users\carlo\OneDrive\Escritorio\Spirit_Tower_Proyecto_2\Spirit_Tower_Proyecto_2\Server\Server\Server\bin\Debug\netcoreapp3.1\Server.exe
+C:\Users\carlo\OneDrive\Escritorio\Spirit_Tower_Proyecto_2\Spirit_Tower_Proyecto_2\Server\Server\Server\bin\Debug\netcoreapp3.1\Server.deps.json
+C:\Users\carlo\OneDrive\Escritorio\Spirit_Tower_Proyecto_2\Spirit_Tower_Proyecto_2\Server\Server\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.json
+C:\Users\carlo\OneDrive\Escritorio\Spirit_Tower_Proyecto_2\Spirit_Tower_Proyecto_2\Server\Server\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.dev.json
+C:\Users\carlo\OneDrive\Escritorio\Spirit_Tower_Proyecto_2\Spirit_Tower_Proyecto_2\Server\Server\Server\bin\Debug\netcoreapp3.1\Server.dll
+C:\Users\carlo\OneDrive\Escritorio\Spirit_Tower_Proyecto_2\Spirit_Tower_Proyecto_2\Server\Server\Server\bin\Debug\netcoreapp3.1\Server.pdb
+C:\Users\carlo\OneDrive\Escritorio\Spirit_Tower_Proyecto_2\Spirit_Tower_Proyecto_2\Server\Server\Server\obj\Debug\netcoreapp3.1\Server.csprojAssemblyReference.cache
+C:\Users\carlo\OneDrive\Escritorio\Spirit_Tower_Proyecto_2\Spirit_Tower_Proyecto_2\Server\Server\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfoInputs.cache
+C:\Users\carlo\OneDrive\Escritorio\Spirit_Tower_Proyecto_2\Spirit_Tower_Proyecto_2\Server\Server\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfo.cs
+C:\Users\carlo\OneDrive\Escritorio\Spirit_Tower_Proyecto_2\Spirit_Tower_Proyecto_2\Server\Server\Server\obj\Debug\netcoreapp3.1\Server.csproj.CoreCompileInputs.cache
+C:\Users\carlo\OneDrive\Escritorio\Spirit_Tower_Proyecto_2\Spirit_Tower_Proyecto_2\Server\Server\Server\obj\Debug\netcoreapp3.1\Server.dll
+C:\Users\carlo\OneDrive\Escritorio\Spirit_Tower_Proyecto_2\Spirit_Tower_Proyecto_2\Server\Server\Server\obj\Debug\netcoreapp3.1\Server.pdb
+C:\Users\carlo\OneDrive\Escritorio\Spirit_Tower_Proyecto_2\Spirit_Tower_Proyecto_2\Server\Server\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache

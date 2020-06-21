@@ -13,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\carlo\\OneDrive\\Escritorio\\Spirit_Tower_Proyecto_2\\Spirit_Tower_Proyecto_2\\Cliente\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
-      "projectName": "ConsoleApp1",
-      "projectPath": "C:\\Users\\carlo\\OneDrive\\Escritorio\\Spirit_Tower_Proyecto_2\\Spirit_Tower_Proyecto_2\\Cliente\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+      "projectUniqueName": "C:\\Users\\carlo\\OneDrive\\Escritorio\\Spirit_Tower_Proyecto_2\\Spirit_Tower_Proyecto_2\\Cliente\\ConsoleApp1\\ConsoleApp1\\Cliente.csproj",
+      "projectName": "Cliente",
+      "projectPath": "C:\\Users\\carlo\\OneDrive\\Escritorio\\Spirit_Tower_Proyecto_2\\Spirit_Tower_Proyecto_2\\Cliente\\ConsoleApp1\\ConsoleApp1\\Cliente.csproj",
       "packagesPath": "C:\\Users\\carlo\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\carlo\\OneDrive\\Escritorio\\Spirit_Tower_Proyecto_2\\Spirit_Tower_Proyecto_2\\Cliente\\ConsoleApp1\\ConsoleApp1\\obj\\",
       "projectStyle": "PackageReference",
