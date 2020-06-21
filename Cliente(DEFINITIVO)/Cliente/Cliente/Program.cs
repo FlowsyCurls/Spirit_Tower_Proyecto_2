@@ -9,11 +9,42 @@ namespace Client
 
 	class Program
 	{
+		private static byte[] messageSent;
+		private static Socket sender;
+		private static int byteSent;
+		private static byte[] messageReceived;
+		private static int byteRecv;
 
 		// Main Method 
 		static void Main(string[] args)
 		{
 			ExecuteClient();
+		}
+
+		/**
+		 * Envia un mensaje al servidor
+		 * 
+		 */
+		private static void sendMessage(string msg)
+        {
+
+			messageSent = Encoding.ASCII.GetBytes(msg);
+			byteSent = sender.Send(messageSent);
+
+		}
+		/**
+		 * 
+		 * Recibe un mensaje del servidor
+		 * 
+		 */
+
+		private static void receiveMessage()
+        {
+			messageReceived = new byte[1024];
+
+			byteRecv = sender.Receive(messageReceived);
+			Console.WriteLine("Message from Server -> {0}", Encoding.ASCII.GetString(messageReceived, 0, byteRecv));
+
 		}
 
 		// ExecuteClient() Method 
@@ -22,10 +53,9 @@ namespace Client
 
 			try
 			{
-
 				// Establish the remote endpoint 
 				// for the socket. This example 
-				// uses port 11111 on the local 
+				// uses port 7777 on the local 
 				// computer. 
 				IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
 				IPAddress ipAddr = ipHost.AddressList[0];
@@ -33,10 +63,9 @@ namespace Client
 
 				// Creation TCP/IP Socket using 
 				// Socket Class Costructor 
-				Socket sender = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+				sender = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-				try
-				{
+				try{
 
 					// Connect Socket to the remote 
 					// endpoint using method Connect() 
@@ -44,26 +73,16 @@ namespace Client
 
 					// We print EndPoint information 
 					// that we are connected 
-					Console.WriteLine("Socket connected to -> {0} ",
-								sender.RemoteEndPoint.ToString());
+					Console.WriteLine("Socket connected to -> {0} ", sender.RemoteEndPoint.ToString());
 
 					// Creation of messagge that 
 					// we will send to Server 
-					byte[] messageSent = Encoding.ASCII.GetBytes("Test Client<EOF>");
-					int byteSent = sender.Send(messageSent);
 
-					// Data buffer 
-					byte[] messageReceived = new byte[1024];
+					sendMessage("Primer mensaje");
 
-					// We receive the messagge using 
-					// the method Receive(). This 
-					// method returns number of bytes 
-					// received, that we'll use to 
-					// convert them to string 
-					int byteRecv = sender.Receive(messageReceived);
-					Console.WriteLine("Message from Server -> {0}",
-						Encoding.ASCII.GetString(messageReceived,
-													0, byteRecv));
+					receiveMessage();
+
+					sendMessage("1");
 
 					// Close Socket using 
 					// the method Close() 
@@ -74,13 +93,11 @@ namespace Client
 				// Manage of Socket's Exceptions 
 				catch (ArgumentNullException ane)
 				{
-
 					Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
 				}
 
 				catch (SocketException se)
 				{
-
 					Console.WriteLine("SocketException : {0}", se.ToString());
 				}
 
@@ -92,7 +109,6 @@ namespace Client
 
 			catch (Exception e)
 			{
-
 				Console.WriteLine(e.ToString());
 			}
 		}

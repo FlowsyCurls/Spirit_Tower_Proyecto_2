@@ -7,251 +7,141 @@
 #include "algorithms/Bresenham.h"
 #include <chrono>
 
+#define BUFFERSIZE 2000
+
 void algoritmTests();
+void timeTest();
+void printBuffer();
 
-int main(int argc, char **argv)
+// Declare and initialize variables
 
-{
+WSADATA wsaData;
+SOCKET s, NewConnection;
+char *szPort = "7777";
+struct addrinfo hints, * res=NULL, * ptr=NULL;
+char buffer[BUFFERSIZE];
+int ByteReceived, i;
+int rc;
 
-    auto start = std::chrono::high_resolution_clock::now();
-
-    // operation to be timed ...
-    algoritmTests();
-
-    auto finish = std::chrono::high_resolution_clock::now();
-    std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << "ns\n";
-
-
-
-    // Declare and initialize variables
-
-    WSADATA            wsaData;
-
-    SOCKET        slisten[16], NewConnection;
-
-    char     *szPort = "7777";
-
-    struct addrinfo            hints, * res=NULL, * ptr=NULL;
-
-    int        count=0, rc;
-
-    char     recvbuff[1024];
-
-    int                    ByteReceived, i;
-
-
-
-    // Initialize Winsock
-
-    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-
-    {
+/**
+ * Inicializa Winsock
+ * @return 1 en caso de error y 0 si todo sale bien
+ */
+int initWinsock(){
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0){
 
         printf("Server: WSAStartup() failed with error code %ld\n", WSAGetLastError());
-
         return 1;
-
-    }
-
-    else
-
+    }else{
         printf("Server: WSAStartup() looks fine!\n");
+        return 0;
+    }
+}
 
-
-
+void initHints(){
     memset(&hints, 0, sizeof(hints));
-
     hints.ai_family = AF_UNSPEC;
-
     hints.ai_socktype = SOCK_STREAM;
-
     hints.ai_protocol = IPPROTO_TCP;
-
     hints.ai_flags = AI_PASSIVE;
+}
+/**
+ * Limpia el buffer
+ */
+void clearBuffer(){
 
+    fill_n(buffer, BUFFERSIZE, 0);
+}
+/**
+ * Manda un mensaje al cliente
+ * @param msg
+ */
+void sendMessage(string msg){
 
+    strcpy(buffer,msg.c_str());
 
+    ByteReceived = send( NewConnection, buffer, sizeof(buffer), 0 );
+    cout << "Se ha enviado un mensaje al cliente: " << buffer << endl;
+
+}
+/**
+ * Recibe un mensaje del cliente y lo almacena en el buffer de texto
+ */
+void receiveMessage(){
+
+    cout << "En espera de un mensaje del cliente..." << endl;
+    ByteReceived = recv(NewConnection, buffer, sizeof(buffer), 0);
+    printBuffer();
+
+}
+
+int main(int argc, char **argv){
+
+    //timeTest();
+
+    // Initialize Winsock
+    initWinsock();
+    initHints();
     rc = getaddrinfo(NULL, szPort, &hints, &res);
 
-    if (rc != 0)
-
-    {
-
+    if (rc != 0){
         printf("Server: getaddrinfo() failed with error code %ld\n", WSAGetLastError());
-
         WSACleanup();
-
         return 1;
-
-    }
-
-    else
-
+    }else
         printf("Server: getaddrinfo() is OK...\n");
-
-
 
     ptr = res;
 
+    while (ptr){
 
-
-    while (ptr)
-
-    {
-
-        printf("\nServer: count value = %d\n", count);
 
         // Use the res struct info for listening...
-
-        slisten[count] = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
-
-        if (slisten[count] == INVALID_SOCKET)
-
-        {
-
-            printf("Server: socket() failed with error code %ld\n", WSAGetLastError());
-
-            WSACleanup();
-
-            return 1;
-
-        }
-
-        else
-
-            printf("Server: socket() is OK...\n");
-
-
-
-        // The res struct info
-
-        printf("\n The address family: %d\n", res->ai_family);
-
-        printf(" The socket type: %d\n", res->ai_socktype);
-
-        printf(" The protocol: %d\n\n", res->ai_protocol);
-
-
+        s = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
 
         // Then bind
-
-        rc = bind(slisten[count], ptr->ai_addr, ptr->ai_addrlen);
-
-
-
-        if (rc == SOCKET_ERROR)
-
-        {
-
-            printf("Server: bind() failed with error code %ld\n", WSAGetLastError());
-
-            WSACleanup();
-
-            return 1;
-
-        }
-
-        else
-
-            printf("Server: bind() is OK...\n");
-
-
+        rc = bind(s, ptr->ai_addr, ptr->ai_addrlen);
 
         // Next, listen
-
-        rc = listen(slisten[count], 10);
-
+        rc = listen(s, 10);
 
 
-        if (rc == SOCKET_ERROR)
-
-        {
+        if (rc == SOCKET_ERROR){
 
             printf("Server: listen() failed with error code %ld\n", WSAGetLastError());
-
             WSACleanup();
-
             return 1;
-
-        }
-
-        else
-
-        {
+        }else{
 
             printf("Server: listen() is OK...\n");
-
             NewConnection = SOCKET_ERROR;
-
             // While the NewConnection socket equal to SOCKET_ERROR
-
             // which is always true in this case...
 
-            while(NewConnection == SOCKET_ERROR)
+            while(NewConnection == SOCKET_ERROR){
 
-            {
-
-                // Accept connection on the slisten[count] socket and assign
-
-                // it to the NewConnection socket, let the slisten[count]
-
+                // Accept connection on the s socket and assign
+                // it to the NewConnection socket, let the s
                 // do the listening for more connection
 
-                NewConnection = accept(slisten[count], NULL, NULL);
 
-                printf("Server: accept() is OK...\n");
+                NewConnection = accept(s, NULL, NULL);
 
-                printf("Server: New client got connected, ready to receive and send data...\n");
+                clearBuffer();
 
+                receiveMessage();
 
+                clearBuffer();
 
-                // Wait for more connections by calling accept again on ListeningSocket (loop)
+                sendMessage("Mensaje recibido");
 
-                // or start sending or receiving data on NewConnection.
+                clearBuffer();
 
-                ByteReceived = recv(NewConnection, recvbuff, sizeof(recvbuff), 0);
+                receiveMessage();
 
+                if(strcmp(buffer, "1") == 0){
 
-
-                // When there is problem
-
-                if ( ByteReceived == SOCKET_ERROR )
-
-                {
-
-                    printf("Server: recv() failed with error code %ld\n", WSAGetLastError());
-
-                    WSACleanup();
-
-                    break;
-
-                }
-
-                else
-
-                {
-
-                    printf("Server: recv() is OK....\n");
-
-                    // Print the received bytes. Take note that this is the total
-
-                    // byte received, it is not the size of the declared buffer
-
-                    printf("Server: Bytes received: %d\n", ByteReceived);
-
-                    // Print what those bytes represent
-
-                    printf("Server: Those bytes are: \"");
-
-                    // Print the string only, discard other
-
-                    // remaining 'rubbish' in the 1024 buffer size
-
-                    for(i=0;i < ByteReceived;i++)
-
-                        printf("%c", recvbuff[i]);
-
-                    printf("\"\n");
+                    cout << "opcion 1" << endl;
 
                 }
 
@@ -259,38 +149,39 @@ int main(int argc, char **argv)
 
         }
 
-
-
-        if(res->ai_protocol == 6)
-
-        {
-
-            printf("Doing the TCP shutdown on the receiving part...\n");
-
-            shutdown(slisten[count], SD_RECEIVE);
-
-        }
-
-
-
-        closesocket(slisten[count]);
-
-        count++;
-
-        ptr = ptr->ai_next;
+        closesocket(s);
 
     }
 
-
-
     freeaddrinfo(res);
-
     WSACleanup();
-
     return 0;
+}
+/**
+ * Imprime lo que tenga el buffer de texto
+ */
+void printBuffer(){
+
+    printf("Se ha recibido un mensaje del cliente: %s\n",buffer );
 
 }
 
+/**
+ * Test de tiempo que tarda en ejecutarse un algoritmo
+ */
+void timeTest(){
+    auto start = std::chrono::high_resolution_clock::now();
+
+    // operation to be timed ...
+    algoritmTests();
+
+    auto finish = std::chrono::high_resolution_clock::now();
+    std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << "ns\n";
+}
+
+/**
+ * Tests para los algoritmos a realizar
+ */
 void algoritmTests() {
     /* Description of the Grid-
     1--> The cell is not blocked
