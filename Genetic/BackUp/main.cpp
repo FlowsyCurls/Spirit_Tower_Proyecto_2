@@ -11,4 +11,6 @@ int main() {
     auto *controller = new GeneticManager();
     controller->setPopulation();
     controller->getGeneration();
+    controller->getGeneration();
+    controller->getGeneration();
 }

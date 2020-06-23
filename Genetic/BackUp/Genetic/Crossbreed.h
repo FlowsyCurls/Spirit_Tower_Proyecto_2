@@ -9,11 +9,12 @@
 class Crossbreed {
 
 private:
-    LinkedList<Spectrum*>* newPopulationSpectrums = new LinkedList<Spectrum*>;
+    LinkedList<Spectrum*>* newPopulationSpectrums;
 //    LinkedList<string>* newPopulationGens;
-    const int mutationProbability = 50;
-    const int inversionProbability = 25;
+    const int mutationProbability = 8;
+    const int inversionProbability = 4;
     const int numOfGenesReversed = 4;
+    int genNumber = 1;
 
 public:
 
@@ -44,6 +45,8 @@ public:
     static Spectrum *Fitness(Spectrum *pCandidate1, Spectrum *pCandidate2);
 
     void printPopulation();
+
+    static int verifyBin(int pBin);
 };
 
 

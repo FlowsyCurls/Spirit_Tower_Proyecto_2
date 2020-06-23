@@ -13,7 +13,7 @@ void Spectrum::toString() {
     cout <<
 //    "  Spectrum\n\t" <<
 //         "\t" <<
-         id << "  " <<
+         id << " | " <<
          routeSpeed << "  " <<
          chaseSpeed << "  " <<
          sightRange << endl;

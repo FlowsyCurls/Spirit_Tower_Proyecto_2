@@ -10,7 +10,7 @@ class GeneticManager {
 
 private:
     static int spectrumCounter;
-    const int totalSpectrums = 2;
+    const int totalSpectrums = 3;
     LinkedList<Spectrum*>* population = new LinkedList<Spectrum*>; /* LinkedList for population */
 
 public:

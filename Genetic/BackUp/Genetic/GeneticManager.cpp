@@ -22,12 +22,14 @@ void GeneticManager::setPopulation() {
 }
 
 Spectrum *GeneticManager::setFirstGens() {
+    cout << endl<< "[Generation 0 -Start]"<<endl;
     string id = "SP-" + to_string(population->size());
     auto *spectrum = new Spectrum(id);
-    spectrum->setRouteSpeed(Utility::Random(1,7));
-    spectrum->setChaseSpeed(Utility::Random(1,7));
-    spectrum->setSightRange(Utility::Random(1,7));
-//    spectrum->toString();
+    spectrum->setRouteSpeed(Utility::Random(1,3));
+    spectrum->setChaseSpeed(Utility::Random(1,3));
+    spectrum->setSightRange(Utility::Random(1,3));
+    spectrum->toString();
+    cout << endl << "[Generation-End]"<<endl;
     return spectrum;
 }
 
