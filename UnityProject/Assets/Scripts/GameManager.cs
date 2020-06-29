@@ -1,12 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+//Class that keeps the state of the game in the client side, tracks the player and enemy behavoir, sends data to server and call server petitions
 
 public class GameManager : MonoBehaviour
 {
 
     public GameObject node;
     public GameObject enemy;
+    public GameObject client;
+    public GameObject player;
 
     public int gridX;
     public int gridZ;
@@ -24,10 +29,15 @@ public class GameManager : MonoBehaviour
         spawnEnemies();     //Spawn enemies on stage
     }
 
-    // Update is called once per frame
+    // Update is called once per frame, keeps track of the player, at least at this early stage of the client-server communication
     void Update()
     {
-        
+        //If player is moving, send msg that he is moving
+        if (player.GetComponent<PlayerMovement>().getLastDir() != player.GetComponent<PlayerMovement>().getDir()) {
+            Debug.Log("Moviendose");
+            //Send msg that the player is moving on a direction to server
+            Program.sendMessage("Player is moving");
+        }
     }
 
 
