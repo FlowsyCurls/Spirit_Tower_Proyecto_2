@@ -124,20 +124,19 @@ int main(int argc, char **argv){
                 // it to the NewConnection socket, let the s
                 // do the listening for more connection
 
-
                 NewConnection = accept(s, NULL, NULL);
 
                 clearBuffer();
 
                 receiveMessage();
 
-                clearBuffer();
+                //clearBuffer();
 
-                sendMessage("Mensaje recibido");
+                //sendMessage("Mensaje recibido");
 
-                clearBuffer();
+               // clearBuffer();
 
-                receiveMessage();
+               // receiveMessage();
 
                 if(strcmp(buffer, "1") == 0){
 

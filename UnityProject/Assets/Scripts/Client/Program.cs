@@ -16,7 +16,7 @@ class Program : MonoBehaviour
     private static int byteRecv;
 
     // Main Method 
-    private void Start()
+    public static void Start()
     {
         ExecuteClient();
     }
@@ -88,14 +88,14 @@ class Program : MonoBehaviour
 
                 sendMessage("Primer mensaje");
 
-                receiveMessage();
+                //receiveMessage();
 
-                sendMessage("1");
+                //sendMessage("1");
 
                 // Close Socket using 
                 // the method Close() 
-                sender.Shutdown(SocketShutdown.Both);
-                sender.Close();
+                //sender.Shutdown(SocketShutdown.Both);
+                //sender.Close();
             }
 
             // Manage of Socket's Exceptions 
