@@ -4,9 +4,22 @@
 
 
 #include "GameManager.h"
-#include "../Model/Spectres/Spectre.h"
+#include "../Model/Objects/Treasure.h"
 
+void GameManager::initSpectresMovement() {
 
+    for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+
+        board.getListOfSpectres()->at(i).startMovement();
+
+    }
+
+}
+
+/**
+ * Inicia el juego cargando los datos que se encuentran en el json del nivel
+ * @param pLevel
+ */
 void GameManager::startGame(int pLevel) {
 
     ifstream file("..\\src\\resources\\maps\\level_01\\level01.json");
@@ -15,6 +28,9 @@ void GameManager::startGame(int pLevel) {
     string JSON = tmp.str();
     //cout << JSON << endl;
     loadGameFromJSON(JSON);
+    initSpectresMovement();
+    int i;
+    cin >> i;
 
 }
 /**
@@ -49,8 +65,10 @@ void GameManager::parseMatrizJSON(json pJSON) {
     }
 
 }
-
-
+/**
+ * Parsea los espectros que se encuentran en el json a la memoria
+ * @param pJSON
+ */
 void GameManager::parseSpectresJSON(json pJSON) {
 
     for(int i = 0; i < pJSON["spectres"].size(); i++){
@@ -63,21 +81,59 @@ void GameManager::parseSpectresJSON(json pJSON) {
         double persuitVelocity = pJSON["spectres"].at(i)["persuitVelocity"];
         int visionRange = pJSON["spectres"].at(i)["visionRange"];
         vector<Position>* patrolRoute = new vector<Position>();
+        board.assignMatrizEntity(position, id);
+        SpectreType spectreType;
 
-        for(int e = 0; e < pJSON["spectres"].at(i)["patrolRoute"].size(); e++){
-
-            Position *tmpPosition = new Position(pJSON["spectres"].at(i)["patrolRoute"].at(e)[0], pJSON["spectres"].at(i)["patrolRoute"].at(e)[1]);
-            patrolRoute->push_back(*tmpPosition);
-
+        if(type.compare("spectre_gray") == 0){
+            spectreType = GRAY;
+        }else{
+            if(type.compare("spectre_blue") == 0){
+                spectreType = BLUE;
+            } else{
+                if(type.compare("spectre_red") == 0){
+                    spectreType = RED;
+                }
+            }
         }
 
-        Spectre *spectre = new Spectre(id, type, patrolRoute, direction, routeVelocity, persuitVelocity, visionRange, position);
-        //spectre->printSpectre();
-        Spectre::listOfSpectres->at(0).printSpectre();
+        for(int e = 0; e < pJSON["spectres"].at(i)["patrolRoute"].size(); e++){
+            Position *tmpPosition = new Position(pJSON["spectres"].at(i)["patrolRoute"].at(e)[0], pJSON["spectres"].at(i)["patrolRoute"].at(e)[1]);
+            patrolRoute->push_back(*tmpPosition);
+        }
+
+        Spectre *spectre = new Spectre(id, type, patrolRoute, direction, routeVelocity, persuitVelocity, visionRange, position, spectreType);
+
+
     }
 
 }
+/**
+ * Parsea los objetos que se encuentran el archivo json del mapa
+ * @param pJSON
+ */
+void GameManager::parseObjectsJSON(json pJSON) {
+    for(int i = 0; i < pJSON["objects"].size(); i++){
 
+        string id = pJSON["objects"].at(i)["id"];
+        string type = pJSON["objects"].at(i)["type"];
+        int scorePoints = pJSON["objects"].at(i)["scorePoints"];
+        Position *position = new Position(pJSON["objects"].at(i)["position"][0], pJSON["objects"].at(i)["position"][1]);
+
+        if(type.compare("treasure") == 0){
+
+            Treasure *treasure = new Treasure(id, type, scorePoints, position);
+            //board.getListOfObjects()->push_back(treasure);
+
+        }
+
+
+    }
+}
+
+/**
+ * Carga los datos del json al juego
+ * @param pJSON
+ */
 void GameManager::loadGameFromJSON(string pJSON) {
 
     json jsonObj;
@@ -118,5 +174,8 @@ int GameManager::getScore() {
 int GameManager::getLifes() {
     return lifes;
 }
+
+
+
 
 

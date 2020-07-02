@@ -18,9 +18,19 @@ void Board::setMatrizJson(string pMatrizJson) {
 
 Board::Board() {
 
-
+    listOfObjects = new vector<Objeto>();
+    listOfSimpleEnemies = new vector<SimpleEnemy>();
+    listOfSpectres = Spectre::listOfSpectres;
 
 }
+
+
+void Board::assignMatrizEntity(Position *pPosition, string pEntityID) {
+
+    matriz[pPosition->getX()][pPosition->getY()]->setEntity(pEntityID);
+
+}
+
 
 void Board::printBoard() {
 
@@ -34,4 +44,16 @@ void Board::printBoard() {
         cout << endl;
     }
 
+}
+
+vector<Objeto> *Board::getListOfObjects() {
+    return listOfObjects;
+}
+
+vector<SimpleEnemy> *Board::getListOfEnemies() {
+    return listOfSimpleEnemies;
+}
+
+vector<Spectre> *Board::getListOfSpectres() {
+    return listOfSpectres;
 }

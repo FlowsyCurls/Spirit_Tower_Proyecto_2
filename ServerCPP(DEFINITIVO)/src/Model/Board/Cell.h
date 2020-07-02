@@ -23,14 +23,14 @@ private:
 
     string id;
     CellType cellType;
-    Entity entity;
+    string entityID;
     int row;
     int column;
 
 public:
 
     //Constructor
-    Cell(int pRow, int pColumn, string pId, CellType pCellType, Entity pEntity);
+    Cell(int pRow, int pColumn, string pId, CellType pCellType, string pEntityID);
     Cell(int pRow, int pColumn, string pId, CellType pCellType);
     Cell();
 
@@ -40,8 +40,8 @@ public:
     void setId(string id);
     CellType getCellType();
     void setCellType(CellType cellType);
-    Entity getEntity();
-    void setEntity(Entity entity);
+    string getEntity();
+    void setEntity(string pEntityID);
 
 
 };

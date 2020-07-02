@@ -8,9 +8,12 @@
 
 #include "../Model/Board/Board.h"
 #include "../lib/json.hpp"
+#include "../Model/Spectres/Spectre.h"
 #include <iomanip>
 #include <fstream>
 #include <iostream>
+#include <thread>
+#include <unistd.h>
 
 using json = nlohmann::json;
 using namespace std;
@@ -35,6 +38,7 @@ private:
     void loadGameFromJSON(string pJSON);
     void parseMatrizJSON(json pJSON);
     void parseSpectresJSON(json pJSON);
+    void parseObjectsJSON(json pJSON);
 
 
 public:
@@ -47,7 +51,7 @@ public:
     Board getBoard();
     int getScore();
     int getLifes();
-
+    void initSpectresMovement();
 
 
 };

@@ -21,7 +21,6 @@ public:
     Entity(string pId, string pType, Position* pPosition);
     Entity();
 
-
     //Setters and getters
     string getId();
     void setId(string pId);
@@ -29,6 +28,8 @@ public:
     void setType(string pType);
     Position* getPosition();
     void setPosition(Position *pPosition);
+
+
 
 };
 

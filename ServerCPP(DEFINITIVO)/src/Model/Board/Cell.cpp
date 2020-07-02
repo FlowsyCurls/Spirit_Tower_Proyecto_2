@@ -20,15 +20,15 @@ void Cell::setCellType(CellType pCellType) {
     cellType = pCellType;
 }
 
-Entity Cell::getEntity()  {
-    return entity;
+string Cell::getEntity()  {
+    return entityID;
 }
 
-void Cell::setEntity(Entity pEntity) {
-    entity = pEntity;
+void Cell::setEntity(string pEntityID) {
+    entityID = pEntityID;
 }
 
-Cell::Cell(int pRow, int pColumn, string pId, CellType pCellType, Entity pEntity) : row(pRow), column(pColumn), id(pId), cellType(pCellType), entity(pEntity) {}
+Cell::Cell(int pRow, int pColumn, string pId, CellType pCellType, string pEntityID) : row(pRow), column(pColumn), id(pId), cellType(pCellType), entityID(pEntityID) {}
 
 Cell::Cell() {
 

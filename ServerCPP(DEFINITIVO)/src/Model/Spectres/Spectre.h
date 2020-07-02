@@ -8,32 +8,45 @@
 #include "../Board/Entity.h"
 #include <string>
 #include <vector>
+#include <thread>
+#include <unistd.h>
 
 using namespace std;
+
+enum SpectreType{
+
+    GRAY,
+    BLUE,
+    RED
+
+};
 
 class Spectre: Entity {
 
 private:
 
     vector<Position>* patrolRoute;
+    vector<Position>* routeInUse;
     string direction;
     double routeVelocity;
     double persuitVelocity;
     int visionRange;
-
-    int routePatrolCounter = 0;
+    int routeCounter = 0;
     bool isOnPersuit = false;
+    SpectreType spectreType;
 
 public:
 
     //Constructor
     Spectre(string pId, string pType, vector<Position>* pPatrolRoute, string pDirection, double pRouteVelocity,
-            double pPersuitVelocity, int pVisionRange, Position *pPosition);
+            double pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType);
 
     static vector<Spectre> *listOfSpectres;
 
     //Methods
     void moveNext();
+    void startMovement();
+    void updateDirection();
 
     void persuitPlayer();
     void sendSignalToPersuit();

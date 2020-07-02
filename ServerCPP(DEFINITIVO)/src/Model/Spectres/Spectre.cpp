@@ -7,16 +7,114 @@
 vector<Spectre> *Spectre::listOfSpectres = new vector<Spectre>();
 
 Spectre::Spectre(string pId, string pType, vector<Position>* pPatrolRoute, string pDirection, double pRouteVelocity,
-                 double pPersuitVelocity, int pVisionRange, Position *pPosition) : Entity(pId, pType, pPosition) {
+                 double pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType) : Entity(pId, pType, pPosition) {
 
     patrolRoute = pPatrolRoute;
+    routeInUse = patrolRoute;
     direction = pDirection;
     routeVelocity = pRouteVelocity;
     persuitVelocity = pPersuitVelocity;
     visionRange = pVisionRange;
     listOfSpectres->push_back(*this);
+    spectreType = pSpectreType;
 
 }
+
+
+void Spectre::persuitPlayer() {
+
+}
+
+void Spectre::sendSignalToPersuit() {
+
+}
+
+void Spectre::returnToPatrol() {
+
+}
+
+void Spectre::attackedFromBack() {
+
+}
+
+void Spectre::attackedFromFront() {
+
+}
+
+void Spectre::paralizeCuzMouse() {
+
+}
+
+/**
+ * Cambia la direccion del espectro dependiendo de la posicion hacia la que se mueva
+ */
+void Spectre::updateDirection() {
+
+    //Con eje x
+    if(routeInUse->at(routeCounter).getX() > getPosition()->getX()){
+
+        setDirection("east");
+
+    }else{
+        if(routeInUse->at(routeCounter).getX() < getPosition()->getX()){
+
+            setDirection("west");
+
+        }
+    }
+    //Con eje y
+    if(routeInUse->at(routeCounter).getY() > getPosition()->getY()){
+
+        setDirection("south");
+
+    }else{
+        if(routeInUse->at(routeCounter).getY() < getPosition()->getY()){
+
+            setDirection("north");
+
+        }
+    }
+}
+/**
+ * Mueve el espectro a su siguiente posicion de ruta de
+ */
+void Spectre::moveNext() {
+
+    while(1){
+
+        if(isOnPersuit){
+            sleep(persuitVelocity);
+
+        }else{
+            sleep(routeVelocity);
+            routeInUse = patrolRoute;
+        }
+
+        if(routeCounter != routeInUse->size()){
+
+            updateDirection();
+            this->setPosition(&routeInUse->at(routeCounter));
+            cout << "El espectro: " << this->getId() << " se ha movido a ";
+            this->getPosition()->printPosition();
+            cout << " y su direccion es: " << getDirection() << endl;
+            routeCounter++;
+
+        }else{
+            routeCounter = 0;
+        }
+
+    }
+
+
+
+}
+
+void Spectre::startMovement() {
+
+    thread(&Spectre::moveNext, this).detach();
+
+}
+
 
 void Spectre::setPatrolRoute(vector<Position> *pPatrolRoute) {
     patrolRoute = pPatrolRoute;
@@ -62,40 +160,6 @@ int Spectre::getVisionRange() {
 string Spectre::toString() {
 
     return "";
-}
-
-void Spectre::persuitPlayer() {
-
-}
-
-void Spectre::sendSignalToPersuit() {
-
-}
-
-void Spectre::returnToPatrol() {
-
-}
-
-void Spectre::attackedFromBack() {
-
-}
-
-void Spectre::attackedFromFront() {
-
-}
-
-void Spectre::paralizeCuzMouse() {
-
-}
-
-void Spectre::moveNext() {
-
-    if(routePatrolCounter != patrolRoute->size()){
-
-        this->setPosition(&patrolRoute->at(routePatrolCounter));
-
-    }
-
 }
 
 void Spectre::printSpectre() {

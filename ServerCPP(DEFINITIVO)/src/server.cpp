@@ -80,7 +80,7 @@ void receiveMessage(){
 void pruebaGameManager(){
 
     gameManager->startGame(1);
-    gameManager->getBoard().printBoard();
+    //gameManager->getBoard().printBoard();
 
 }
 
