@@ -8,4 +8,4 @@ void Mouse::moveRandomly() {
 
 }
 
-Mouse::Mouse(string pId, string pType, Position pPosition) : SimpleEnemy(pId, pType, pPosition) {}
+Mouse::Mouse(string pId, string pType, Position* pPosition) : SimpleEnemy(pId, pType, pPosition) {}

@@ -4,8 +4,8 @@
 
 #include "RedSpectre.h"
 
-RedSpectre::RedSpectre(string pId, string pType, vector<string> pPatrolRoute, Direction pDirection,
-                       double pRouteVelocity, double pPersuitVelocity, int pVisionRange, Position pPosition) : Spectre(pId, pType,
+RedSpectre::RedSpectre(string pId, string pType, vector<Position>* pPatrolRoute, string pDirection,
+                       double pRouteVelocity, double pPersuitVelocity, int pVisionRange, Position *pPosition) : Spectre(pId, pType,
                                                                                                    pPatrolRoute,
                                                                                                    pDirection,
                                                                                                    pRouteVelocity,

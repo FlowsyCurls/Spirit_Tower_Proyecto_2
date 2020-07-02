@@ -12,7 +12,7 @@ class SimpleEnemy: Entity {
 
 public:
     //Constructor
-    SimpleEnemy(string pId, string pType, Position pPosition);
+    SimpleEnemy(string pId, string pType, Position *pPosition);
 
 
     //Methods

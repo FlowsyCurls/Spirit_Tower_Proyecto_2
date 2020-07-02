@@ -4,34 +4,34 @@
 
 #include "Spectre.h"
 
-vector<Spectre> Spectre::listOfSpectres = *new vector<Spectre>();
+vector<Spectre> *Spectre::listOfSpectres = new vector<Spectre>();
 
-Spectre::Spectre(string pId, string pType, vector<string> pPatrolRoute, Direction pDirection, double pRouteVelocity,
-                 double pPersuitVelocity, int pVisionRange, Position pPosition) : Entity(pId, pType, pPosition) {
+Spectre::Spectre(string pId, string pType, vector<Position>* pPatrolRoute, string pDirection, double pRouteVelocity,
+                 double pPersuitVelocity, int pVisionRange, Position *pPosition) : Entity(pId, pType, pPosition) {
 
     patrolRoute = pPatrolRoute;
     direction = pDirection;
     routeVelocity = pRouteVelocity;
     persuitVelocity = pPersuitVelocity;
     visionRange = pVisionRange;
-    listOfSpectres.push_back(*this);
+    listOfSpectres->push_back(*this);
 
 }
 
-void Spectre::setPatrolRoute(vector<string> pPatrolRoute) {
+void Spectre::setPatrolRoute(vector<Position> *pPatrolRoute) {
     patrolRoute = pPatrolRoute;
 
 }
 
-vector<string> Spectre::getPatrolRoute() {
+vector<Position>* Spectre::getPatrolRoute() {
     return patrolRoute;
 }
 
-void Spectre::setDirection(Direction pDirection) {
+void Spectre::setDirection(string pDirection) {
     direction = pDirection;
 }
 
-Direction Spectre::getDirection() {
+string Spectre::getDirection() {
     return direction;
 }
 
@@ -60,6 +60,7 @@ int Spectre::getVisionRange() {
 }
 
 string Spectre::toString() {
+
     return "";
 }
 
@@ -89,10 +90,29 @@ void Spectre::paralizeCuzMouse() {
 
 void Spectre::moveNext() {
 
-    if(routePatrolCounter != patrolRoute.size()){
+    if(routePatrolCounter != patrolRoute->size()){
 
-        this->setPosition(patrolRoute.at(routePatrolCounter));
+        this->setPosition(&patrolRoute->at(routePatrolCounter));
 
     }
+
+}
+
+void Spectre::printSpectre() {
+
+    cout << "id: " << getId() << endl;
+    cout << "type: " << getType() << endl;
+    cout << "direction: " << direction << endl;
+    cout << "routeVelocity: " << routeVelocity << endl;
+    cout << "persuitVelocity: " << persuitVelocity << endl;
+    cout << "visionRange: " << visionRange << endl;
+    cout << "patrolRoute: " << endl;
+    for(int i = 0; i < patrolRoute->size(); i++){
+
+        patrolRoute->at(i).printPosition();
+        cout << ", ";
+
+    }
+    cout << endl;
 
 }

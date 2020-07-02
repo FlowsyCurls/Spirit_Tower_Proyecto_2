@@ -6,6 +6,7 @@
 #include "algorithms/A_Star.h"
 #include "algorithms/Bresenham.h"
 #include <chrono>
+#include "Controller/GameManager.h"
 
 #define BUFFERSIZE 2000
 
@@ -22,6 +23,7 @@ struct addrinfo hints, * res=NULL, * ptr=NULL;
 char buffer[BUFFERSIZE];
 int ByteReceived, i;
 int rc;
+GameManager *gameManager = GameManager::getInstance();
 
 /**
  * Inicializa Winsock
@@ -75,11 +77,22 @@ void receiveMessage(){
 
 }
 
+void pruebaGameManager(){
+
+    gameManager->startGame(1);
+    gameManager->getBoard().printBoard();
+
+}
+
 int main(int argc, char **argv){
 
     //timeTest();
 
     // Initialize Winsock
+
+    pruebaGameManager();
+
+    /*
     initWinsock();
     initHints();
     rc = getaddrinfo(NULL, szPort, &hints, &res);
@@ -155,6 +168,8 @@ int main(int argc, char **argv){
     freeaddrinfo(res);
     WSACleanup();
     return 0;
+
+     */
 }
 /**
  * Imprime lo que tenga el buffer de texto

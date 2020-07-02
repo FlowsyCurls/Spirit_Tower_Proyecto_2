@@ -4,7 +4,7 @@
 
 #include "SimpleEnemy.h"
 
-SimpleEnemy::SimpleEnemy(string pId, string pType, Position pPosition) : Entity(pId, pType, pPosition) {
+SimpleEnemy::SimpleEnemy(string pId, string pType, Position* pPosition) : Entity(pId, pType, pPosition) {
 
 
 }

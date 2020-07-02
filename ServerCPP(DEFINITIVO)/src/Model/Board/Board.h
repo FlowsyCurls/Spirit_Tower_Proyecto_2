@@ -7,15 +7,20 @@
 
 
 #include "Cell.h"
+#include <iostream>
+
+using namespace std;
 
 class Board {
 
 private:
 
-    Cell matriz[15][15];
+
     string matrizJSON;
 
 public:
+
+    Cell* matriz[20][20];
 
     Board();
 
@@ -25,6 +30,7 @@ public:
     //Setters and getters
     string getMatrizJson();
     void setMatrizJson(string pMatrizJson);
+    void printBoard();
 
 
 };

@@ -11,33 +11,26 @@
 
 using namespace std;
 
-enum Direction{
-
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST
-
-};
-
 class Spectre: Entity {
 
 private:
 
-    vector<Position> patrolRoute;
-    Direction direction;
+    vector<Position>* patrolRoute;
+    string direction;
     double routeVelocity;
     double persuitVelocity;
     int visionRange;
-    static vector<Spectre> listOfSpectres;
+
     int routePatrolCounter = 0;
     bool isOnPersuit = false;
 
 public:
 
     //Constructor
-    Spectre(string pId, string pType, vector<string> pPatrolRoute, Direction pDirection, double pRouteVelocity,
-            double pPersuitVelocity, int pVisionRange, Position pPosition);
+    Spectre(string pId, string pType, vector<Position>* pPatrolRoute, string pDirection, double pRouteVelocity,
+            double pPersuitVelocity, int pVisionRange, Position *pPosition);
+
+    static vector<Spectre> *listOfSpectres;
 
     //Methods
     void moveNext();
@@ -51,10 +44,10 @@ public:
 
 
     //Setters and getters
-    void setPatrolRoute(vector<string> pPatrolRoute);
-    vector<string> getPatrolRoute();
-    void setDirection(Direction pDirection);
-    Direction getDirection();
+    void setPatrolRoute(vector<Position>* pPatrolRoute);
+    vector<Position>* getPatrolRoute();
+    void setDirection(string pDirection);
+    string getDirection();
     void setRouteVelocity(double pRouteVelocity);
     double getRouteVelocity();
     void setPersuitVelocity(double pPersuitVelocity);
@@ -64,6 +57,7 @@ public:
 
     //toString, prints, logs
     string toString();
+    void printSpectre();
 
 };
 

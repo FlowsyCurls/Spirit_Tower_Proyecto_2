@@ -14,11 +14,11 @@ private:
 
      string id;
      string type;
-     Position position;
+     Position *position;
 
 public:
     //Constructor
-    Entity(string pId, string pType, Position pPosition);
+    Entity(string pId, string pType, Position* pPosition);
     Entity();
 
 
@@ -27,8 +27,8 @@ public:
     void setId(string pId);
     string getType();
     void setType(string pType);
-    Position getPosition();
-    void setPosition(Position pPosition);
+    Position* getPosition();
+    void setPosition(Position *pPosition);
 
 };
 

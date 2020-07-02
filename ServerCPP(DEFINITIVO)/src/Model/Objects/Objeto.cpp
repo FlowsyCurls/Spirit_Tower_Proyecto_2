@@ -12,7 +12,7 @@ int Objeto::getScorePoints() {
     return scorePoints;
 }
 
-Objeto::Objeto(string pId, string pType, int pScorePoints, Position pPosition) : Entity(pId, pType, pPosition),
+Objeto::Objeto(string pId, string pType, int pScorePoints, Position* pPosition) : Entity(pId, pType, pPosition),
                                                                           scorePoints(pScorePoints) {
 
 

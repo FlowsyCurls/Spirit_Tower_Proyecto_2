@@ -21,3 +21,17 @@ Board::Board() {
 
 
 }
+
+void Board::printBoard() {
+
+    for(int i = 0; i < 20; i++){
+
+        for(int e = 0; e < 20; e++){
+
+            cout << matriz[i][e]->getCellType() << " ";
+
+        }
+        cout << endl;
+    }
+
+}

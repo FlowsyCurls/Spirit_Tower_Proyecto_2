@@ -8,4 +8,4 @@ void Chuchu::findPlayer() {
 
 }
 
-Chuchu::Chuchu(string pId, string pType, Position pPosition) : SimpleEnemy(pId, pType, pPosition) {}
+Chuchu::Chuchu(string pId, string pType, Position *pPosition) : SimpleEnemy(pId, pType, pPosition) {}

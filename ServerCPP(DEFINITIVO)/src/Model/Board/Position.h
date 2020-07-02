@@ -5,6 +5,8 @@
 #ifndef SERVER_POSITION_H
 #define SERVER_POSITION_H
 
+#include <iostream>
+using namespace std;
 
 class Position {
 
@@ -20,6 +22,8 @@ public:
     void setX(int pX);
     int getY();
     void setY(int pY);
+
+    void printPosition();
 
 };
 

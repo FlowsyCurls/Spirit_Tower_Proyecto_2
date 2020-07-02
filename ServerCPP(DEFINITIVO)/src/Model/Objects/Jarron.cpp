@@ -12,7 +12,7 @@ int Jarron::getHeartQuantity() {
     return heartQuantity;
 }
 
-Jarron::Jarron(string pId, string pType, int pScorePoints, int pHeartQuantity, Position pPosition) : Objeto(pId, pType,
+Jarron::Jarron(string pId, string pType, int pScorePoints, int pHeartQuantity, Position* pPosition) : Objeto(pId, pType,
                                                                                                     pScorePoints, pPosition),
                                                                                              heartQuantity(
                                                                                                      pHeartQuantity) {

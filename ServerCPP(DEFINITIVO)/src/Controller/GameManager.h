@@ -7,6 +7,15 @@
 
 
 #include "../Model/Board/Board.h"
+#include "../lib/json.hpp"
+#include <iomanip>
+#include <fstream>
+#include <iostream>
+
+using json = nlohmann::json;
+using namespace std;
+
+
 
 class GameManager {
 
@@ -23,7 +32,9 @@ private:
     GameManager();
 
     //Methods
-    void loadGameFromJSON(string pJson);
+    void loadGameFromJSON(string pJSON);
+    void parseMatrizJSON(json pJSON);
+    void parseSpectresJSON(json pJSON);
 
 
 public:
@@ -31,6 +42,11 @@ public:
     static GameManager* getInstance();
     void startGame(int pLevel);
 
+
+    //Getters and setters
+    Board getBoard();
+    int getScore();
+    int getLifes();
 
 
 

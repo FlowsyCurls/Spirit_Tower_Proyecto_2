@@ -11,8 +11,8 @@ using namespace std;
 
 enum CellType{
 
-    OBSTACLE,
     NORMAL,
+    OBSTACLE,
     SAFEZONE
 
 };
@@ -24,11 +24,14 @@ private:
     string id;
     CellType cellType;
     Entity entity;
+    int row;
+    int column;
 
 public:
 
     //Constructor
-    Cell(string pId, CellType pCellType, Entity pEntity);
+    Cell(int pRow, int pColumn, string pId, CellType pCellType, Entity pEntity);
+    Cell(int pRow, int pColumn, string pId, CellType pCellType);
     Cell();
 
 

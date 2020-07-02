@@ -29,3 +29,9 @@ void Position::setY(int pY) {
 
 Position::Position() {
 }
+
+void Position::printPosition() {
+
+    cout << "(x=" << x << ",y=" << y << ")";
+
+}
