@@ -16,7 +16,7 @@ private:
 
 public:
     //Constructor
-    Jarron(string pId, string pType, int scorePoints, int heartQuantity);
+    Jarron(string pId, string pType, int scorePoints, int heartQuantity, Position pPosition);
 
 
     //Setters and getters

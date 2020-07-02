@@ -17,6 +17,8 @@ private:
 
 public:
 
+    Board();
+
     string parseBoardToJSON();
 
 

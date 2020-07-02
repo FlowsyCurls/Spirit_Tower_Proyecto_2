@@ -16,7 +16,7 @@ private:
 
 public:
     //Constructor
-    Objeto(string pId, string pType, int scorePoints);
+    Objeto(string pId, string pType, int scorePoints, Position pPosition);
 
 
     //Getter and setters

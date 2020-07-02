@@ -20,4 +20,16 @@ void Entity::setType(string pType) {
     type = pType;
 }
 
-Entity::Entity(string pId, string pType) : id(pId), type(pType) {}
+Entity::Entity(string pId, string pType, Position pPosition) : id(pId), type(pType), position(pPosition) {}
+
+Entity::Entity() {
+
+}
+
+Position Entity::getPosition() {
+    return position;
+}
+
+void Entity::setPosition(Position pPosition) {
+    position = pPosition;
+}

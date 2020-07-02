@@ -7,7 +7,7 @@
 vector<Spectre> Spectre::listOfSpectres = *new vector<Spectre>();
 
 Spectre::Spectre(string pId, string pType, vector<string> pPatrolRoute, Direction pDirection, double pRouteVelocity,
-                 double pPersuitVelocity, int pVisionRange) : Entity(pId, pType) {
+                 double pPersuitVelocity, int pVisionRange, Position pPosition) : Entity(pId, pType, pPosition) {
 
     patrolRoute = pPatrolRoute;
     direction = pDirection;
@@ -84,5 +84,15 @@ void Spectre::attackedFromFront() {
 }
 
 void Spectre::paralizeCuzMouse() {
+
+}
+
+void Spectre::moveNext() {
+
+    if(routePatrolCounter != patrolRoute.size()){
+
+        this->setPosition(patrolRoute.at(routePatrolCounter));
+
+    }
 
 }

@@ -24,20 +24,24 @@ class Spectre: Entity {
 
 private:
 
-    vector<string> patrolRoute;
+    vector<Position> patrolRoute;
     Direction direction;
     double routeVelocity;
     double persuitVelocity;
     int visionRange;
     static vector<Spectre> listOfSpectres;
+    int routePatrolCounter = 0;
+    bool isOnPersuit = false;
 
 public:
 
     //Constructor
     Spectre(string pId, string pType, vector<string> pPatrolRoute, Direction pDirection, double pRouteVelocity,
-            double pPersuitVelocity, int pVisionRange);
+            double pPersuitVelocity, int pVisionRange, Position pPosition);
 
     //Methods
+    void moveNext();
+
     void persuitPlayer();
     void sendSignalToPersuit();
     void returnToPatrol();

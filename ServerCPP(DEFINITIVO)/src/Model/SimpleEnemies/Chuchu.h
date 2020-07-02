@@ -12,7 +12,7 @@ class Chuchu: SimpleEnemy {
 
 public:
     //Constructor
-    Chuchu(string pId, string pType);
+    Chuchu(string pId, string pType, Position pPosition);
 
     //Methods
     void findPlayer();

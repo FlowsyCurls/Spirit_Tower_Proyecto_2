@@ -29,3 +29,7 @@ void Cell::setEntity(Entity pEntity) {
 }
 
 Cell::Cell(string pId, CellType pCellType, Entity pEntity) : id(pId), cellType(pCellType), entity(pEntity) {}
+
+Cell::Cell() {
+
+}

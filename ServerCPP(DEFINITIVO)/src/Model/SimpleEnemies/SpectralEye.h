@@ -15,7 +15,7 @@ private:
     int visionRange;
 
 public:
-    SpectralEye(string pId, string pType, int visionRange);
+    SpectralEye(string pId, string pType, int visionRange, Position pPosition);
 
     //Methods
     void callSpectres();

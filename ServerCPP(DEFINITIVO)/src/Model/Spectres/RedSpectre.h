@@ -11,7 +11,7 @@ class RedSpectre: Spectre {
 public:
 
     RedSpectre(string pId, string pType, vector<string> pPatrolRoute, Direction pDirection,
-               double pRouteVelocity, double pPersuitVelocity, int pVisionRange);
+               double pRouteVelocity, double pPersuitVelocity, int pVisionRange, Position pPosition);
 
     void iluminate();
 };

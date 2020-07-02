@@ -15,3 +15,9 @@ string Board::getMatrizJson(){
 void Board::setMatrizJson(string pMatrizJson) {
     matrizJSON = pMatrizJson;
 }
+
+Board::Board() {
+
+
+
+}

@@ -13,7 +13,7 @@ class Mouse: SimpleEnemy {
 
 public:
     //Constructor
-    Mouse(string pId, string pType);
+    Mouse(string pId, string pType, Position pPosition);
 
     //Methods
     void moveRandomly();

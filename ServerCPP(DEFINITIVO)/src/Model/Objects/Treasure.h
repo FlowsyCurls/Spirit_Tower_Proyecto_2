@@ -17,6 +17,8 @@ private:
 
 public:
 
+    Treasure(string pId, string pType, int scorePoints, const Position pPosition);
+
 };
 
 

@@ -12,7 +12,7 @@ void SpectralEye::makeNoise() {
 
 }
 
-SpectralEye::SpectralEye(string pId, string pType, int pVisionRange) : SimpleEnemy(pId, pType),
+SpectralEye::SpectralEye(string pId, string pType, int pVisionRange, Position pPosition) : SimpleEnemy(pId, pType, pPosition),
                                                                                     visionRange(pVisionRange) {
 
 

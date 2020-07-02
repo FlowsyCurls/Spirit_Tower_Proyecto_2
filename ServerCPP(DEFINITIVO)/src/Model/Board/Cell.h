@@ -29,6 +29,7 @@ public:
 
     //Constructor
     Cell(string pId, CellType pCellType, Entity pEntity);
+    Cell();
 
 
     //Setters and getters
