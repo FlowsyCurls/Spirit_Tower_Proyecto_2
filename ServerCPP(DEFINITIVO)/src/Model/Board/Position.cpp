@@ -4,27 +4,27 @@
 
 #include "Position.h"
 
-Position::Position(int pX, int pY) {
+Position::Position(int pRow, int pColumn) {
 
-    x = pX;
-    y = pY;
+    row = pRow;
+    column = pColumn;
 
 }
 
-int Position::getX() {
-    return x;
+int Position::getRow() {
+    return row;
 }
 
-void Position::setX(int pX) {
-    x = pX;
+void Position::setRow(int pRow) {
+    row = pRow;
 }
 
-int Position::getY() {
-    return y;
+int Position::getColumn() {
+    return column;
 }
 
-void Position::setY(int pY) {
-    y = pY;
+void Position::setColumn(int pColumn) {
+    column = pColumn;
 }
 
 Position::Position() {
@@ -32,6 +32,6 @@ Position::Position() {
 
 void Position::printPosition() {
 
-    cout << "(x=" << x << ",y=" << y << ")";
+    cout << "(row=" << row << ",column=" << column << ")";
 
 }

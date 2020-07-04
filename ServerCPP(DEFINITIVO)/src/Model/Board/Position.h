@@ -11,17 +11,17 @@ using namespace std;
 class Position {
 
 private:
-    int x;
-    int y;
+    int row;
+    int column;
 
 public:
-    Position(int pX, int pY);
+    Position(int pRow, int pColumn);
     Position();
 
-    int getX();
-    void setX(int pX);
-    int getY();
-    void setY(int pY);
+    int getRow();
+    void setRow(int pRow);
+    int getColumn();
+    void setColumn(int pColumn);
 
     void printPosition();
 

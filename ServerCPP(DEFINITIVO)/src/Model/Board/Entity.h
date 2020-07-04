@@ -6,6 +6,7 @@
 #define SERVER_ENTITY_H
 #include <string>
 #include "Position.h"
+#include <vector>
 using namespace std;
 
 class Entity {
@@ -17,6 +18,9 @@ private:
      Position *position;
 
 public:
+    //Atributos
+    static vector<Entity> *listOfEntitys;
+
     //Constructor
     Entity(string pId, string pType, Position* pPosition);
     Entity();
@@ -28,8 +32,6 @@ public:
     void setType(string pType);
     Position* getPosition();
     void setPosition(Position *pPosition);
-
-
 
 };
 

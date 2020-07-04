@@ -11,12 +11,13 @@ public class CameraScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        this.transform.position = new Vector3(21, 40, -21);
     }
 
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = player.transform.position + Vector3.up * offset;
+        //this.transform.position = player.transform.position + Vector3.up * offset;
+        
     }
 }

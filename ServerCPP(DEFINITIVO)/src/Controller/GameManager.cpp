@@ -5,12 +5,14 @@
 
 #include "GameManager.h"
 #include "../Model/Objects/Treasure.h"
+#include "../Model/Objects/Jarron.h"
+#include "../Model/Board/Jugador.h"
 
 void GameManager::initSpectresMovement() {
 
     for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
 
-        board.getListOfSpectres()->at(i).startMovement();
+        Spectre::listOfSpectres->at(i)->startMovement();
 
     }
 
@@ -22,22 +24,58 @@ void GameManager::initSpectresMovement() {
  */
 void GameManager::startGame(int pLevel) {
 
+    cout << "Iniciando carga del nivel: " << pLevel << endl;
     ifstream file("..\\src\\resources\\maps\\level_01\\level01.json");
     ostringstream tmp;
     tmp<<file.rdbuf();
     string JSON = tmp.str();
-    //cout << JSON << endl;
     loadGameFromJSON(JSON);
+    board.printBoardCellType();
+    board.printBoardEntity();
     initSpectresMovement();
-    int i;
-    cin >> i;
+
+    thread(&GameManager::updateGame, this).detach();
+
+
 
 }
+
+void GameManager::updateGame() {
+    while(1){
+        sleep(1.5);
+        board.printBoardEntity();
+    }
+}
+
+
+void GameManager::parseJugadorJSON(json pJSON) {
+
+    cout << "Cargando los datos del jugador desde el archivo JSON..." << endl;
+
+    string id = pJSON["jugador"]["id"];
+    string type = pJSON["jugador"]["type"];
+    Position *position = new Position(pJSON["jugador"]["position"][0], pJSON["jugador"]["position"][1]);
+    Jugador *jugador = new Jugador(id, type, position, 1);
+
+}
+
+void GameManager::createMatrizJsonString(json pJSON) {
+
+    matrizJSONString = "{\"matriz\":";
+    matrizJSONString += pJSON["matriz"].dump();
+    matrizJSONString += "}";
+
+}
+
 /**
  * Parsea la matriz desde el archivo json del mapa
  * @param pJSON
  */
 void GameManager::parseMatrizJSON(json pJSON) {
+
+    createMatrizJsonString(pJSON);
+
+    cout << "Cargando la matriz del archivo JSON..." << endl;
 
     for(int i = 0; i < pJSON["matriz"].size(); i++){
 
@@ -71,6 +109,8 @@ void GameManager::parseMatrizJSON(json pJSON) {
  */
 void GameManager::parseSpectresJSON(json pJSON) {
 
+    cout << "Cargando los espectros del archivo JSON..." << endl;
+
     for(int i = 0; i < pJSON["spectres"].size(); i++){
 
         string id = pJSON["spectres"].at(i)["id"];
@@ -81,7 +121,6 @@ void GameManager::parseSpectresJSON(json pJSON) {
         double persuitVelocity = pJSON["spectres"].at(i)["persuitVelocity"];
         int visionRange = pJSON["spectres"].at(i)["visionRange"];
         vector<Position>* patrolRoute = new vector<Position>();
-        board.assignMatrizEntity(position, id);
         SpectreType spectreType;
 
         if(type.compare("spectre_gray") == 0){
@@ -100,12 +139,8 @@ void GameManager::parseSpectresJSON(json pJSON) {
             Position *tmpPosition = new Position(pJSON["spectres"].at(i)["patrolRoute"].at(e)[0], pJSON["spectres"].at(i)["patrolRoute"].at(e)[1]);
             patrolRoute->push_back(*tmpPosition);
         }
-
         Spectre *spectre = new Spectre(id, type, patrolRoute, direction, routeVelocity, persuitVelocity, visionRange, position, spectreType);
-
-
     }
-
 }
 /**
  * Parsea los objetos que se encuentran el archivo json del mapa
@@ -124,9 +159,16 @@ void GameManager::parseObjectsJSON(json pJSON) {
             Treasure *treasure = new Treasure(id, type, scorePoints, position);
             //board.getListOfObjects()->push_back(treasure);
 
+        }else{
+
+            if(type.compare("jarron") == 0){
+
+                int heartQuantity = pJSON["objects"].at(i)["heartQuantity"];
+                Jarron *jarron = new Jarron(id, type, scorePoints, heartQuantity, position);
+
+            }
+
         }
-
-
     }
 }
 
@@ -136,14 +178,26 @@ void GameManager::parseObjectsJSON(json pJSON) {
  */
 void GameManager::loadGameFromJSON(string pJSON) {
 
+    cout << "Cargando datos desde el archivo JSON..." << endl;
     json jsonObj;
     stringstream(pJSON) >> jsonObj;
 
-    parseMatrizJSON(jsonObj);
-    parseSpectresJSON(jsonObj);
 
+    parseMatrizJSON(jsonObj);
+    parseJugadorJSON(jsonObj);
+    parseSpectresJSON(jsonObj);
+    parseObjectsJSON(jsonObj);
+
+
+    cout << "Carga completa!" << endl;
 
 }
+
+
+string GameManager::getMatrizJsonString() {
+    return matrizJSONString;
+}
+
 
 /* Null, because instance will be initialized on demand. */
 GameManager* GameManager::instance = 0;
@@ -174,6 +228,8 @@ int GameManager::getScore() {
 int GameManager::getLifes() {
     return lifes;
 }
+
+
 
 
 

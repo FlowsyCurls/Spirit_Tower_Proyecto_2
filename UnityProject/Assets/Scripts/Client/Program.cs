@@ -45,12 +45,15 @@ class Program : MonoBehaviour
 		* 
 		*/
 
-    private static void receiveMessage()
+    public static String receiveMessage()
     {
         messageReceived = new byte[1024];
 
         byteRecv = sender.Receive(messageReceived);
-        Debug.Log("Message from Server -> {0}" + "\n" +  Encoding.ASCII.GetString(messageReceived, 0, byteRecv));
+        String texto = Encoding.ASCII.GetString(messageReceived, 0, byteRecv);
+        Debug.Log("Se ha recibido el mensaje: " +  Encoding.ASCII.GetString(messageReceived, 0, byteRecv));
+
+        return texto;
         
     }
 
@@ -86,7 +89,7 @@ class Program : MonoBehaviour
                 // Creation of messagge that 
                 // we will send to Server 
 
-                sendMessage("Primer mensaje");
+                //sendMessage("Mensaje de verificacion");
 
                 //receiveMessage();
 

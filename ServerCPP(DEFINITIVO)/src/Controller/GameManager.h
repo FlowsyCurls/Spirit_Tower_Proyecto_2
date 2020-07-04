@@ -30,6 +30,7 @@ private:
     Board board;
     int score;
     int lifes;
+    string matrizJSONString;
 
     //Constructor
     GameManager();
@@ -39,7 +40,11 @@ private:
     void parseMatrizJSON(json pJSON);
     void parseSpectresJSON(json pJSON);
     void parseObjectsJSON(json pJSON);
+    void parseJugadorJSON(json pJSON);
+    void initSpectresMovement();
 
+    void updateGame();
+    void createMatrizJsonString(json pJSON);
 
 public:
 
@@ -51,7 +56,8 @@ public:
     Board getBoard();
     int getScore();
     int getLifes();
-    void initSpectresMovement();
+
+    string getMatrizJsonString();
 
 
 };

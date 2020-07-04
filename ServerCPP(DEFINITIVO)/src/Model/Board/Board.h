@@ -7,9 +7,7 @@
 
 
 #include "Cell.h"
-#include "../Objects/Objeto.h"
-#include "../SimpleEnemies/SimpleEnemy.h"
-#include "../Spectres/Spectre.h"
+#include "Entity.h"
 #include <iostream>
 #include <vector>
 
@@ -20,34 +18,30 @@ class Board {
 private:
 
     string matrizJSON;
-    vector<Objeto> * listOfObjects;
-    vector<SimpleEnemy> * listOfSimpleEnemies;
-    vector<Spectre> * listOfSpectres;
+
 
 public:
     //Atributos
-    Cell* matriz[20][20];
+    static Cell* matriz[20][20];
+    vector<Entity> * listOfEntitys;
 
     //Constructor
     Board();
 
     //Methods
     string parseBoardToJSON();
-    void assignMatrizEntity(Position * pPosition, string pEntityID);
+    static void assignMatrizEntity(Position * pPosition, string pEntityID);
 
 
     //Setters and getters
     string getMatrizJson();
     void setMatrizJson(string pMatrizJson);
-    vector<Objeto> * getListOfObjects();
-    vector<SimpleEnemy> * getListOfEnemies();
-    vector<Spectre> * getListOfSpectres();
+    vector<Entity> * getListOfEntity();
 
 
     //toStrings y prints
-    void printBoard();
-
-
+    void printBoardCellType();
+    static void printBoardEntity();
 
 };
 

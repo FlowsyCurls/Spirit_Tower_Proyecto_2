@@ -4,7 +4,7 @@
 
 #include "Spectre.h"
 
-vector<Spectre> *Spectre::listOfSpectres = new vector<Spectre>();
+vector<Spectre*> *Spectre::listOfSpectres = new vector<Spectre*>();
 
 Spectre::Spectre(string pId, string pType, vector<Position>* pPatrolRoute, string pDirection, double pRouteVelocity,
                  double pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType) : Entity(pId, pType, pPosition) {
@@ -15,7 +15,7 @@ Spectre::Spectre(string pId, string pType, vector<Position>* pPatrolRoute, strin
     routeVelocity = pRouteVelocity;
     persuitVelocity = pPersuitVelocity;
     visionRange = pVisionRange;
-    listOfSpectres->push_back(*this);
+    listOfSpectres->push_back(this);
     spectreType = pSpectreType;
 
 }
@@ -45,30 +45,37 @@ void Spectre::paralizeCuzMouse() {
 
 }
 
+void Spectre::updateMatriz() {
+
+    Board::matriz[getPosition()->getRow()][getPosition()->getColumn()]->setEntity("");
+    Board::matriz[routeInUse->at(routeCounter).getRow()][routeInUse->at(routeCounter).getColumn()]->setEntity(this->getId());
+
+}
+
 /**
  * Cambia la direccion del espectro dependiendo de la posicion hacia la que se mueva
  */
 void Spectre::updateDirection() {
 
     //Con eje x
-    if(routeInUse->at(routeCounter).getX() > getPosition()->getX()){
+    if(routeInUse->at(routeCounter).getRow() > getPosition()->getRow()){
 
         setDirection("east");
 
     }else{
-        if(routeInUse->at(routeCounter).getX() < getPosition()->getX()){
+        if(routeInUse->at(routeCounter).getRow() < getPosition()->getRow()){
 
             setDirection("west");
 
         }
     }
     //Con eje y
-    if(routeInUse->at(routeCounter).getY() > getPosition()->getY()){
+    if(routeInUse->at(routeCounter).getColumn() > getPosition()->getColumn()){
 
         setDirection("south");
 
     }else{
-        if(routeInUse->at(routeCounter).getY() < getPosition()->getY()){
+        if(routeInUse->at(routeCounter).getColumn() < getPosition()->getColumn()){
 
             setDirection("north");
 
@@ -93,10 +100,11 @@ void Spectre::moveNext() {
         if(routeCounter != routeInUse->size()){
 
             updateDirection();
+            updateMatriz();
             this->setPosition(&routeInUse->at(routeCounter));
-            cout << "El espectro: " << this->getId() << " se ha movido a ";
-            this->getPosition()->printPosition();
-            cout << " y su direccion es: " << getDirection() << endl;
+            //cout << "El espectro: " << this->getId() << " se ha movido a ";
+            //this->getPosition()->printPosition();
+            //cout << " y su direccion es: " << getDirection() << endl;
             routeCounter++;
 
         }else{
@@ -104,9 +112,6 @@ void Spectre::moveNext() {
         }
 
     }
-
-
-
 }
 
 void Spectre::startMovement() {
@@ -180,3 +185,13 @@ void Spectre::printSpectre() {
     cout << endl;
 
 }
+
+Spectre *Spectre::getSpectreByID(string pId) {
+    for(int i = 0; i < listOfSpectres->size(); i++){
+        if(listOfSpectres->at(i)->getId().compare(pId)==0){
+            return listOfSpectres->at(i);
+        }
+    }
+}
+
+

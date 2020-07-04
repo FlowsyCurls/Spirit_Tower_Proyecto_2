@@ -10,6 +10,8 @@
 #include <vector>
 #include <thread>
 #include <unistd.h>
+#include "../Board/Board.h"
+#include <map>
 
 using namespace std;
 
@@ -41,12 +43,13 @@ public:
     Spectre(string pId, string pType, vector<Position>* pPatrolRoute, string pDirection, double pRouteVelocity,
             double pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType);
 
-    static vector<Spectre> *listOfSpectres;
+    static vector<Spectre*> *listOfSpectres;
 
     //Methods
     void moveNext();
     void startMovement();
     void updateDirection();
+    void updateMatriz();
 
     void persuitPlayer();
     void sendSignalToPersuit();
@@ -67,6 +70,7 @@ public:
     double getPersuitVelocity();
     void setVisionRange(int pVisionRange);
     int getVisionRange();
+    Spectre* getSpectreByID(string pId);
 
     //toString, prints, logs
     string toString();

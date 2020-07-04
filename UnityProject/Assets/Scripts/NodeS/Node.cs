@@ -9,23 +9,23 @@ public class Node : MonoBehaviour
     private int column;
     private int row;
     private bool isTraversable;
+    public String type;
 
-    public Color32 playerColor;
-    public Color32 enemyColor;
+    public Color32 normalCellColor;
+    public Color32 obstacleCellColor;
+    public Color32 safeZoneCellColor;
     public float nodeObsAltitude;
     public float nodePathAltitude;
 
     // Start is called before the first frame update
     void Start()
     {
-        isTraversable = true;
+
     }
 
     // Update is called once per frame
     void Update() {
 
-        //Uptade state of the nodes
-        updateNode();
 
     }
     // Triggers when a collision happen with this object, collision contains all info of the object that had collide with this object
@@ -37,25 +37,31 @@ public class Node : MonoBehaviour
     //Triggers when you click on the collider of the object, changes the state of the node, traversable or nor traversable (obstacle)
     private void OnMouseDown()
     {
-        this.isTraversable = !this.isTraversable;
+        //convertToSafeZone();
     }
 
-    //Displays the color of the state of node, if is playerField (can walk)
-    void updateNode() {
+    public void convertToNormal()
+    {
+        isTraversable = true;
+        this.GetComponent<Renderer>().material.color = normalCellColor;
+        type = "normal";
 
-        //Set color if isPlayerField
-        if (isTraversable)
-        {
-            this.GetComponent<Renderer>().material.color = playerColor;
-            this.transform.localScale = new Vector3(transform.localScale.x, nodePathAltitude, transform.localScale.z);
-        }
-        //is enemy
-        else
-        {
-            this.GetComponent<Renderer>().material.color = enemyColor;
-            this.transform.localScale = new Vector3(transform.localScale.x, nodeObsAltitude, transform.localScale.z); 
-        }
+    }
 
+    public void convertToObstacle()
+    {
+        this.isTraversable = false;
+        this.GetComponent<Renderer>().material.color = obstacleCellColor;
+        this.transform.localScale = new Vector3(transform.localScale.x, 2, transform.localScale.z);
+        this.transform.localPosition = new Vector3(transform.localPosition.x, nodeObsAltitude, transform.localPosition.z);
+        type = "obstacle";
+    }
+
+    public void convertToSafeZone()
+    {
+        this.isTraversable = true;
+        this.GetComponent<Renderer>().material.color = safeZoneCellColor;
+        this.transform.localScale = new Vector3(transform.localScale.x, nodePathAltitude, transform.localScale.z);
     }
 
     public void setColumn(int _column) {

@@ -23,6 +23,8 @@ struct addrinfo hints, * res=NULL, * ptr=NULL;
 char buffer[BUFFERSIZE];
 int ByteReceived, i;
 int rc;
+bool gameIsStarted = false;
+
 GameManager *gameManager = GameManager::getInstance();
 
 /**
@@ -80,7 +82,7 @@ void receiveMessage(){
 void pruebaGameManager(){
 
     gameManager->startGame(1);
-    //gameManager->getBoard().printBoard();
+    //gameManager->getBoard().printBoardBlocksType();
 
 }
 
@@ -90,9 +92,9 @@ int main(int argc, char **argv){
 
     // Initialize Winsock
 
-    pruebaGameManager();
+    //pruebaGameManager();
 
-    /*
+
     initWinsock();
     initHints();
     rc = getaddrinfo(NULL, szPort, &hints, &res);
@@ -143,19 +145,25 @@ int main(int argc, char **argv){
 
                 receiveMessage();
 
-                //clearBuffer();
+                if(!gameIsStarted){
+                    if(strcmp(buffer, "play_level01") == 0){
 
-                //sendMessage("Mensaje recibido");
+                        cout << "El cliente solicita el nivel01" << endl;
+                        cout << "Enviando el nivel 01" << endl;
 
-               // clearBuffer();
+                        gameManager->startGame(1);
 
-               // receiveMessage();
+                        sendMessage(gameManager->getMatrizJsonString());
+                        gameIsStarted = true;
 
-                if(strcmp(buffer, "1") == 0){
+                    }
+                }else{
 
-                    cout << "opcion 1" << endl;
+
 
                 }
+
+
 
             }
 
@@ -169,7 +177,7 @@ int main(int argc, char **argv){
     WSACleanup();
     return 0;
 
-     */
+
 }
 /**
  * Imprime lo que tenga el buffer de texto

@@ -107,13 +107,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cde980864315c3949a3a72d1c650d95d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerColor:
+  type: 
+  normalCellColor:
     serializedVersion: 2
-    rgba: 5038155
-  enemyColor:
+    rgba: 13956080
+  obstacleCellColor:
     serializedVersion: 2
-    rgba: 3947734
-  nodeObsAltitude: 5
+    rgba: 0
+  safeZoneCellColor:
+    serializedVersion: 2
+    rgba: 63490
+  nodeObsAltitude: 0.8
   nodePathAltitude: 0.5
 --- !u!54 &8839708227173863658
 Rigidbody:
