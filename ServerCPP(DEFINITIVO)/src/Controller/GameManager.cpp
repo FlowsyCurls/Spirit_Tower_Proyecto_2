@@ -7,6 +7,9 @@
 #include "../Model/Objects/Treasure.h"
 #include "../Model/Objects/Jarron.h"
 #include "../Model/Board/Jugador.h"
+#include "../Model/SimpleEnemies/SpectralEye.h"
+#include "../Model/SimpleEnemies/Chuchu.h"
+#include "../Model/SimpleEnemies/Mouse.h"
 
 void GameManager::initSpectresMovement() {
 
@@ -18,35 +21,36 @@ void GameManager::initSpectresMovement() {
 
 }
 
-/**
- * Inicia el juego cargando los datos que se encuentran en el json del nivel
- * @param pLevel
- */
-void GameManager::startGame(int pLevel) {
+void GameManager::loadGame(int pLevel) {
 
     cout << "Iniciando carga del nivel: " << pLevel << endl;
-    ifstream file("..\\src\\resources\\maps\\level_01\\level01.json");
+    ifstream file("..\\src\\resources\\maps\\level_0" + to_string(pLevel) + "\\level0" + to_string(pLevel) +".json");
     ostringstream tmp;
     tmp<<file.rdbuf();
     string JSON = tmp.str();
     loadGameFromJSON(JSON);
     board.printBoardCellType();
     board.printBoardEntity();
+    generateEntityLastStatusJSON();
+
+}
+
+/**
+ * Inicia el juego cargando los datos que se encuentran en el json del nivel
+ * @param pLevel
+ */
+void GameManager::startGame() {
     initSpectresMovement();
-
     thread(&GameManager::updateGame, this).detach();
-
-
-
 }
 
 void GameManager::updateGame() {
     while(1){
-        sleep(1.5);
-        board.printBoardEntity();
+        sleep(0.5);
+        generateEntityLastStatusJSON();
+        //board.printBoardEntity();
     }
 }
-
 
 void GameManager::parseJugadorJSON(json pJSON) {
 
@@ -116,6 +120,7 @@ void GameManager::parseSpectresJSON(json pJSON) {
         string id = pJSON["spectres"].at(i)["id"];
         string type = pJSON["spectres"].at(i)["type"];
         Position *position = new Position(pJSON["spectres"].at(i)["position"][0],pJSON["spectres"].at(i)["position"][1]);
+
         string direction = pJSON["spectres"].at(i)["direction"];
         double routeVelocity = pJSON["spectres"].at(i)["routeVelocity"];
         double persuitVelocity = pJSON["spectres"].at(i)["persuitVelocity"];
@@ -141,6 +146,7 @@ void GameManager::parseSpectresJSON(json pJSON) {
         }
         Spectre *spectre = new Spectre(id, type, patrolRoute, direction, routeVelocity, persuitVelocity, visionRange, position, spectreType);
     }
+
 }
 /**
  * Parsea los objetos que se encuentran el archivo json del mapa
@@ -153,7 +159,6 @@ void GameManager::parseObjectsJSON(json pJSON) {
         string type = pJSON["objects"].at(i)["type"];
         int scorePoints = pJSON["objects"].at(i)["scorePoints"];
         Position *position = new Position(pJSON["objects"].at(i)["position"][0], pJSON["objects"].at(i)["position"][1]);
-
         if(type.compare("treasure") == 0){
 
             Treasure *treasure = new Treasure(id, type, scorePoints, position);
@@ -172,6 +177,26 @@ void GameManager::parseObjectsJSON(json pJSON) {
     }
 }
 
+void GameManager::parseSimpleEnemiesJSON(json pJSON) {
+    for(int i = 0; i < pJSON["simpleEnemies"].size(); i++){
+
+        string id = pJSON["simpleEnemies"].at(i)["id"];
+        string type = pJSON["simpleEnemies"].at(i)["type"];
+        Position *position = new Position(pJSON["simpleEnemies"].at(i)["position"][0], pJSON["simpleEnemies"].at(i)["position"][1]);
+        if(type.compare("spectralEye") == 0){
+
+            int visionRange = pJSON["simpleEnemies"].at(i)["visionRange"];
+            SpectralEye *spectralEye = new SpectralEye(id, type, visionRange, position);
+
+        }else if(type.compare("chuchu") == 0){
+                Chuchu *chuchu = new Chuchu(id, type, position);
+        }else if(type.compare("mouse") == 0){
+            Mouse *mouse = new Mouse(id, type, position);
+        }
+    }
+}
+
+
 /**
  * Carga los datos del json al juego
  * @param pJSON
@@ -182,16 +207,38 @@ void GameManager::loadGameFromJSON(string pJSON) {
     json jsonObj;
     stringstream(pJSON) >> jsonObj;
 
-
     parseMatrizJSON(jsonObj);
     parseJugadorJSON(jsonObj);
     parseSpectresJSON(jsonObj);
     parseObjectsJSON(jsonObj);
-
+    parseSimpleEnemiesJSON(jsonObj);
 
     cout << "Carga completa!" << endl;
-
 }
+
+void GameManager::generateEntityLastStatusJSON() {
+
+    json j;
+    j["listOfEntitys"] = {};
+
+    //cout << "SEPARATOR" << endl << endl;
+
+    for(int i = 1; i < Entity::listOfEntitys->size(); i++){
+
+        json j2;
+        Position * position = new Position(Entity::listOfEntitys->at(i).getPosition()->getRow(), Entity::listOfEntitys->at(i).getPosition()->getColumn());
+
+        j2["id"] =  Entity::listOfEntitys->at(i).getId();
+        j2["type"] =  Entity::listOfEntitys->at(i).getType();
+        j2["position"] = {};
+        j2["position"][0] = position->getRow();
+        j2["position"][1] = position->getColumn();
+        j["listOfEntitys"][i-1] = j2;
+
+    }
+    entitysJSONString = j.dump();
+}
+
 
 
 string GameManager::getMatrizJsonString() {
@@ -228,6 +275,11 @@ int GameManager::getScore() {
 int GameManager::getLifes() {
     return lifes;
 }
+
+string GameManager::getEntitysJsonString() {
+    return entitysJSONString;
+}
+
 
 
 

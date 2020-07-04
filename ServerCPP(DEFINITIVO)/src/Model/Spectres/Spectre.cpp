@@ -101,7 +101,8 @@ void Spectre::moveNext() {
 
             updateDirection();
             updateMatriz();
-            this->setPosition(&routeInUse->at(routeCounter));
+            //setPosition(&routeInUse->at(routeCounter));
+            setPosition(routeInUse->at(routeCounter).getRow(),routeInUse->at(routeCounter).getColumn());
             //cout << "El espectro: " << this->getId() << " se ha movido a ";
             //this->getPosition()->printPosition();
             //cout << " y su direccion es: " << getDirection() << endl;

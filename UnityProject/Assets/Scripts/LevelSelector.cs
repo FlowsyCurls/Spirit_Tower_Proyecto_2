@@ -14,9 +14,9 @@ public class LevelSelector : MonoBehaviour
         Program.Start();
         Program.sendMessage("play_level01");
         Debug.Log("Recibiendo el mapa a cargar desde el servidor..");
-        string mensaje = Program.receiveMessage();
-
-        GameManager.setMapData(mensaje);
+        GameManager.setMapData(Program.receiveMessage());
+        Program.sendMessage("getEntitys");
+        GameManager.setEntityData(Program.receiveMessage());
         SceneManager.LoadScene(2);
 
 

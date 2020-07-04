@@ -77,49 +77,72 @@
       "id": "tr01",
       "type": "treasure",
       "scorePoints": 15,
-      "position": [5,6]
+      "position": [6,5]
     },
     {
       "id": "tr02",
       "type": "treasure",
       "scorePoints": 25,
-      "position": [11,6]
+      "position": [6,11]
     },
     {
       "id": "tr03",
       "type": "treasure",
       "scorePoints": 35,
-      "position": [11,14]
+      "position": [14,11]
     },
     {
       "id": "ja01",
       "type": "jarron",
       "scorePoints": 5,
       "heartQuantity": 2,
-      "position": [3,7]
+      "position": [7,3]
     },
         {
       "id": "ja02",
       "type": "jarron",
       "scorePoints": 5,
       "heartQuantity": 1,
-      "position": [19,10]
+      "position": [10,19]
     },
         {
       "id": "ja03",
       "type": "jarron",
       "scorePoints": 5,
       "heartQuantity": 1,
-      "position": [15,14]
+      "position": [14,15]
     },
         {
       "id": "ja04",
       "type": "jarron",
       "scorePoints": 5,
       "heartQuantity": 2,
-      "position": [0,16]
+      "position": [16,0]
     }
     
     ],
-  "simpleEnemies":[1,2]
+  "simpleEnemies":[
+    {
+      "id": "se01",
+      "type": "spectralEye",
+      "visionRange": 3,
+      "position": [6,4]
+    },
+        {
+      "id": "ch01",
+      "type": "chuchu",
+      "position": [5,10]
+    },
+        {
+      "id": "ch02",
+      "type": "chuchu",
+      "position": [16,9]
+    },
+        {
+      "id": "mo01",
+      "type": "mouse",
+      "position": [9,7]
+    }
+    
+    ]
 }

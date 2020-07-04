@@ -32,6 +32,7 @@ public:
     void setType(string pType);
     Position* getPosition();
     void setPosition(Position *pPosition);
+    void setPosition(int row, int column);
 
 };
 

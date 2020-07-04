@@ -3,8 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using System.Threading;
+using System.Runtime.ExceptionServices;
 
 //Class that keeps the state of the game in the client side, tracks the player and enemy behavoir, sends data to server and call server petitions
+
+class CapsulaEntity
+{
+    public Entity[] listOfEntitys;
+}
+
+class Entity
+{
+    public string id;
+    public int[] position;
+    public string type;
+}
 
 class Matriz
 {
@@ -19,6 +33,15 @@ public class GameManager : MonoBehaviour
     public GameObject client;
     public GameObject player;
 
+    public Color32 spectreGray;
+    public Color32 spectreBlue;
+    public Color32 spectreRed;
+    public Color32 treasure;
+    public Color32 jarron;
+    public Color32 spectralEye;
+    public Color32 mouse;
+    public Color32 chuchu;
+
     int gridX = 20;
     int gridZ = 20;
     public float nodeSeparation;
@@ -27,11 +50,31 @@ public class GameManager : MonoBehaviour
     public int enemyQuantity;
 
     public static string mapData;
-    
+    public static string entityData;
 
+    private static List<GameObject> entitys;
+    
+    public static void setEntityData(string msg)
+    {
+        entityData = msg;
+    }
     public static void setMapData(string msg)
     {
         mapData = msg;
+    }
+
+    static void threadCommunicator()
+    {
+
+        while (true)
+        {
+            Program.Start();
+            Program.sendMessage("getEntitysUpdate");
+            entityData = Program.receiveMessage();
+            
+            Thread.Sleep(500);
+        }
+
     }
 
 
@@ -39,8 +82,13 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         //Create the matrix
-        
+        entitys = new List<GameObject>();
         createGrid();       //Create all nodes on matrix, and put them onto the structure
+        createEntitys();
+        //Program.Start();
+        Thread t = new Thread(new ThreadStart(threadCommunicator));
+        t.Start();
+        
         //spawnEnemies();     //Spawn enemies on stage
 
     }
@@ -49,12 +97,16 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         //If player is moving, send msg that he is moving
-        if (player.GetComponent<PlayerMovement>().getLastDir() != player.GetComponent<PlayerMovement>().getDir()) {
-            //Debug.Log("Moviendose");
-            //Send msg that the player is moving on a direction to server
-            //Program.Start();
-            //Program.sendMessage("Player is moving");
-        }
+        //if (player.GetComponent<PlayerMovement>().getLastDir() != player.GetComponent<PlayerMovement>().getDir()) {
+        //Debug.Log("Moviendose");
+        //Send msg that the player is moving on a direction to server
+        //Program.Start();
+        //Program.sendMessage("Player is moving");
+        //}
+        //Thread.Sleep(1000);
+        //Debug.Log("a");
+        Thread.Sleep(50);
+        updateEntitys();
     }
 
 
@@ -108,17 +160,57 @@ public class GameManager : MonoBehaviour
         
     }
 
-    //Spanwn an enemy on pos n,m
+    void createEntitys()
+    {
+        CapsulaEntity listJSON = JsonConvert.DeserializeObject<CapsulaEntity>(entityData);
 
-    void spawnEnemies() {
+        Debug.Log(listJSON.listOfEntitys[0].id);
 
-        for (int i = 0; i < enemyQuantity; i++)
+        for(int i = 0; i < listJSON.listOfEntitys.Length; i++)
         {
-            GameObject fartestNode = mat[gridX - 1, gridZ - 1];        //Get the fartest node to spawn the enemies
 
-            //Instantiate and set position for the enemy
-            GameObject e = Instantiate(enemy, new Vector3(fartestNode.GetComponent<Node>().getColumn() * (node.transform.localScale.x + nodeSeparation), 2f, fartestNode.GetComponent<Node>().getRow() *- (node.transform.localScale.z + nodeSeparation)), Quaternion.identity);
+            GameObject e = Instantiate(enemy, new Vector3(listJSON.listOfEntitys[i].position[1] * (node.transform.localScale.x + nodeSeparation), 1f, listJSON.listOfEntitys[i].position[0] * -(node.transform.localScale.z + nodeSeparation)), Quaternion.identity);
+
+            string type = listJSON.listOfEntitys[i].type;
+
+            if (type == "spectre_gray"){
+                e.GetComponent<Renderer>().material.color = spectreGray;
+            }else if(type == "spectre_blue"){
+                e.GetComponent<Renderer>().material.color = spectreBlue;
+            }else if (type == "spectre_red"){
+                e.GetComponent<Renderer>().material.color = spectreRed;
+            }else if (type == "treasure"){
+                e.GetComponent<Renderer>().material.color = treasure;
+            }else if (type == "jarron"){
+                e.GetComponent<Renderer>().material.color = jarron;
+            }else if (type == "spectralEye"){
+                e.GetComponent<Renderer>().material.color = spectralEye;
+            }else if (type == "chuchu"){
+                e.GetComponent<Renderer>().material.color = chuchu;
+            }else if (type == "mouse"){
+                e.GetComponent<Renderer>().material.color = mouse;
+            }
+            
+
+            entitys.Add(e);
+
         }
+
+
+    }
+
+    static void updateEntitys()
+    {
+        CapsulaEntity listJSON = JsonConvert.DeserializeObject<CapsulaEntity>(entityData);
+
+        //Debug.Log(listJSON.listOfEntitys[0].id);
+        //entitys[0].GetComponent<EnemyScript>().moveTo(Convert.ToSingle(listJSON.listOfEntitys[0].position[1] * (2.1)), Convert.ToSingle(listJSON.listOfEntitys[0].position[0] * -(2.1)));
+
+        for (int i = 0; i < listJSON.listOfEntitys.Length; i++)
+        {
+            entitys[i].GetComponent<EnemyScript>().moveTo(Convert.ToSingle(listJSON.listOfEntitys[i].position[1] * (2.1)), Convert.ToSingle(listJSON.listOfEntitys[i].position[0] * -(2.1)));
+        }
+
 
     }
 

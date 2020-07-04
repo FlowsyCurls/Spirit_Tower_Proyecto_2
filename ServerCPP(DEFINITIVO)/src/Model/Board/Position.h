@@ -22,6 +22,7 @@ public:
     void setRow(int pRow);
     int getColumn();
     void setColumn(int pColumn);
+    bool compare(Position* position);
 
     void printPosition();
 

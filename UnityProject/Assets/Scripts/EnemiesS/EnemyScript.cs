@@ -15,4 +15,8 @@ public class EnemyScript : MonoBehaviour
     {
 
     }
+    public void moveTo(float row, float column)
+    {
+        this.transform.localPosition = new Vector3(row, 1f, column);
+    }
 }

@@ -35,3 +35,7 @@ void Position::printPosition() {
     cout << "(row=" << row << ",column=" << column << ")";
 
 }
+
+bool Position::compare(Position *position) {
+    return position->getRow() == row && position->getColumn() == column;
+}

@@ -512,8 +512,30 @@ MonoBehaviour:
   enemy: {fileID: 2426587525174805606, guid: e3b8126ebfebdf041b2763f2a2a7534c, type: 3}
   client: {fileID: 801822602}
   player: {fileID: 443484463}
-  gridX: 20
-  gridZ: 20
+  spectreGray:
+    serializedVersion: 2
+    rgba: 4284703587
+  spectreBlue:
+    serializedVersion: 2
+    rgba: 4294910720
+  spectreRed:
+    serializedVersion: 2
+    rgba: 4278190335
+  treasure:
+    serializedVersion: 2
+    rgba: 4278255591
+  jarron:
+    serializedVersion: 2
+    rgba: 4278999696
+  spectralEye:
+    serializedVersion: 2
+    rgba: 4278222848
+  mouse:
+    serializedVersion: 2
+    rgba: 4294967295
+  chuchu:
+    serializedVersion: 2
+    rgba: 4279177205
   nodeSeparation: 0.1
   enemyQuantity: 3
 --- !u!4 &1959026810

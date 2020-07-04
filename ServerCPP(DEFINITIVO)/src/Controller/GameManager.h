@@ -31,25 +31,34 @@ private:
     int score;
     int lifes;
     string matrizJSONString;
+    string entitysJSONString;
 
     //Constructor
     GameManager();
 
-    //Methods
+    //Methods parsing from JSON to memory
     void loadGameFromJSON(string pJSON);
     void parseMatrizJSON(json pJSON);
     void parseSpectresJSON(json pJSON);
     void parseObjectsJSON(json pJSON);
     void parseJugadorJSON(json pJSON);
-    void initSpectresMovement();
+    void parseSimpleEnemiesJSON(json pJSON);
 
-    void updateGame();
+    //Methods parsing from memory to JSON
     void createMatrizJsonString(json pJSON);
+    void generateEntityLastStatusJSON();
+
+
+    //General methods
+    void initSpectresMovement();
+    void updateGame();
+
 
 public:
 
     static GameManager* getInstance();
-    void startGame(int pLevel);
+    void startGame();
+    void loadGame(int pLevel);
 
 
     //Getters and setters
@@ -58,7 +67,7 @@ public:
     int getLifes();
 
     string getMatrizJsonString();
-
+    string getEntitysJsonString();
 
 };
 

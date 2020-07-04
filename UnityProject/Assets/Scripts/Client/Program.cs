@@ -47,7 +47,7 @@ class Program : MonoBehaviour
 
     public static String receiveMessage()
     {
-        messageReceived = new byte[1024];
+        messageReceived = new byte[5000];
 
         byteRecv = sender.Receive(messageReceived);
         String texto = Encoding.ASCII.GetString(messageReceived, 0, byteRecv);

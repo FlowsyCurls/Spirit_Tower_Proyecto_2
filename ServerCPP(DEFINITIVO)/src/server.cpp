@@ -81,7 +81,7 @@ void receiveMessage(){
 
 void pruebaGameManager(){
 
-    gameManager->startGame(1);
+    //gameManager->startGame(1);
     //gameManager->getBoard().printBoardBlocksType();
 
 }
@@ -151,26 +151,33 @@ int main(int argc, char **argv){
                         cout << "El cliente solicita el nivel01" << endl;
                         cout << "Enviando el nivel 01" << endl;
 
-                        gameManager->startGame(1);
+                        gameManager->loadGame(1);
 
                         sendMessage(gameManager->getMatrizJsonString());
+
+                        cout << "Esperando request de entidades"<< endl;
+
+                        clearBuffer();
+
+                        receiveMessage();
+
+                        clearBuffer();
+
+                        sendMessage(gameManager->getEntitysJsonString());
+
+                        gameManager->startGame();
+
                         gameIsStarted = true;
 
                     }
                 }else{
-
-
-
+                        if(strcmp(buffer, "getEntitysUpdate") == 0){
+                            sendMessage(gameManager->getEntitysJsonString());
+                        }
                 }
-
-
-
             }
-
         }
-
         closesocket(s);
-
     }
 
     freeaddrinfo(res);

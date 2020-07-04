@@ -44,3 +44,10 @@ Position* Entity::getPosition() {
 void Entity::setPosition(Position* pPosition) {
     position = pPosition;
 }
+
+void Entity::setPosition(int row, int column) {
+
+    position->setRow(row);
+    position->setColumn(column);
+
+}
