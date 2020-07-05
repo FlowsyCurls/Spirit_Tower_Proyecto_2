@@ -31,7 +31,12 @@ public class Node : MonoBehaviour
     // Triggers when a collision happen with this object, collision contains all info of the object that had collide with this object
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Column: " + column + " row: + " + row);
+        if(collision.gameObject.name == "Player")
+        {
+            PlayerMovement.row = row;
+            PlayerMovement.column = column;
+        }
+        //Debug.Log("Column: " + column + " row: + " + row);
     }
 
     //Triggers when you click on the collider of the object, changes the state of the node, traversable or nor traversable (obstacle)

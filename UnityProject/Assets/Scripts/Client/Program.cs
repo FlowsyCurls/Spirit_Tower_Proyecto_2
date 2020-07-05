@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
+using System.Windows.Forms;
 
 //Prueba cliente
 
@@ -110,6 +111,8 @@ class Program : MonoBehaviour
             catch (SocketException se)
             {
                 Console.WriteLine("SocketException : {0}", se.ToString());
+                MessageBox.Show("Ha ocurrido un error al conectar con el servidor");
+                Debug.Break();
             }
 
             catch (Exception e)
@@ -121,6 +124,7 @@ class Program : MonoBehaviour
         catch (Exception e)
         {
             Console.WriteLine(e.ToString());
+            MessageBox.Show("Ha ocurrido un error al conectar con el servidor");
         }
     }
 }

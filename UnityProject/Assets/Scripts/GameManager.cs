@@ -8,6 +8,11 @@ using System.Runtime.ExceptionServices;
 
 //Class that keeps the state of the game in the client side, tracks the player and enemy behavoir, sends data to server and call server petitions
 
+class PlayerStatusJSON
+{
+    public int[] position = new int[2];
+}
+
 class CapsulaEntity
 {
     public Entity[] listOfEntitys;
@@ -63,19 +68,24 @@ public class GameManager : MonoBehaviour
         mapData = msg;
     }
 
-    static void threadCommunicator()
+    private string generatePlayerPositionJSON()
     {
+        PlayerStatusJSON p = new PlayerStatusJSON();
+        p.position[0] = PlayerMovement.row;
+        p.position[1] = PlayerMovement.column;
 
-        while (true)
-        {
-            Program.Start();
-            Program.sendMessage("getEntitysUpdate");
-            entityData = Program.receiveMessage();
-            
-            Thread.Sleep(500);
-        }
+        return JsonConvert.SerializeObject(p);
+    }
+
+    void threadCommunicator()
+    {
+        Program.Start();
+        Program.sendMessage(generatePlayerPositionJSON());
+        entityData = Program.receiveMessage();
+        updateEntitys();
 
     }
+
 
 
     // Start is called before the first frame update
@@ -85,9 +95,11 @@ public class GameManager : MonoBehaviour
         entitys = new List<GameObject>();
         createGrid();       //Create all nodes on matrix, and put them onto the structure
         createEntitys();
+
         //Program.Start();
-        Thread t = new Thread(new ThreadStart(threadCommunicator));
-        t.Start();
+        InvokeRepeating("threadCommunicator", 0, 0.5F);
+        //Thread t = new Thread(new ThreadStart(threadCommunicator));
+        //t.Start();
         
         //spawnEnemies();     //Spawn enemies on stage
 
@@ -96,6 +108,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame, keeps track of the player, at least at this early stage of the client-server communication
     void Update()
     {
+
         //If player is moving, send msg that he is moving
         //if (player.GetComponent<PlayerMovement>().getLastDir() != player.GetComponent<PlayerMovement>().getDir()) {
         //Debug.Log("Moviendose");
@@ -105,8 +118,9 @@ public class GameManager : MonoBehaviour
         //}
         //Thread.Sleep(1000);
         //Debug.Log("a");
-        Thread.Sleep(50);
-        updateEntitys();
+
+
+        
     }
 
 
@@ -170,11 +184,12 @@ public class GameManager : MonoBehaviour
         {
 
             GameObject e = Instantiate(enemy, new Vector3(listJSON.listOfEntitys[i].position[1] * (node.transform.localScale.x + nodeSeparation), 1f, listJSON.listOfEntitys[i].position[0] * -(node.transform.localScale.z + nodeSeparation)), Quaternion.identity);
-
+           
             string type = listJSON.listOfEntitys[i].type;
 
             if (type == "spectre_gray"){
                 e.GetComponent<Renderer>().material.color = spectreGray;
+                
             }else if(type == "spectre_blue"){
                 e.GetComponent<Renderer>().material.color = spectreBlue;
             }else if (type == "spectre_red"){
@@ -199,7 +214,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    static void updateEntitys()
+    void updateEntitys()
     {
         CapsulaEntity listJSON = JsonConvert.DeserializeObject<CapsulaEntity>(entityData);
 
@@ -208,7 +223,20 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < listJSON.listOfEntitys.Length; i++)
         {
-            entitys[i].GetComponent<EnemyScript>().moveTo(Convert.ToSingle(listJSON.listOfEntitys[i].position[1] * (2.1)), Convert.ToSingle(listJSON.listOfEntitys[i].position[0] * -(2.1)));
+
+            float moveRow = Convert.ToSingle(listJSON.listOfEntitys[i].position[1] * (2 + nodeSeparation));
+            float moveColumn = Convert.ToSingle(listJSON.listOfEntitys[i].position[0] * -(2 + nodeSeparation));
+
+            if (listJSON.listOfEntitys[i].type.Contains("spectre") || listJSON.listOfEntitys[i].type.Contains("mouse") || listJSON.listOfEntitys[i].type.Contains("chuchu"))
+            {
+                entitys[i].GetComponent<EnemyScript>().moveTo(moveRow, moveColumn);
+            }
+
+                //Comprobar si no se debe 
+
+            
+        
+
         }
 
 

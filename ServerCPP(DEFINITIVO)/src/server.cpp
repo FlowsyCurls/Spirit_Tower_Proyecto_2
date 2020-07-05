@@ -65,7 +65,7 @@ void sendMessage(string msg){
     strcpy(buffer,msg.c_str());
 
     ByteReceived = send( NewConnection, buffer, sizeof(buffer), 0 );
-    cout << "Se ha enviado un mensaje al cliente: " << buffer << endl;
+    cout << "Se ha enviado un mensaje al cliente: " << msg.substr(0,20) << "..." <<endl;
 
 }
 /**
@@ -171,9 +171,13 @@ int main(int argc, char **argv){
 
                     }
                 }else{
-                        if(strcmp(buffer, "getEntitysUpdate") == 0){
-                            sendMessage(gameManager->getEntitysJsonString());
+                        string s(buffer);
+                        string temp = s.substr(2,8);
+
+                        if(temp.compare("position")==0){
+                            gameManager->updatePlayerPosition(s);
                         }
+                        sendMessage(gameManager->getEntitysJsonString());
                 }
             }
         }

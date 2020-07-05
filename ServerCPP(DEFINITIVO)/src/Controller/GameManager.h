@@ -54,6 +54,7 @@ private:
     void updateGame();
 
 
+
 public:
 
     static GameManager* getInstance();
@@ -68,6 +69,7 @@ public:
 
     string getMatrizJsonString();
     string getEntitysJsonString();
+    void updatePlayerPosition(string pJson);
 
 };
 

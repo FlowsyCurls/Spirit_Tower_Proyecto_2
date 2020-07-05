@@ -33,6 +33,7 @@ public:
     Position* getPosition();
     void setPosition(Position *pPosition);
     void setPosition(int row, int column);
+    static Entity* getEntityByID(string id);
 
 };
 

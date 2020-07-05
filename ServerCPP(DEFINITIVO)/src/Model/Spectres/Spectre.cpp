@@ -91,21 +91,15 @@ void Spectre::moveNext() {
 
         if(isOnPersuit){
             sleep(persuitVelocity);
-
         }else{
             sleep(routeVelocity);
             routeInUse = patrolRoute;
         }
-
-        if(routeCounter != routeInUse->size()){
+        if(routeCounter != routeInUse->size()) {
 
             updateDirection();
             updateMatriz();
-            //setPosition(&routeInUse->at(routeCounter));
-            setPosition(routeInUse->at(routeCounter).getRow(),routeInUse->at(routeCounter).getColumn());
-            //cout << "El espectro: " << this->getId() << " se ha movido a ";
-            //this->getPosition()->printPosition();
-            //cout << " y su direccion es: " << getDirection() << endl;
+            setPosition(routeInUse->at(routeCounter).getRow(), routeInUse->at(routeCounter).getColumn());
             routeCounter++;
 
         }else{
@@ -193,6 +187,7 @@ Spectre *Spectre::getSpectreByID(string pId) {
             return listOfSpectres->at(i);
         }
     }
+    return nullptr;
 }
 
 

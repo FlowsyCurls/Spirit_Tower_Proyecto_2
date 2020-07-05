@@ -40,6 +40,8 @@ void GameManager::loadGame(int pLevel) {
  * @param pLevel
  */
 void GameManager::startGame() {
+    score = 0;
+    lifes = 5;
     initSpectresMovement();
     thread(&GameManager::updateGame, this).detach();
 }
@@ -278,6 +280,28 @@ int GameManager::getLifes() {
 
 string GameManager::getEntitysJsonString() {
     return entitysJSONString;
+}
+
+void GameManager::updatePlayerPosition(string pJson) {
+
+    Entity * e = Entity::getEntityByID("ju01");
+    if(e != nullptr){
+
+        json jsonObj;
+        stringstream(pJson) >> jsonObj;
+
+        Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity("");
+
+        e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
+
+        Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
+
+        cout << "Se ha actualizado la posicion del jugador a: ";
+        e->getPosition()->printPosition();
+        cout << endl;
+
+    }
+
 }
 
 

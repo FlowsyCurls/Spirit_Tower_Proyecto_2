@@ -51,3 +51,14 @@ void Entity::setPosition(int row, int column) {
     position->setColumn(column);
 
 }
+
+Entity * Entity::getEntityByID(string id) {
+
+    for(int i = 0; i <listOfEntitys->size(); i++){
+        if(listOfEntitys->at(i).getId().compare(id)==0){
+            return &listOfEntitys->at(i);
+        }
+    }
+
+    return nullptr;
+}

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Data;
+using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class PlayerMovement : MonoBehaviour
     public float speed;
     private string dir;
     private string lastDir;
+    public static int row = 0;
+    public static int column = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +22,16 @@ public class PlayerMovement : MonoBehaviour
     {
         //Checks if the speed limit is reached
 
-            if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.Space))
+        {
+            speed = 10f;
+        }
+        else
+        {
+            speed = 2f;
+        }        
+
+        if (Input.GetKey(KeyCode.UpArrow))
             {
                 //Move the Rigidbody forwards constantly at speed you define (the blue arrow axis in Scene view)
                 setLastDir(dir);
