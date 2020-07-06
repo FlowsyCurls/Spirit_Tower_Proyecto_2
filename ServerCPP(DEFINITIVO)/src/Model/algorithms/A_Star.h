@@ -125,7 +125,7 @@ vector<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
         isUnBlocked(grid, dest.first, dest.second) == false)
     {
         printf ("Source or the destination is blocked\n");
-        return nullptr;
+        return new vector<Position*>;
     }
 
     // If the destination cell is the same as source cell
