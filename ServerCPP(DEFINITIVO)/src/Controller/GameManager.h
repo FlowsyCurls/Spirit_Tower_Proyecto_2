@@ -57,7 +57,6 @@ private:
     void checkSpectresPlayerInteract();
 
 
-
 public:
 
     static GameManager* getInstance();

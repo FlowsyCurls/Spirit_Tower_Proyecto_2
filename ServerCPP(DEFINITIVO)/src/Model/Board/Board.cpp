@@ -10,6 +10,31 @@ bool Board::playerOnPersuit = false;
 bool Board::playerHasMoved = false;
 
 /**
+ * Actualiza la matriz que se utiliza en el algoritmo a star
+ */
+void Board::updateMatrizStar() {
+
+    for(int i = 0; i < 20; i++){
+        for(int e = 0; e < 20; e++){
+            if(matriz[i][e]->getCellType() == NORMAL ){
+
+                if(!matriz[i][e]->getEntity().compare("") == 0){
+                    //cout << board.matriz[i][e]->getEntity().substr(0,2) << endl;
+                    if(matriz[i][e]->getEntity().compare("ju01") == 0 || matriz[i][e]->getEntity().substr(0,2).compare("sp") == 0){
+                        matrizStar[i][e] = 1;
+                    }
+                }else{
+                    matrizStar[i][e] = 1;
+                }
+
+            }else{
+                matrizStar[i][e] = 0;
+            }
+        }
+    }
+}
+
+/**
  * Asigna una entidad a un campo en la matriz
  * @param pPosition
  * @param pEntityID

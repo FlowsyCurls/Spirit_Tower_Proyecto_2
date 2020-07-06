@@ -227,12 +227,15 @@ public class GameManager : MonoBehaviour
             float moveRow = Convert.ToSingle(listJSON.listOfEntitys[i].position[1] * (2 + nodeSeparation));
             float moveColumn = Convert.ToSingle(listJSON.listOfEntitys[i].position[0] * -(2 + nodeSeparation));
 
-            if (listJSON.listOfEntitys[i].type.Contains("spectre") || listJSON.listOfEntitys[i].type.Contains("mouse") || listJSON.listOfEntitys[i].type.Contains("chuchu"))
-            {
-                entitys[i].GetComponent<EnemyScript>().moveTo(moveRow, moveColumn);
-            }
+            //Debug.Log("Row de json: " + moveRow);
+            //Debug.Log("Column de json: " + moveColumn);
+            //Debug.Log("Row de Entity antes de mover: " + entitys[i].GetComponent<EnemyScript>().row);
+            //Debug.Log("Column de Entity antes de mover: " + entitys[i].GetComponent<EnemyScript>().column);
 
-                //Comprobar si no se debe 
+            entitys[i].GetComponent<EnemyScript>().moveTo(moveRow, moveColumn);
+            
+
+            //Comprobar si no se debe 
 
             
         

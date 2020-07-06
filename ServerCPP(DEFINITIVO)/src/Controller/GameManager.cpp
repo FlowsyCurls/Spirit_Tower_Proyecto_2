@@ -51,7 +51,6 @@ void GameManager::loadGame(int pLevel) {
     generateEntityLastStatusJSON();
 
 }
-
 /**
  * Inicia el juego cargando los datos que se encuentran en el json del nivel
  * @param pLevel
@@ -133,15 +132,15 @@ void GameManager::parseMatrizJSON(json pJSON) {
 
             if(pJSON["matriz"].at(i).at(e) == 0){
                 cellType = NORMAL;
-                board.matrizStar[i][e] = 1;
+                //board.matrizStar[i][e] = 1;
             }else{
                 if(pJSON["matriz"].at(i).at(e) == 1){
                     cellType = OBSTACLE;
-                    board.matrizStar[i][e] = 0;
+                    //board.matrizStar[i][e] = 0;
                 }else{
                     if(pJSON["matriz"].at(i).at(e) == 2){
                         cellType = SAFEZONE;
-                        board.matrizStar[i][e] = 0;
+                        //board.matrizStar[i][e] = 0;
                     }
                 }
             }
@@ -366,6 +365,8 @@ int GameManager::getLifes() {
 string GameManager::getEntitysJsonString() {
     return entitysJSONString;
 }
+
+
 
 
 

@@ -130,6 +130,7 @@ void Spectre::moveNext() {
             updateDirection();
             updateMatriz();
             setPosition(routeInUse->at(routeCounter)->getRow(), routeInUse->at(routeCounter)->getColumn());
+            Board::updateMatrizStar();
             routeCounter++;
 
         }else{
