@@ -33,6 +33,7 @@ private:
     string matrizJSONString;
     string entitysJSONString;
 
+
     //Constructor
     GameManager();
 
@@ -51,7 +52,9 @@ private:
 
     //General methods
     void initSpectresMovement();
+    void checkSpectresVision();
     void updateGame();
+    void checkSpectresPlayerInteract();
 
 
 

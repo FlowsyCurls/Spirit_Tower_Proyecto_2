@@ -21,6 +21,18 @@ void GameManager::initSpectresMovement() {
 
 }
 
+
+void GameManager::checkSpectresVision() {
+
+    for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+
+        Spectre::listOfSpectres->at(i)->checkVisionRange();
+
+    }
+
+}
+
+
 void GameManager::loadGame(int pLevel) {
 
     cout << "Iniciando carga del nivel: " << pLevel << endl;
@@ -46,10 +58,22 @@ void GameManager::startGame() {
     thread(&GameManager::updateGame, this).detach();
 }
 
+void GameManager::checkSpectresPlayerInteract() {
+    if(!Board::playerOnPersuit){
+        checkSpectresVision();
+    }else{
+        if(board.checkPlayerOfSafeZone()){
+            Spectre::sendSignalToStopPersuit();
+        }
+    }
+}
+
+
 void GameManager::updateGame() {
     while(1){
         sleep(0.5);
         generateEntityLastStatusJSON();
+        checkSpectresPlayerInteract();
         //board.printBoardEntity();
     }
 }
@@ -74,7 +98,9 @@ void GameManager::createMatrizJsonString(json pJSON) {
 }
 
 /**
- * Parsea la matriz desde el archivo json del mapa
+ * Parsea la matriz desde el archivo json del mapa y ademas carga una matriz que se utilizara para el algoritmo a star
+ * basicamente esta matriz tendra valores 0 para casillas que son obstaculo y 1 para las que se pueden atravesar por los
+ * espectros.
  * @param pJSON
  */
 void GameManager::parseMatrizJSON(json pJSON) {
@@ -93,12 +119,15 @@ void GameManager::parseMatrizJSON(json pJSON) {
 
             if(pJSON["matriz"].at(i).at(e) == 0){
                 cellType = NORMAL;
+                board.matrizStar[i][e] = 1;
             }else{
                 if(pJSON["matriz"].at(i).at(e) == 1){
                     cellType = OBSTACLE;
+                    board.matrizStar[i][e] = 0;
                 }else{
                     if(pJSON["matriz"].at(i).at(e) == 2){
                         cellType = SAFEZONE;
+                        board.matrizStar[i][e] = 0;
                     }
                 }
             }
@@ -296,13 +325,16 @@ void GameManager::updatePlayerPosition(string pJson) {
 
         Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
 
-        cout << "Se ha actualizado la posicion del jugador a: ";
-        e->getPosition()->printPosition();
-        cout << endl;
+        //cout << "Se ha actualizado la posicion del jugador a: ";
+        //e->getPosition()->printPosition();
+        //cout << endl;
+
 
     }
 
 }
+
+
 
 
 

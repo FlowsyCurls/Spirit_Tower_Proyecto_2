@@ -32,7 +32,7 @@ Position::Position() {
 
 void Position::printPosition() {
 
-    cout << "(row=" << row << ",column=" << column << ")";
+    cout << "(" << row << "," << column << ")";
 
 }
 

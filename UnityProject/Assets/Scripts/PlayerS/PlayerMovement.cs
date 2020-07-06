@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            speed = 2f;
+            speed = 4f;
         }        
 
         if (Input.GetKey(KeyCode.UpArrow))

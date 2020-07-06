@@ -50,9 +50,12 @@ public:
     void startMovement();
     void updateDirection();
     void updateMatriz();
+    void checkVisionRange();
+
 
     void persuitPlayer();
     void sendSignalToPersuit();
+    static void sendSignalToStopPersuit();
     void returnToPatrol();
     void attackedFromBack();
     void attackedFromFront();

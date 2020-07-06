@@ -23,14 +23,16 @@ private:
 public:
     //Atributos
     static Cell* matriz[20][20];
+    static int matrizStar[20][20];
     vector<Entity> * listOfEntitys;
-
+    static bool playerOnPersuit;
     //Constructor
     Board();
 
     //Methods
     string parseBoardToJSON();
     static void assignMatrizEntity(Position * pPosition, string pEntityID);
+    bool checkPlayerOfSafeZone();
 
 
     //Setters and getters
@@ -42,6 +44,7 @@ public:
     //toStrings y prints
     void printBoardCellType();
     static void printBoardEntity();
+    static void printMatrizStar();
 
 };
 

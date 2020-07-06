@@ -65,7 +65,7 @@ void sendMessage(string msg){
     strcpy(buffer,msg.c_str());
 
     ByteReceived = send( NewConnection, buffer, sizeof(buffer), 0 );
-    cout << "Se ha enviado un mensaje al cliente: " << msg.substr(0,20) << "..." <<endl;
+    //cout << "Se ha enviado un mensaje al cliente: " << msg.substr(0,30) << "..." <<endl;
 
 }
 /**
@@ -73,9 +73,9 @@ void sendMessage(string msg){
  */
 void receiveMessage(){
 
-    cout << "En espera de un mensaje del cliente..." << endl;
+    //cout << "En espera de un mensaje del cliente..." << endl;
     ByteReceived = recv(NewConnection, buffer, sizeof(buffer), 0);
-    printBuffer();
+    //printBuffer();
 
 }
 
@@ -94,6 +94,7 @@ int main(int argc, char **argv){
 
     //pruebaGameManager();
 
+    //algoritmTests();
 
     initWinsock();
     initHints();
@@ -123,12 +124,12 @@ int main(int argc, char **argv){
 
         if (rc == SOCKET_ERROR){
 
-            printf("Server: listen() failed with error code %ld\n", WSAGetLastError());
+            //printf("Server: listen() failed with error code %ld\n", WSAGetLastError());
             WSACleanup();
             return 1;
         }else{
 
-            printf("Server: listen() is OK...\n");
+            //printf("Server: listen() is OK...\n");
             NewConnection = SOCKET_ERROR;
             // While the NewConnection socket equal to SOCKET_ERROR
             // which is always true in this case...
@@ -152,6 +153,7 @@ int main(int argc, char **argv){
                         cout << "Enviando el nivel 01" << endl;
 
                         gameManager->loadGame(1);
+                        gameManager->getBoard().printMatrizStar();
 
                         sendMessage(gameManager->getMatrizJsonString());
 
@@ -219,28 +221,48 @@ void algoritmTests() {
     /* Description of the Grid-
     1--> The cell is not blocked
     0--> The cell is blocked */
-//    int grid[ROW][COL] =
-//            {
-//                    { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
-//                    { 1, 1, 1, 0, 1, 1, 1, 0, 1, 1 },
-//                    { 1, 1, 1, 0, 1, 1, 0, 1, 0, 1 },
-//                    { 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
-//                    { 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 },
-//                    { 1, 0, 1, 1, 1, 1, 0, 1, 0, 0 },
-//                    { 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
-//                    { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
-//                    { 1, 1, 1, 0, 0, 0, 1, 0, 0, 1 }
-//            };
+    int grid[ROW][COL] =
+            {
+                    {1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1},
+                    {1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1},
+                    {1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,1,0,1,1,1},
+                    {0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,1,1,1},
+                    {1,1,1,1,1,0,1,1,1,0,0,0,1,1,1,0,0,1,1,1},
+                    {1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,1,1,1},
+                    {1,1,1,0,1,1,0,0,1,1,1,1,0,0,0,0,0,1,1,1},
+                    {1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                    {1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                    {1,1,1,1,0,0,1,1,1,1,1,0,0,0,0,0,0,0,1,1},
+                    {1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+                    {1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                    {1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,1,1,1},
+                    {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1},
+                    {1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1},
+                    {0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0}
+            };
 
-//    // Source is the left-most bottom-most corner
-//    Pair src = make_pair(8, 0);
-//
-//    // Destination is the left-most top-most corner
-//    Pair dest = make_pair(0, 0);
-//
-//    aStarSearch(grid, src, dest);
+    // Source is the left-most bottom-most corner
+    Pair src = make_pair(0, 0);
+
+    // Destination is the left-most top-most corner
+    Pair dest = make_pair(19, 0);
+
+    vector<Position*> *route = aStarSearch(grid, src, dest);
+
+    cout << "Printing vector" << endl;
+
+    for(int i = 0; i < route->size(); i++){
+
+        route->at(i)->printPosition();
+        cout << " -> ";
+
+    }
 
     //Bresenham
-    Bresenham* b = new Bresenham;
-    b->bresenham(3,2, 15,5);
+    //Bresenham* b = new Bresenham;
+    //b->bresenham(3,2, 15,5);
 }

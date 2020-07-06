@@ -6,10 +6,12 @@
 #define SERVER_A_STAR_H
 // A C++ Program to implement A* Search Algorithm
 #include<bits/stdc++.h>
+#include "../Model/Board/Position.h"
+
 using namespace std;
 
-#define ROW 9
-#define COL 10
+#define ROW 20
+#define COL 20
 
 // Creating a shortcut for int, int pair type
 typedef pair<int, int> Pair;
@@ -68,7 +70,7 @@ double calculateHValue(int row, int col, Pair dest)
 
 // A Utility Function to trace the path from the source
 // to destination
-void tracePath(cell cellDetails[][COL], Pair dest)
+vector<Position*>* tracePath(cell cellDetails[][COL], Pair dest)
 {
     printf ("\nThe Path is ");
     int row = dest.first;
@@ -87,33 +89,35 @@ void tracePath(cell cellDetails[][COL], Pair dest)
     }
 
     Path.push (make_pair (row, col));
+    vector<Position*> * astarRoute = new vector<Position*>();
     while (!Path.empty())
     {
         pair<int,int> p = Path.top();
+        astarRoute->push_back(new Position(p.first,p.second));
         Path.pop();
         printf("-> (%d,%d) ",p.first,p.second);
     }
-
-    return;
+    cout << endl;
+    return astarRoute;
 }
 
 // A Function to find the shortest path between
 // a given source cell to a destination cell according
 // to A* Search Algorithm
-void aStarSearch(int grid[][COL], Pair src, Pair dest)
+vector<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
 {
     // If the source is out of range
     if (isValid (src.first, src.second) == false)
     {
         printf ("Source is invalid\n");
-        return;
+        return nullptr;
     }
 
     // If the destination is out of range
     if (isValid (dest.first, dest.second) == false)
     {
         printf ("Destination is invalid\n");
-        return;
+        return nullptr;
     }
 
     // Either the source or the destination is blocked
@@ -121,14 +125,14 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
         isUnBlocked(grid, dest.first, dest.second) == false)
     {
         printf ("Source or the destination is blocked\n");
-        return;
+        return nullptr;
     }
 
     // If the destination cell is the same as source cell
     if (isDestination(src.first, src.second, dest) == true)
     {
         printf ("We are already at the destination\n");
-        return;
+        return nullptr;
     }
 
     // Create a closed list and initialise it to false which means
@@ -229,9 +233,9 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i-1][j].parent_i = i;
                 cellDetails[i-1][j].parent_j = j;
                 printf ("The destination cell is found\n");
-                tracePath (cellDetails, dest);
+                vector<Position*> * route = tracePath (cellDetails, dest);
                 foundDest = true;
-                return;
+                return route;
             }
                 // If the successor is already on the closed
                 // list or if it is blocked, then ignore it.
@@ -280,9 +284,9 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i+1][j].parent_i = i;
                 cellDetails[i+1][j].parent_j = j;
                 printf("The destination cell is found\n");
-                tracePath(cellDetails, dest);
+                vector<Position*> *route = tracePath(cellDetails, dest);
                 foundDest = true;
-                return;
+                return route;
             }
                 // If the successor is already on the closed
                 // list or if it is blocked, then ignore it.
@@ -329,9 +333,9 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i][j+1].parent_i = i;
                 cellDetails[i][j+1].parent_j = j;
                 printf("The destination cell is found\n");
-                tracePath(cellDetails, dest);
+                vector<Position*> *route = tracePath(cellDetails, dest);
                 foundDest = true;
-                return;
+                return route;
             }
 
                 // If the successor is already on the closed
@@ -381,9 +385,9 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i][j-1].parent_i = i;
                 cellDetails[i][j-1].parent_j = j;
                 printf("The destination cell is found\n");
-                tracePath(cellDetails, dest);
+                vector<Position*> *route = tracePath(cellDetails, dest);
                 foundDest = true;
-                return;
+                return route;
             }
 
                 // If the successor is already on the closed
@@ -433,9 +437,9 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i-1][j+1].parent_i = i;
                 cellDetails[i-1][j+1].parent_j = j;
                 printf ("The destination cell is found\n");
-                tracePath (cellDetails, dest);
+                vector<Position*> *route = tracePath (cellDetails, dest);
                 foundDest = true;
-                return;
+                return route;
             }
 
                 // If the successor is already on the closed
@@ -485,9 +489,9 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i-1][j-1].parent_i = i;
                 cellDetails[i-1][j-1].parent_j = j;
                 printf ("The destination cell is found\n");
-                tracePath (cellDetails, dest);
+                vector<Position*> *route = tracePath (cellDetails, dest);
                 foundDest = true;
-                return;
+                return route;
             }
 
                 // If the successor is already on the closed
@@ -535,9 +539,9 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i+1][j+1].parent_i = i;
                 cellDetails[i+1][j+1].parent_j = j;
                 printf ("The destination cell is found\n");
-                tracePath (cellDetails, dest);
+                vector<Position*> *route = tracePath (cellDetails, dest);
                 foundDest = true;
-                return;
+                return route;
             }
 
                 // If the successor is already on the closed
@@ -587,9 +591,9 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i+1][j-1].parent_i = i;
                 cellDetails[i+1][j-1].parent_j = j;
                 printf("The destination cell is found\n");
-                tracePath(cellDetails, dest);
+                vector<Position*> *route = tracePath(cellDetails, dest);
                 foundDest = true;
-                return;
+                return route;
             }
 
                 // If the successor is already on the closed
@@ -634,7 +638,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
     if (foundDest == false)
         printf("Failed to find the Destination Cell\n");
 
-    return;
+    return nullptr;
 }
 
 

@@ -5,6 +5,8 @@
 #include "Board.h"
 
 Cell *Board::matriz[20][20] = {};
+int Board::matrizStar[20][20] = {};
+bool Board::playerOnPersuit = false;
 
 string Board::parseBoardToJSON() {
     return "";
@@ -67,4 +69,32 @@ void Board::printBoardEntity() {
         cout << endl;
     }
     cout << endl << endl;
+}
+
+void Board::printMatrizStar() {
+
+    cout << "Printing matriz star:" << endl;
+
+    for(int i = 0; i < 20; i++){
+        cout << "[";
+        for(int e = 0; e < 20; e++){
+            cout << matrizStar[i][e] << ",";
+        }
+        cout <<"]" << endl;
+    }
+
+}
+
+bool Board::checkPlayerOfSafeZone() {
+
+    Entity *player = Entity::getEntityByID("ju01");
+
+    if(player != nullptr){
+        if(matriz[player->getPosition()->getRow()][player->getPosition()->getColumn()]->getCellType() == SAFEZONE){
+            cout << "********************El jugador entro a safezone********************"<< endl;
+            return true;
+        }
+    }
+
+    return false;
 }
