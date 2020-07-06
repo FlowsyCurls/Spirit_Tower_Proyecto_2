@@ -10,7 +10,9 @@
 #include "../Model/SimpleEnemies/SpectralEye.h"
 #include "../Model/SimpleEnemies/Chuchu.h"
 #include "../Model/SimpleEnemies/Mouse.h"
-
+/**
+ * Da comienzo al movimiento de los espectros (threads)
+ */
 void GameManager::initSpectresMovement() {
 
     for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
@@ -20,8 +22,9 @@ void GameManager::initSpectresMovement() {
     }
 
 }
-
-
+/**
+ * Hace un checkeo del rango de vision de los espectros para verificar si el jugador nse encuentra dentro
+ */
 void GameManager::checkSpectresVision() {
 
     for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
@@ -31,8 +34,10 @@ void GameManager::checkSpectresVision() {
     }
 
 }
-
-
+/**
+ * Carga los datos del nivel que se le pasa por parametro
+ * @param pLevel
+ */
 void GameManager::loadGame(int pLevel) {
 
     cout << "Iniciando carga del nivel: " << pLevel << endl;
@@ -57,7 +62,10 @@ void GameManager::startGame() {
     initSpectresMovement();
     thread(&GameManager::updateGame, this).detach();
 }
-
+/**
+ * Hace un checkeo de la situacion en la que se encuentra el jugador con respecto a los espectros, ya sea que determine
+ * si lo vieron o si entro en zona segura y lo deben dejar de seguir
+ */
 void GameManager::checkSpectresPlayerInteract() {
     if(!Board::playerOnPersuit){
         checkSpectresVision();
@@ -67,8 +75,9 @@ void GameManager::checkSpectresPlayerInteract() {
         }
     }
 }
-
-
+/**
+ * Actualiza el juego cada 0.5 segundos, este es el thread principal del juego
+ */
 void GameManager::updateGame() {
     while(1){
         sleep(0.5);
@@ -77,7 +86,10 @@ void GameManager::updateGame() {
         //board.printBoardEntity();
     }
 }
-
+/**
+ * Carga los datos del juegador desde el archivo json
+ * @param pJSON
+ */
 void GameManager::parseJugadorJSON(json pJSON) {
 
     cout << "Cargando los datos del jugador desde el archivo JSON..." << endl;
@@ -88,7 +100,10 @@ void GameManager::parseJugadorJSON(json pJSON) {
     Jugador *jugador = new Jugador(id, type, position, 1);
 
 }
-
+/**
+ * Crea una matriz string de los tipos de casillas predisenado
+ * @param pJSON
+ */
 void GameManager::createMatrizJsonString(json pJSON) {
 
     matrizJSONString = "{\"matriz\":";
@@ -96,7 +111,6 @@ void GameManager::createMatrizJsonString(json pJSON) {
     matrizJSONString += "}";
 
 }
-
 /**
  * Parsea la matriz desde el archivo json del mapa y ademas carga una matriz que se utilizara para el algoritmo a star
  * basicamente esta matriz tendra valores 0 para casillas que son obstaculo y 1 para las que se pueden atravesar por los
@@ -207,7 +221,10 @@ void GameManager::parseObjectsJSON(json pJSON) {
         }
     }
 }
-
+/**
+ * Carga los datos de los enemigos desde el archivo json
+ * @param pJSON
+ */
 void GameManager::parseSimpleEnemiesJSON(json pJSON) {
     for(int i = 0; i < pJSON["simpleEnemies"].size(); i++){
 
@@ -226,8 +243,6 @@ void GameManager::parseSimpleEnemiesJSON(json pJSON) {
         }
     }
 }
-
-
 /**
  * Carga los datos del json al juego
  * @param pJSON
@@ -246,7 +261,9 @@ void GameManager::loadGameFromJSON(string pJSON) {
 
     cout << "Carga completa!" << endl;
 }
-
+/**
+ * Genera un stringJson del ultimo estado de todas las entidades
+ */
 void GameManager::generateEntityLastStatusJSON() {
 
     json j;
@@ -269,9 +286,36 @@ void GameManager::generateEntityLastStatusJSON() {
     }
     entitysJSONString = j.dump();
 }
+/**
+ * Actualiza la posicion del jugador que se recibe del cliente
+ * @param pJson
+ */
+void GameManager::updatePlayerPosition(string pJson) {
+
+    Entity * e = Entity::getEntityByID("ju01");
+    if(e != nullptr){
+
+        json jsonObj;
+        stringstream(pJson) >> jsonObj;
+
+        Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity("");
+
+        e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
+
+        Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
+
+        //cout << "Se ha actualizado la posicion del jugador a: ";
+        //e->getPosition()->printPosition();
+        //cout << endl;
 
 
+    }
 
+}
+/**
+ * Devuelve la matriz jsonString
+ * @return
+ */
 string GameManager::getMatrizJsonString() {
     return matrizJSONString;
 }
@@ -309,29 +353,6 @@ int GameManager::getLifes() {
 
 string GameManager::getEntitysJsonString() {
     return entitysJSONString;
-}
-
-void GameManager::updatePlayerPosition(string pJson) {
-
-    Entity * e = Entity::getEntityByID("ju01");
-    if(e != nullptr){
-
-        json jsonObj;
-        stringstream(pJson) >> jsonObj;
-
-        Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity("");
-
-        e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
-
-        Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
-
-        //cout << "Se ha actualizado la posicion del jugador a: ";
-        //e->getPosition()->printPosition();
-        //cout << endl;
-
-
-    }
-
 }
 
 

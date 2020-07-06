@@ -8,30 +8,19 @@ Cell *Board::matriz[20][20] = {};
 int Board::matrizStar[20][20] = {};
 bool Board::playerOnPersuit = false;
 
-string Board::parseBoardToJSON() {
-    return "";
-}
-
-string Board::getMatrizJson(){
-    return matrizJSON;
-}
-
-void Board::setMatrizJson(string pMatrizJson) {
-    matrizJSON = pMatrizJson;
-}
-
-Board::Board() {
-    listOfEntitys = Entity::listOfEntitys;
-}
-
-
+/**
+ * Asigna una entidad a un campo en la matriz
+ * @param pPosition
+ * @param pEntityID
+ */
 void Board::assignMatrizEntity(Position *pPosition, string pEntityID) {
 
     matriz[pPosition->getRow()][pPosition->getColumn()]->setEntity(pEntityID);
 
 }
-
-
+/**
+ * Imprime la matriz mostrando el tipo de cada casilla
+ */
 void Board::printBoardCellType() {
 
     cout << "Mostrando las celdas de la tabla" << endl;
@@ -47,11 +36,16 @@ void Board::printBoardCellType() {
     }
 
 }
-
+/**
+ * Retorna la lista de entidades
+ * @return
+ */
 vector<Entity> *Board::getListOfEntity() {
     return listOfEntitys;
 }
-
+/**
+ * Imprime la matriz mostrando la entidad en cada casilla
+ */
 void Board::printBoardEntity() {
 
     cout << "Mostrando las entidades de la tabla" << endl;
@@ -70,7 +64,9 @@ void Board::printBoardEntity() {
     }
     cout << endl << endl;
 }
-
+/**
+ * Imprime la matriz que se utiliza en el algoritmo A*
+ */
 void Board::printMatrizStar() {
 
     cout << "Printing matriz star:" << endl;
@@ -84,7 +80,10 @@ void Board::printMatrizStar() {
     }
 
 }
-
+/**
+ * Checkea si el jugador se encuentra en una zona segura.
+ * @return
+ */
 bool Board::checkPlayerOfSafeZone() {
 
     Entity *player = Entity::getEntityByID("ju01");
@@ -97,4 +96,20 @@ bool Board::checkPlayerOfSafeZone() {
     }
 
     return false;
+}
+
+string Board::parseBoardToJSON() {
+    return "";
+}
+
+string Board::getMatrizJson(){
+    return matrizJSON;
+}
+
+void Board::setMatrizJson(string pMatrizJson) {
+    matrizJSON = pMatrizJson;
+}
+
+Board::Board() {
+    listOfEntitys = Entity::listOfEntitys;
 }

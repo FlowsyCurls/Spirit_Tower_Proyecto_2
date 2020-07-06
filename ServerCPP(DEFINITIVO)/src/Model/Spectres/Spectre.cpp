@@ -42,7 +42,10 @@ void Spectre::attackedFromFront() {
 void Spectre::paralizeCuzMouse() {
 
 }
-
+/**
+ * Actualiza la matriz cuando un espectro se mueve, o sea, hace que la casilla en la que estaba deje de tener esta entidad
+ * y pone la entidad en la casilla hacia la que se movio
+ */
 void Spectre::updateMatriz() {
 
     Board::matriz[getPosition()->getRow()][getPosition()->getColumn()]->setEntity("");
@@ -74,7 +77,7 @@ void Spectre::updateDirection() {
     //cout << getId() << ": " << direction << endl;
 }
 /**
- * Mueve el espectro a su siguiente posicion de ruta de
+ * Mueve el espectro a su siguiente posicion
  */
 void Spectre::moveNext() {
 
@@ -100,61 +103,18 @@ void Spectre::moveNext() {
 
     }
 }
-
+/**
+ * Empieza el thread del movimiento del espectro
+ */
 void Spectre::startMovement() {
 
     thread(&Spectre::moveNext, this).detach();
     thread(&Spectre::checkVisionRange, this).detach();
 
 }
-
-
-void Spectre::setPatrolRoute(vector<Position> *pPatrolRoute) {
-    patrolRoute = pPatrolRoute;
-
-}
-
-vector<Position>* Spectre::getPatrolRoute() {
-    return patrolRoute;
-}
-
-void Spectre::setDirection(string pDirection) {
-    direction = pDirection;
-}
-
-string Spectre::getDirection() {
-    return direction;
-}
-
-void Spectre::setRouteVelocity(double pRouteVelocity) {
-    routeVelocity = pRouteVelocity;
-}
-
-double Spectre::getRouteVelocity() {
-    return routeVelocity;
-}
-
-void Spectre::setPersuitVelocity(double pPersuitVelocity) {
-    persuitVelocity = pPersuitVelocity;
-}
-
-double Spectre::getPersuitVelocity() {
-    return persuitVelocity;
-}
-
-void Spectre::setVisionRange(int pVisionRange) {
-    visionRange = pVisionRange;
-}
-
-int Spectre::getVisionRange() {
-    return visionRange;
-}
-
-string Spectre::toString() {
-
-    return "";
-}
-
+/**
+ * Imprime la informacion del espectro
+ */
 void Spectre::printSpectre() {
 
     cout << "id: " << getId() << endl;
@@ -173,7 +133,11 @@ void Spectre::printSpectre() {
     cout << endl;
 
 }
-
+/**
+ * Devuelve el espectro que se pide por id
+ * @param pId
+ * @return
+ */
 Spectre *Spectre::getSpectreByID(string pId) {
     for(int i = 0; i < listOfSpectres->size(); i++){
         if(listOfSpectres->at(i)->getId().compare(pId)==0){
@@ -182,9 +146,9 @@ Spectre *Spectre::getSpectreByID(string pId) {
     }
     return nullptr;
 }
-
-
-
+/**
+ * Envia una senal a todos los espectros para que dejen la persecucion
+ */
 void Spectre::sendSignalToStopPersuit() {
     for(int i = 0; i < listOfSpectres->size();i++){
 
@@ -194,7 +158,9 @@ void Spectre::sendSignalToStopPersuit() {
     Board::playerOnPersuit = false;
     cout << "********************Se ha enviado una senal para dejar de seguir al jugador********************" << endl;
 }
-
+/**
+ * Envia una senal a todos los espectros para que empiecen la persecucion
+ */
 void Spectre::sendSignalToPersuit() {
     for(int i = 0; i < listOfSpectres->size();i++){
 
@@ -204,7 +170,9 @@ void Spectre::sendSignalToPersuit() {
     Board::playerOnPersuit = true;
     cout << "********************Se ha enviado una senal para de seguir al jugador********************" << endl;
 }
-
+/**
+ * Checkea el rango de vision del espectro para buscar si el jugador se encuentra dentro del rango
+ */
 void Spectre::checkVisionRange() {
 
     int posTemp;
@@ -254,4 +222,49 @@ void Spectre::checkVisionRange() {
 }
 
 
+void Spectre::setPatrolRoute(vector<Position> *pPatrolRoute) {
+    patrolRoute = pPatrolRoute;
+
+}
+
+vector<Position>* Spectre::getPatrolRoute() {
+    return patrolRoute;
+}
+
+void Spectre::setDirection(string pDirection) {
+    direction = pDirection;
+}
+
+string Spectre::getDirection() {
+    return direction;
+}
+
+void Spectre::setRouteVelocity(double pRouteVelocity) {
+    routeVelocity = pRouteVelocity;
+}
+
+double Spectre::getRouteVelocity() {
+    return routeVelocity;
+}
+
+void Spectre::setPersuitVelocity(double pPersuitVelocity) {
+    persuitVelocity = pPersuitVelocity;
+}
+
+double Spectre::getPersuitVelocity() {
+    return persuitVelocity;
+}
+
+void Spectre::setVisionRange(int pVisionRange) {
+    visionRange = pVisionRange;
+}
+
+int Spectre::getVisionRange() {
+    return visionRange;
+}
+
+string Spectre::toString() {
+
+    return "";
+}
 
