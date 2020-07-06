@@ -6,7 +6,7 @@
 #define SERVER_A_STAR_H
 // A C++ Program to implement A* Search Algorithm
 #include<bits/stdc++.h>
-#include "../Model/Board/Position.h"
+#include "../Board/Position.h"
 
 using namespace std;
 
@@ -72,7 +72,7 @@ double calculateHValue(int row, int col, Pair dest)
 // to destination
 vector<Position*>* tracePath(cell cellDetails[][COL], Pair dest)
 {
-    printf ("\nThe Path is ");
+    printf ("\nSe ha calculado una ruta A* nuevamente: ");
     int row = dest.first;
     int col = dest.second;
 

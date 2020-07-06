@@ -26,6 +26,7 @@ public:
     static int matrizStar[20][20];
     vector<Entity> * listOfEntitys;
     static bool playerOnPersuit;
+    static bool playerHasMoved;
     //Constructor
     Board();
 

@@ -3,10 +3,11 @@
 //
 
 #include "Spectre.h"
+#include "../algorithms/A_Star.h"
 
 vector<Spectre*> *Spectre::listOfSpectres = new vector<Spectre*>();
 
-Spectre::Spectre(string pId, string pType, vector<Position>* pPatrolRoute, string pDirection, double pRouteVelocity,
+Spectre::Spectre(string pId, string pType, vector<Position*>* pPatrolRoute, string pDirection, double pRouteVelocity,
                  double pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType) : Entity(pId, pType, pPosition) {
 
     patrolRoute = pPatrolRoute;
@@ -49,7 +50,7 @@ void Spectre::paralizeCuzMouse() {
 void Spectre::updateMatriz() {
 
     Board::matriz[getPosition()->getRow()][getPosition()->getColumn()]->setEntity("");
-    Board::matriz[routeInUse->at(routeCounter).getRow()][routeInUse->at(routeCounter).getColumn()]->setEntity(this->getId());
+    Board::matriz[routeInUse->at(routeCounter)->getRow()][routeInUse->at(routeCounter)->getColumn()]->setEntity(this->getId());
 
 }
 
@@ -59,23 +60,40 @@ void Spectre::updateMatriz() {
 void Spectre::updateDirection() {
 
     //Con eje y
-    if(routeInUse->at(routeCounter).getRow() > getPosition()->getRow()){
+    if(routeInUse->at(routeCounter)->getRow() > getPosition()->getRow()){
         setDirection("south");
     }else{
-        if(routeInUse->at(routeCounter).getRow() < getPosition()->getRow()){
+        if(routeInUse->at(routeCounter)->getRow() < getPosition()->getRow()){
             setDirection("north");
         }
     }
     //Con eje x
-    if(routeInUse->at(routeCounter).getColumn() > getPosition()->getColumn()){
+    if(routeInUse->at(routeCounter)->getColumn() > getPosition()->getColumn()){
         setDirection("east");
     }else{
-        if(routeInUse->at(routeCounter).getColumn() < getPosition()->getColumn()){
+        if(routeInUse->at(routeCounter)->getColumn() < getPosition()->getColumn()){
             setDirection("west");
         }
     }
     //cout << getId() << ": " << direction << endl;
 }
+/**
+ * Calcula el algoritmo A star
+ */
+
+void Spectre::calculateAStar() {
+    //Punto de partida
+    Pair src = make_pair(getPosition()->getRow(), getPosition()->getColumn());
+
+    //Punto destino
+    Entity *e = Entity::getEntityByID("ju01");
+    Pair dest = make_pair(e->getPosition()->getRow(), e->getPosition()->getColumn());
+
+    persuitRoute =  aStarSearch(Board::matrizStar, src, dest);
+    routeInUse = persuitRoute;
+    routeCounter = 0;
+}
+
 /**
  * Mueve el espectro a su siguiente posicion
  */
@@ -85,6 +103,20 @@ void Spectre::moveNext() {
 
         if(isOnPersuit){
             sleep(persuitVelocity);
+            if(useBreadcrumbing){//En caso de ser el espectro que vio al jugador usa breadcrumbing
+
+            }else{//Se usa A*
+                if(persuitRoute->size() == 0){
+                    //Calcular A*
+                    calculateAStar();
+
+                }else{
+                    if(Board::playerHasMoved){
+                        //Calcular A*
+                        calculateAStar();
+                    }
+                }
+            }
         }else{
             sleep(routeVelocity);
             routeInUse = patrolRoute;
@@ -93,8 +125,7 @@ void Spectre::moveNext() {
 
             updateDirection();
             updateMatriz();
-            setPosition(routeInUse->at(routeCounter).getRow(), routeInUse->at(routeCounter).getColumn());
-            //checkVisionRange();
+            setPosition(routeInUse->at(routeCounter)->getRow(), routeInUse->at(routeCounter)->getColumn());
             routeCounter++;
 
         }else{
@@ -126,7 +157,7 @@ void Spectre::printSpectre() {
     cout << "patrolRoute: " << endl;
     for(int i = 0; i < patrolRoute->size(); i++){
 
-        patrolRoute->at(i).printPosition();
+        patrolRoute->at(i)->printPosition();
         cout << ", ";
 
     }
@@ -153,13 +184,16 @@ void Spectre::sendSignalToStopPersuit() {
     for(int i = 0; i < listOfSpectres->size();i++){
 
         listOfSpectres->at(i)->isOnPersuit = false;
+        listOfSpectres->at(i)->useBreadcrumbing = false;
+        listOfSpectres->at(i)->persuitRoute->clear();
 
     }
     Board::playerOnPersuit = false;
     cout << "********************Se ha enviado una senal para dejar de seguir al jugador********************" << endl;
 }
 /**
- * Envia una senal a todos los espectros para que empiecen la persecucion
+ * Envia una senal a todos los espectros para que empiecen la persecucion y ademas activa la flag useBreadcrumbing para
+ * diferenciar este espectro como el que debe usar breadcrunbing
  */
 void Spectre::sendSignalToPersuit() {
     for(int i = 0; i < listOfSpectres->size();i++){
@@ -168,6 +202,7 @@ void Spectre::sendSignalToPersuit() {
 
     }
     Board::playerOnPersuit = true;
+    useBreadcrumbing = true;
     cout << "********************Se ha enviado una senal para de seguir al jugador********************" << endl;
 }
 /**
@@ -222,12 +257,12 @@ void Spectre::checkVisionRange() {
 }
 
 
-void Spectre::setPatrolRoute(vector<Position> *pPatrolRoute) {
+void Spectre::setPatrolRoute(vector<Position*> *pPatrolRoute) {
     patrolRoute = pPatrolRoute;
 
 }
 
-vector<Position>* Spectre::getPatrolRoute() {
+vector<Position*>* Spectre::getPatrolRoute() {
     return patrolRoute;
 }
 
@@ -267,4 +302,6 @@ string Spectre::toString() {
 
     return "";
 }
+
+
 

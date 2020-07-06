@@ -7,6 +7,7 @@
 Cell *Board::matriz[20][20] = {};
 int Board::matrizStar[20][20] = {};
 bool Board::playerOnPersuit = false;
+bool Board::playerHasMoved = false;
 
 /**
  * Asigna una entidad a un campo en la matriz

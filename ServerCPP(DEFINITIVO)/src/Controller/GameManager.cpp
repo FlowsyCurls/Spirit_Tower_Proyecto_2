@@ -170,7 +170,7 @@ void GameManager::parseSpectresJSON(json pJSON) {
         double routeVelocity = pJSON["spectres"].at(i)["routeVelocity"];
         double persuitVelocity = pJSON["spectres"].at(i)["persuitVelocity"];
         int visionRange = pJSON["spectres"].at(i)["visionRange"];
-        vector<Position>* patrolRoute = new vector<Position>();
+        vector<Position*>* patrolRoute = new vector<Position*>();
         SpectreType spectreType;
 
         if(type.compare("spectre_gray") == 0){
@@ -187,7 +187,7 @@ void GameManager::parseSpectresJSON(json pJSON) {
 
         for(int e = 0; e < pJSON["spectres"].at(i)["patrolRoute"].size(); e++){
             Position *tmpPosition = new Position(pJSON["spectres"].at(i)["patrolRoute"].at(e)[0], pJSON["spectres"].at(i)["patrolRoute"].at(e)[1]);
-            patrolRoute->push_back(*tmpPosition);
+            patrolRoute->push_back(tmpPosition);
         }
         Spectre *spectre = new Spectre(id, type, patrolRoute, direction, routeVelocity, persuitVelocity, visionRange, position, spectreType);
     }
@@ -293,16 +293,28 @@ void GameManager::generateEntityLastStatusJSON() {
 void GameManager::updatePlayerPosition(string pJson) {
 
     Entity * e = Entity::getEntityByID("ju01");
+
     if(e != nullptr){
 
         json jsonObj;
         stringstream(pJson) >> jsonObj;
 
-        Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity("");
+        //No se movio
+        if(e->getPosition()->getRow() == jsonObj["position"][0] && e->getPosition()->getColumn() == jsonObj["position"][1]){
 
-        e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
+            board.playerHasMoved = false;
+            //cout << "El jugador no se movio" << endl;
 
-        Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
+        }else{
+
+            //cout << "***El jugador se movio" << endl;
+            Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity("");
+            e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
+            Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
+            board.playerHasMoved = true;
+        }
+
+
 
         //cout << "Se ha actualizado la posicion del jugador a: ";
         //e->getPosition()->printPosition();

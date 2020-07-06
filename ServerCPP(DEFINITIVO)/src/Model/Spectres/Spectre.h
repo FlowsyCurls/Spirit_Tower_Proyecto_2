@@ -11,7 +11,7 @@
 #include <thread>
 #include <unistd.h>
 #include "../Board/Board.h"
-#include <map>
+
 
 using namespace std;
 
@@ -27,8 +27,9 @@ class Spectre: Entity {
 
 private:
 
-    vector<Position>* patrolRoute;
-    vector<Position>* routeInUse;
+    vector<Position*>* patrolRoute;
+    vector<Position*>* routeInUse;
+    vector<Position*>* persuitRoute;
     string direction;
     double routeVelocity;
     double persuitVelocity;
@@ -36,11 +37,12 @@ private:
     int routeCounter = 0;
     bool isOnPersuit = false;
     SpectreType spectreType;
+    bool useBreadcrumbing = false;
 
 public:
 
     //Constructor
-    Spectre(string pId, string pType, vector<Position>* pPatrolRoute, string pDirection, double pRouteVelocity,
+    Spectre(string pId, string pType, vector<Position*>* pPatrolRoute, string pDirection, double pRouteVelocity,
             double pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType);
 
     static vector<Spectre*> *listOfSpectres;
@@ -60,11 +62,12 @@ public:
     void attackedFromBack();
     void attackedFromFront();
     void paralizeCuzMouse();
+    void calculateAStar();
 
 
     //Setters and getters
-    void setPatrolRoute(vector<Position>* pPatrolRoute);
-    vector<Position>* getPatrolRoute();
+    void setPatrolRoute(vector<Position*>* pPatrolRoute);
+    vector<Position*>* getPatrolRoute();
     void setDirection(string pDirection);
     string getDirection();
     void setRouteVelocity(double pRouteVelocity);

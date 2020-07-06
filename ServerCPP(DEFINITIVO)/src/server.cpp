@@ -3,15 +3,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
-#include "algorithms/A_Star.h"
-#include "algorithms/Bresenham.h"
 #include <chrono>
 #include "Controller/GameManager.h"
+//#include "Model/algorithms/A_Star.h"
 
 #define BUFFERSIZE 2000
 
-void algoritmTests();
-void timeTest();
+//void algoritmTests();
+//void timeTest();
 void printBuffer();
 
 // Declare and initialize variables
@@ -204,6 +203,7 @@ void printBuffer(){
 /**
  * Test de tiempo que tarda en ejecutarse un algoritmo
  */
+ /*
 void timeTest(){
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -212,15 +212,16 @@ void timeTest(){
 
     auto finish = std::chrono::high_resolution_clock::now();
     std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << "ns\n";
-}
+}*/
 
 /**
  * Tests para los algoritmos a realizar
  */
+/*
 void algoritmTests() {
-    /* Description of the Grid-
-    1--> The cell is not blocked
-    0--> The cell is blocked */
+    // Description of the Grid-
+    //1--> The cell is not blocked
+    //0--> The cell is blocked
     int grid[ROW][COL] =
             {
                     {1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1},
@@ -266,3 +267,4 @@ void algoritmTests() {
     //Bresenham* b = new Bresenham;
     //b->bresenham(3,2, 15,5);
 }
+*/
