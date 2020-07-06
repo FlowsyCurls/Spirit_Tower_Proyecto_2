@@ -114,6 +114,10 @@ void Spectre::moveNext() {
                     if(Board::playerHasMoved){
                         //Calcular A*
                         calculateAStar();
+                        //Este condicional permite al espectro moverse incluso cuando el jugador se esta moviendo
+                        if(routeInUse->size()>0 && getPosition()->compare(routeInUse->at(0))){
+                            routeCounter++;
+                        }
                     }
                 }
             }
