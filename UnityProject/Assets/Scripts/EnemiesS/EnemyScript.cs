@@ -8,6 +8,8 @@ public class EnemyScript : MonoBehaviour
 
     public float row;
     public float column;
+    public Transform target;
+    //public float speed;
 
     void Start()
     {
@@ -17,17 +19,26 @@ public class EnemyScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float step = 3.5f * Time.deltaTime;
+        Vector3 destino = new Vector3(row, 1f, column);
 
+        if (transform.position.x != destino.x || transform.position.z != destino.z)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, destino, step);
+        }
+        
     }
     public void moveTo(float _row, float _column)
     {
 
         if (_row != row || _column != column)
         {
-            Debug.Log("ME MOVIIIIIIIII");
+
             row = _row;
             column = _column;
-            this.transform.localPosition = new Vector3(row, 1f, column);
+
+            //this.transform.localPosition = new Vector3(row, 1f, column);
+
         }
     }
 }
