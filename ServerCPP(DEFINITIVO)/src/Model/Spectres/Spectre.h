@@ -63,6 +63,7 @@ public:
     void attackedFromFront();
     void paralizeCuzMouse();
     void calculateAStar();
+    void calculateBreadCrumbing();
 
 
     //Setters and getters
