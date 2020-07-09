@@ -1,17 +1,17 @@
-#ifndef BACKUP_ENTITY_H
-#define BACKUP_ENTITY_H
+#ifndef SERVER_UNIT_H
+#define SERVER_UNIT_H
 
 #include <iostream>
-#include "LinkedList.h"
+#include <vector>
 
 using namespace std;
-class Entity {
+class Unit {
 
 protected:
     string id;
 
 public:
-    explicit Entity(string &pId);
+    explicit Unit(string &pId);
 
     string &getId();
 
@@ -21,4 +21,4 @@ public:
 };
 
 
-#endif //BACKUP_ENTITY_H
+#endif //SERVER_UNIT_H

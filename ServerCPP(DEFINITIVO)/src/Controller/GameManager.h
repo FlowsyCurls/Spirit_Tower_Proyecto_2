@@ -9,6 +9,7 @@
 #include "../Model/Board/Board.h"
 #include "../lib/json.hpp"
 #include "../Model/Spectres/Spectre.h"
+#include "../Model/Genetic/GeneticManager.h"
 #include <iomanip>
 #include <fstream>
 #include <iostream>
@@ -32,6 +33,8 @@ private:
     int lifes;
     string matrizJSONString;
     string entitysJSONString;
+    GeneticManager *controller = new GeneticManager();
+
 
 
     //Constructor
@@ -73,6 +76,7 @@ public:
     string getEntitysJsonString();
     void updatePlayerPosition(string pJson);
 
+    void geneticTest(int pLevel);
 };
 
 

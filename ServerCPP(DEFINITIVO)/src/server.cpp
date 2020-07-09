@@ -5,6 +5,7 @@
 #include <iostream>
 #include <chrono>
 #include "Controller/GameManager.h"
+#include "Model/Genetic/GeneticManager.h"
 //#include "Model/algorithms/A_Star.h"
 
 #define BUFFERSIZE 2000
@@ -94,6 +95,7 @@ int main(int argc, char **argv){
     //pruebaGameManager();
 
     //algoritmTests();
+
 
     initWinsock();
     initHints();

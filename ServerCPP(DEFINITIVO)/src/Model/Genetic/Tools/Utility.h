@@ -1,5 +1,6 @@
-#ifndef BACKUP_UTILITY_H
-#define BACKUP_UTILITY_H
+#ifndef SERVER_UTILITY_H
+#define SERVER_UTILITY_H
+
 
 #include <iostream>
 #include <ctgmath>
@@ -41,4 +42,6 @@ public:
 };
 
 
-#endif //BACKUP_UTILITY_H
+
+
+#endif //SERVER_UTILITY_H

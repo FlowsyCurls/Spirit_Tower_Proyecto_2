@@ -7,11 +7,13 @@ int Utility::Random(int pMax)
 
 int Utility::Random(int pMin, int pMax)
 {
-    default_random_engine rng(std::random_device{}());
-    uniform_real_distribution<double> dist(pMin, pMax);  //(min, max)
-    //get one
-    const int random_num = (int) dist(rng);
-    return random_num;
+//    default_random_engine rng(std::random_device{}());
+//    uniform_real_distribution<double> dist(pMin, pMax);  //(min, max)
+//    //get one
+//    const int random_num = (int) dist(rng);
+//    return random_num;
+
+    return (rand() % pMax) + pMin;
 }
 
 string Utility::decToBinary(int pDecimal)
