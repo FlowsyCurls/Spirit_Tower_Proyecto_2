@@ -4,6 +4,31 @@
 
 int GeneticManager::totalSpectres = 1;
 
+/*
+ * Pass the genetic attributes from SpectrumList to SpectreList, received in param, to be used in game.
+ */
+void GeneticManager::setGroup()
+{
+    if (isFirst)
+    {
+        isFirst = false;
+        return setPrimaryGroup();
+    }
+    auto* spectres =  Spectre::listOfSpectres;
+    for (int i = 0; i < spectres->size(); i++)
+    {
+        auto* spectre = spectres->at(i);
+        spectre->setRouteVelocity(spectrumGroup->at(i)->getRouteSpeed());
+        spectre->setPersuitVelocity(spectrumGroup->at(i)->getChaseSpeed());
+        spectre->setVisionRange(spectrumGroup->at(i)->getSightRange());
+        cout << "SetGroup" << endl;
+        spectre->printSpectre();
+    }
+}
+
+/*
+ * Set the attributes of the first population.
+ */
 void GeneticManager::setPrimaryGroup()
 {
     cout << "[MANAGER-START]\tFIRST GENERATION" << endl;
@@ -37,6 +62,11 @@ void GeneticManager::setPrimaryGroup()
     cout << endl << "[MANAGER-END]"<<endl;
 }
 
+/**
+ * Choose best spectrum of the sample
+ * @param pDescendantSiblings
+ * @return
+ */
 Spectrum* GeneticManager::chooseBestDescendant(vector<Spectrum *> *pDescendantSiblings) {
     Spectrum *best = pDescendantSiblings->at(0);
     for (auto & descendant : *pDescendantSiblings)
@@ -50,34 +80,6 @@ Spectrum* GeneticManager::chooseBestDescendant(vector<Spectrum *> *pDescendantSi
     return best;
 }
 
-/*
- * Pass the genetic attributes from SpectrumList to SpectreList, received in param, to be used in game.
- */
-void GeneticManager::setGroup()
-{
-    auto* spectres =  Spectre::listOfSpectres;
-    for (int i = 0; i <= spectres->size(); i++)
-    {
-        auto* spectre = spectres->at(i);
-        spectre->setRouteVelocity(spectrumGroup->at(i)->getRouteSpeed());
-        spectre->setRouteVelocity(spectrumGroup->at(i)->getRouteSpeed());
-        spectre->setRouteVelocity(spectrumGroup->at(i)->getRouteSpeed());
-
-        cout << "SetGroup" << endl;
-        spectre->printSpectre();
-    }
-}
-
-/**
- *
- * @return
- */
-vector<Spectrum *> *GeneticManager::getNextGroup()
-{
-    vector<Spectrum*>* newGen = crossbreed->getNewGroup(spectrumGroup);
-    return nullptr;
-}
-
 /**
  * Generate id for the spectrum
  * @return
@@ -85,15 +87,6 @@ vector<Spectrum *> *GeneticManager::getNextGroup()
 string GeneticManager::generateId(){
     string id = "spectre_" + to_string(totalSpectres);
     return id;
-}
-
-/**
- * Get the number of the total spectrums sample created.
- * @return
- */
-int GeneticManager::getTotalSpectrums()
-{
-    return totalSpectres;
 }
 
 /**
@@ -105,17 +98,9 @@ void GeneticManager::increaseTotalSpectrums()
 }
 
 /**
- * Decrease total spectre counter.
- */
-void GeneticManager::decreaseTotalSpectrums()
-{
-    totalSpectres--;
-}
-
-/**
  * Get a random number using utility class.
  * @return
  */
-int GeneticManager::getRandom() {
+int GeneticManager::getRandom() const {
     return Utility::Random(1,initialVariability);
 }

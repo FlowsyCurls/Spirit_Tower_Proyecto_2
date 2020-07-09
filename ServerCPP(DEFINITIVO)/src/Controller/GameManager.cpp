@@ -50,12 +50,12 @@ void GameManager::loadGame(int pLevel) {
     board.printBoardCellType();
     board.printBoardEntity();
     generateEntityLastStatusJSON();
-    geneticTest(pLevel);
+    controller->setGroup();
+
 }
 
 void GameManager::geneticTest(int pLevel) {
-    if (pLevel ==1 ) return;
-    controller->getNextGroup();
+//    if (pLevel ==1 ) return;
 }
 
 /**
@@ -85,7 +85,8 @@ void GameManager::checkSpectresPlayerInteract() {
  * Actualiza el juego cada 0.5 segundos, este es el thread principal del juego
  */
 void GameManager::updateGame() {
-    while(1){
+    bool run = true;
+    while(run){
         sleep(0.5);
         generateEntityLastStatusJSON();
         checkSpectresPlayerInteract();
@@ -197,7 +198,7 @@ void GameManager::parseSpectresJSON(json pJSON) {
         }
         Spectre *spectre = new Spectre(id, type, patrolRoute, direction, routeVelocity, persuitVelocity, visionRange, position, spectreType);
     }
-    controller->setPrimaryGroup();
+    controller->setGroup();
 
 }
 /**
