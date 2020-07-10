@@ -141,6 +141,11 @@ void GameManager::parseMatrizJSON(json pJSON) {
                     if(pJSON["matriz"].at(i).at(e) == 2){
                         cellType = SAFEZONE;
                         //board.matrizStar[i][e] = 0;
+                    }else{
+                        if(pJSON["matriz"].at(i).at(e) == 3){
+                            cellType = NORMAL;
+                            //board.matrizStar[i][e] = 1;
+                        }
                     }
                 }
             }
