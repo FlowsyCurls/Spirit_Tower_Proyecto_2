@@ -11,6 +11,10 @@ using System.Runtime.ExceptionServices;
 class PlayerStatusJSON
 {
     public int[] position = new int[2];
+    public int playerLostLives;
+    public int playerScore;
+    public bool hasFall;
+   
 }
 
 class CapsulaEntity
@@ -37,11 +41,12 @@ public class GameManager : MonoBehaviour
     public GameObject enemy;
     public GameObject client;
     public GameObject player;
+    public GameObject treasure;
 
     public Color32 spectreGray;
     public Color32 spectreBlue;
     public Color32 spectreRed;
-    public Color32 treasure;
+    //public Color32 treasure;
     public Color32 jarron;
     public Color32 spectralEye;
     public Color32 mouse;
@@ -73,7 +78,9 @@ public class GameManager : MonoBehaviour
         PlayerStatusJSON p = new PlayerStatusJSON();
         p.position[0] = PlayerMovement.row;
         p.position[1] = PlayerMovement.column;
-
+        p.playerLostLives = player.GetComponent<PlayerMovement>().lostLifes;
+        p.hasFall = player.GetComponent<PlayerMovement>().hasFall;
+        p.playerScore = player.GetComponent<PlayerMovement>().score;
         return JsonConvert.SerializeObject(p);
     }
 
@@ -91,6 +98,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Set isDead to false
+
         //Create the matrix
         entitys = new List<GameObject>();
         createGrid();       //Create all nodes on matrix, and put them onto the structure
@@ -156,13 +165,16 @@ public class GameManager : MonoBehaviour
                 if (valor == 0)
                 {
                     n.GetComponent<Node>().convertToNormal();
-                }else if(valor == 1)
+                } else if (valor == 1)
                 {
                     n.GetComponent<Node>().convertToObstacle();
                 }
-                else
+                else if (valor == 2)
                 {
                     n.GetComponent<Node>().convertToSafeZone();
+                } else if (valor == 3) {
+                    Debug.Log("Creo una trampa");
+                    n.GetComponent<Node>().convertToTrap();
                 }
 
                 
@@ -173,41 +185,60 @@ public class GameManager : MonoBehaviour
         }
         
     }
-
+    
     void createEntitys()
     {
         CapsulaEntity listJSON = JsonConvert.DeserializeObject<CapsulaEntity>(entityData);
 
-        Debug.Log(listJSON.listOfEntitys[0].id);
+        //Debug.Log(listJSON.listOfEntitys[i].id);
 
         for(int i = 0; i < listJSON.listOfEntitys.Length; i++)
         {
-
-            GameObject e = Instantiate(enemy, new Vector3(listJSON.listOfEntitys[i].position[1] * (node.transform.localScale.x + nodeSeparation), 1f, listJSON.listOfEntitys[i].position[0] * -(node.transform.localScale.z + nodeSeparation)), Quaternion.identity);
-           
+            //Debug.Log(listJSON.listOfEntitys[i].type);
             string type = listJSON.listOfEntitys[i].type;
 
             if (type == "spectre_gray"){
+                GameObject e = Instantiate(enemy, new Vector3(listJSON.listOfEntitys[i].position[1] * (node.transform.localScale.x + nodeSeparation), 1f, listJSON.listOfEntitys[i].position[0] * -(node.transform.localScale.z + nodeSeparation)), Quaternion.identity);
                 e.GetComponent<Renderer>().material.color = spectreGray;
-                
-            }else if(type == "spectre_blue"){
+                entitys.Add(e);
+            }
+            if(type == "spectre_blue"){
+                GameObject e = Instantiate(enemy, new Vector3(listJSON.listOfEntitys[i].position[1] * (node.transform.localScale.x + nodeSeparation), 1f, listJSON.listOfEntitys[i].position[0] * -(node.transform.localScale.z + nodeSeparation)), Quaternion.identity);
                 e.GetComponent<Renderer>().material.color = spectreBlue;
-            }else if (type == "spectre_red"){
+                entitys.Add(e);
+            }
+            if (type == "spectre_red"){
+                GameObject e = Instantiate(enemy, new Vector3(listJSON.listOfEntitys[i].position[1] * (node.transform.localScale.x + nodeSeparation), 1f, listJSON.listOfEntitys[i].position[0] * -(node.transform.localScale.z + nodeSeparation)), Quaternion.identity);
                 e.GetComponent<Renderer>().material.color = spectreRed;
-            }else if (type == "treasure"){
-                e.GetComponent<Renderer>().material.color = treasure;
-            }else if (type == "jarron"){
+                entitys.Add(e);
+            }
+            if (type == "treasure"){
+                GameObject e = Instantiate(treasure, new Vector3(listJSON.listOfEntitys[i].position[1] * (node.transform.localScale.x + nodeSeparation), 1f, listJSON.listOfEntitys[i].position[0] * -(node.transform.localScale.z + nodeSeparation)), Quaternion.identity);
+                entitys.Add(e);
+            }
+            if (type == "jarron"){
+                GameObject e = Instantiate(enemy, new Vector3(listJSON.listOfEntitys[i].position[1] * (node.transform.localScale.x + nodeSeparation), 1f, listJSON.listOfEntitys[i].position[0] * -(node.transform.localScale.z + nodeSeparation)), Quaternion.identity);
                 e.GetComponent<Renderer>().material.color = jarron;
-            }else if (type == "spectralEye"){
+                entitys.Add(e);
+            }
+            if (type == "spectralEye"){
+                GameObject e = Instantiate(enemy, new Vector3(listJSON.listOfEntitys[i].position[1] * (node.transform.localScale.x + nodeSeparation), 1f, listJSON.listOfEntitys[i].position[0] * -(node.transform.localScale.z + nodeSeparation)), Quaternion.identity);
                 e.GetComponent<Renderer>().material.color = spectralEye;
-            }else if (type == "chuchu"){
+                entitys.Add(e);
+            }
+            if (type == "chuchu"){
+                GameObject e = Instantiate(enemy, new Vector3(listJSON.listOfEntitys[i].position[1] * (node.transform.localScale.x + nodeSeparation), 1f, listJSON.listOfEntitys[i].position[0] * -(node.transform.localScale.z + nodeSeparation)), Quaternion.identity);
                 e.GetComponent<Renderer>().material.color = chuchu;
-            }else if (type == "mouse"){
+                entitys.Add(e);
+            }
+            if (type == "mouse"){
+                GameObject e = Instantiate(enemy, new Vector3(listJSON.listOfEntitys[i].position[1] * (node.transform.localScale.x + nodeSeparation), 1f, listJSON.listOfEntitys[i].position[0] * -(node.transform.localScale.z + nodeSeparation)), Quaternion.identity);
                 e.GetComponent<Renderer>().material.color = mouse;
+                entitys.Add(e);
             }
             
 
-            entitys.Add(e);
+            
 
         }
 
@@ -218,11 +249,12 @@ public class GameManager : MonoBehaviour
     {
         CapsulaEntity listJSON = JsonConvert.DeserializeObject<CapsulaEntity>(entityData);
 
-        //Debug.Log(listJSON.listOfEntitys[0].id);
+        
         //entitys[0].GetComponent<EnemyScript>().moveTo(Convert.ToSingle(listJSON.listOfEntitys[0].position[1] * (2.1)), Convert.ToSingle(listJSON.listOfEntitys[0].position[0] * -(2.1)));
 
         for (int i = 0; i < listJSON.listOfEntitys.Length; i++)
         {
+            Debug.Log(listJSON.listOfEntitys[i].id);
 
             float moveRow = Convert.ToSingle(listJSON.listOfEntitys[i].position[1] * (2 + nodeSeparation));
             float moveColumn = Convert.ToSingle(listJSON.listOfEntitys[i].position[0] * -(2 + nodeSeparation));
@@ -232,13 +264,15 @@ public class GameManager : MonoBehaviour
             //Debug.Log("Row de Entity antes de mover: " + entitys[i].GetComponent<EnemyScript>().row);
             //Debug.Log("Column de Entity antes de mover: " + entitys[i].GetComponent<EnemyScript>().column);
 
-            entitys[i].GetComponent<EnemyScript>().moveTo(moveRow, moveColumn);
-            
+            //*********************************** ESTO ES LO QUE SE CAGA EN TODO ************************************************
+            if (listJSON.listOfEntitys[i].type != "treasure") { 
+                entitys[i].GetComponent<EnemyScript>().moveTo(moveRow, moveColumn);
+            }
 
             //Comprobar si no se debe 
 
-            
-        
+
+
 
         }
 

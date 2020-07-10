@@ -246,6 +246,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
+  lostLifes: 0
+  hasFall: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,6 +514,8 @@ MonoBehaviour:
   enemy: {fileID: 2426587525174805606, guid: e3b8126ebfebdf041b2763f2a2a7534c, type: 3}
   client: {fileID: 801822602}
   player: {fileID: 443484463}
+  treasure: {fileID: 3613469085842498956, guid: 7d77eb55ac3e3ba45a1cb3825e45daa9,
+    type: 3}
   spectreGray:
     serializedVersion: 2
     rgba: 4284703587
@@ -521,9 +525,6 @@ MonoBehaviour:
   spectreRed:
     serializedVersion: 2
     rgba: 4278190335
-  treasure:
-    serializedVersion: 2
-    rgba: 4278255591
   jarron:
     serializedVersion: 2
     rgba: 4278999696

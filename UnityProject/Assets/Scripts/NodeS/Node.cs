@@ -9,6 +9,7 @@ public class Node : MonoBehaviour
     private int column;
     private int row;
     private bool isTraversable;
+    private bool isTrap;
     public String type;
 
     public Color32 normalCellColor;
@@ -35,6 +36,11 @@ public class Node : MonoBehaviour
         {
             PlayerMovement.row = row;
             PlayerMovement.column = column;
+
+            if (this.isTrap) {
+                Debug.Log("Me destruyo!!!");
+                Destroy(this.GetComponent<GameObject>());
+            }
         }
         //Debug.Log("Column: " + column + " row: + " + row);
     }
@@ -66,6 +72,15 @@ public class Node : MonoBehaviour
     {
         this.isTraversable = true;
         this.GetComponent<Renderer>().material.color = safeZoneCellColor;
+        this.transform.localScale = new Vector3(transform.localScale.x, nodePathAltitude, transform.localScale.z);
+    }
+
+    public void convertToTrap()
+    {
+        this.isTraversable = true;
+        this.isTrap = true;
+        Destroy(this.GetComponent<Collider>());
+        this.GetComponent<Renderer>().material.color = normalCellColor;
         this.transform.localScale = new Vector3(transform.localScale.x, nodePathAltitude, transform.localScale.z);
     }
 

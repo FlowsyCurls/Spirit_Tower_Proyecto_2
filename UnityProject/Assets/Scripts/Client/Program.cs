@@ -52,7 +52,7 @@ class Program : MonoBehaviour
 
         byteRecv = sender.Receive(messageReceived);
         String texto = Encoding.ASCII.GetString(messageReceived, 0, byteRecv);
-        Debug.Log("Se ha recibido el mensaje: " +  Encoding.ASCII.GetString(messageReceived, 0, byteRecv));
+        //Debug.Log("Se ha recibido el mensaje: " +  Encoding.ASCII.GetString(messageReceived, 0, byteRecv));
 
         return texto;
         
