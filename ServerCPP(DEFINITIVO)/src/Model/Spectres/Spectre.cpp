@@ -4,7 +4,6 @@
 
 #include "Spectre.h"
 #include "../algorithms/A_Star.h"
-#include "../algorithms/Breadcrumbing.h"
 
 vector<Spectre*> *Spectre::listOfSpectres = new vector<Spectre*>();
 
@@ -96,25 +95,6 @@ void Spectre::calculateAStar() {
 }
 
 /**
- * Calcula el algoritmo breadcrumbing
- */
-
-void Spectre::calculateBreadCrumbing() {
-    //Punto de partida
-    Pair src = make_pair(getPosition()->getRow(), getPosition()->getColumn());
-
-    //Punto destino
-    Entity *e = Entity::getEntityByID("ju01");
-    Pair dest = make_pair(e->getPosition()->getRow(), e->getPosition()->getColumn());
-
-    Breadcrumbing* breadCrumbing;
-    persuitRoute =  breadCrumbing->breadcrumbing(src, dest, routeInUse);
-    routeInUse = persuitRoute;
-    routeCounter = 0;
-}
-
-
-/**
  * Mueve el espectro a su siguiente posicion
  */
 void Spectre::moveNext() {
@@ -124,7 +104,7 @@ void Spectre::moveNext() {
         if(isOnPersuit){
             sleep(persuitVelocity);
             if(useBreadcrumbing){//En caso de ser el espectro que vio al jugador usa breadcrumbing
-
+                
             }else{//Se usa A*
                 if(persuitRoute->size() == 0){
                     //Calcular A*

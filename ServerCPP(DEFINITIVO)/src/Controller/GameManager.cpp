@@ -10,7 +10,6 @@
 #include "../Model/SimpleEnemies/SpectralEye.h"
 #include "../Model/SimpleEnemies/Chuchu.h"
 #include "../Model/SimpleEnemies/Mouse.h"
-
 /**
  * Da comienzo al movimiento de los espectros (threads)
  */
@@ -50,14 +49,8 @@ void GameManager::loadGame(int pLevel) {
     board.printBoardCellType();
     board.printBoardEntity();
     generateEntityLastStatusJSON();
-    controller->setGroup();
 
 }
-
-void GameManager::geneticTest(int pLevel) {
-//    if (pLevel ==1 ) return;
-}
-
 /**
  * Inicia el juego cargando los datos que se encuentran en el json del nivel
  * @param pLevel
@@ -85,8 +78,7 @@ void GameManager::checkSpectresPlayerInteract() {
  * Actualiza el juego cada 0.5 segundos, este es el thread principal del juego
  */
 void GameManager::updateGame() {
-    bool run = true;
-    while(run){
+    while(1){
         sleep(0.5);
         generateEntityLastStatusJSON();
         checkSpectresPlayerInteract();
@@ -198,8 +190,7 @@ void GameManager::parseSpectresJSON(json pJSON) {
         }
         Spectre *spectre = new Spectre(id, type, patrolRoute, direction, routeVelocity, persuitVelocity, visionRange, position, spectreType);
     }
-    controller->setGroup();
-
+    //controller->setGroup();
 }
 /**
  * Parsea los objetos que se encuentran el archivo json del mapa
