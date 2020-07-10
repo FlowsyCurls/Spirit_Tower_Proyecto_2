@@ -247,6 +247,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   lostLifes: 0
+  score: 0
+  isBlocking: 0
   hasFall: 0
 --- !u!1 &705507993
 GameObject:
