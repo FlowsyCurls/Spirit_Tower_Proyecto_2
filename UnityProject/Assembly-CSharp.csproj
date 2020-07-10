@@ -63,7 +63,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\HealthBar.cs" />
+    <Compile Include="Assets\Score.cs" />
     <Compile Include="Assets\Scripts\CameraS\CameraScript.cs" />
+    <Compile Include="Assets\Scripts\CameraS\Minimap.cs" />
     <Compile Include="Assets\Scripts\Client\Program.cs" />
     <Compile Include="Assets\Scripts\EnemiesS\EnemyScript.cs" />
     <Compile Include="Assets\Scripts\EnemiesS\backTrigger.cs" />

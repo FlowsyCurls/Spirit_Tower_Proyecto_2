@@ -8,7 +8,7 @@ public class EnemyScript : MonoBehaviour
 
     public float row;
     public float column;
-    public Transform target;
+   
     //public float speed;
 
     void Start()

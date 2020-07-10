@@ -176,11 +176,16 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Creo una trampa");
                     n.GetComponent<Node>().convertToTrap();
                 }
+                else if (valor == 4)
+                {
+                    n.GetComponent<Node>().convertToLava();
+                    Debug.Log("Creo una trampa de lava");
+                }
 
-                
-               
+
+
                 //Put the node onto the matrix, to keep track
-                
+
             }
         }
         
@@ -265,7 +270,7 @@ public class GameManager : MonoBehaviour
             //Debug.Log("Column de Entity antes de mover: " + entitys[i].GetComponent<EnemyScript>().column);
 
             //*********************************** ESTO ES LO QUE SE CAGA EN TODO ************************************************
-            if (listJSON.listOfEntitys[i].type != "treasure") { 
+            if (entitys[i] != null && listJSON.listOfEntitys[i] != null && listJSON.listOfEntitys[i].type != "treasure" ) { 
                 entitys[i].GetComponent<EnemyScript>().moveTo(moveRow, moveColumn);
             }
 

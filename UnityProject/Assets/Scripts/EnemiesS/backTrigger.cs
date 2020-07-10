@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class backTrigger : MonoBehaviour
 {
+
+    public GameObject targetEnemy;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +23,7 @@ public class backTrigger : MonoBehaviour
     {
         if (collider.gameObject.tag == "Player") {
             Debug.Log("Ataca jugador por espalda");
+            Destroy(targetEnemy);
         }
     }
 

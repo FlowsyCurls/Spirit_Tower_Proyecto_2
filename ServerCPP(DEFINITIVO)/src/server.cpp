@@ -171,6 +171,11 @@ int main(int argc, char **argv){
                         gameIsStarted = true;
 
                     }
+                    if(strcmp(buffer, "getLifes") == 0){
+
+                        cout << "El cliente solicita cantidad de vidas" << endl;
+
+                    }
                 }else{
                         string s(buffer);
                         string temp = s.substr(2,8);

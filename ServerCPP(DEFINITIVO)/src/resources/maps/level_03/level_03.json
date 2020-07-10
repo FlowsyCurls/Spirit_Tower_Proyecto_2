@@ -1,0 +1,291 @@
+{
+    "matriz": [
+        [0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 2, 2, 1, 1, 0, 0, 0, 1, 1],
+        [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
+        [1, 1, 0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        [1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0, 1, 1],
+        [1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 0, 0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 0, 0, 0, 0, 0, 1, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+        [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2],
+        [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0]
+    ],
+    "jugador": {
+        "id": "ju01",
+        "type": "jugador",
+        "position": [0, 0]
+    },
+    "spectres": [
+        {
+            "id": "sp01",
+            "type": "spectre_blue",
+            "position": [2, 8],
+            "direction": "west",
+            "routeVelocity": 0,
+            "persuitVelocity": 0,
+            "visionRange": 0,
+            "patrolRoute": [
+                [2, 7],
+                [2, 6],
+                [2, 5],
+                [2, 6],
+                [2, 7],
+                [2, 8],
+                [3, 8],
+                [4, 8],
+                [3, 8],
+                [2, 8]
+            ]
+        },
+
+        {
+            "id": "sp02",
+            "type": "spectre_blue",
+            "position": [4, 17],
+            "direction": "north",
+            "routeVelocity": 0,
+            "persuitVelocity": 0,
+            "visionRange": 0,
+            "patrolRoute": [
+                [3, 17],
+                [2, 17],
+                [1, 17],
+                [0, 17],
+                [1, 17],
+                [2, 17],
+                [3, 17],
+                [4, 17],
+                [4, 16],
+                [4, 15],
+                [4, 14],
+                [4, 13],
+                [4, 12],
+                [4, 13],
+                [4, 14],
+                [4, 15],
+                [4, 16],
+                [4, 17]
+            ]
+        },
+
+        {
+            "id": "sp03",
+            "type": "spectre_blue",
+            "position": [7, 17],
+            "direction": "west",
+            "routeVelocity": 0,
+            "persuitVelocity": 0,
+            "visionRange": 0,
+            "patrolRoute": [
+                [7, 16],
+                [7, 15],
+                [7, 14],
+                [7, 13],
+                [7, 12],
+                [7, 13],
+                [7, 14],
+                [7, 15],
+                [7, 16],
+                [7, 17],
+                [8, 17],
+                [9, 17],
+                [10, 17],
+                [9, 17],
+                [8, 17],
+                [7, 17]
+            ]
+        },
+
+        {
+            "id": "sp04",
+            "type": "spectre_blue",
+            "position": [10, 2],
+            "direction": "north",
+            "routeVelocity": 0,
+            "persuitVelocity": 0,
+            "visionRange": 0,
+            "patrolRoute": [
+                [9, 2],
+                [8, 2],
+                [7, 2],
+                [6, 2],
+                [7, 2],
+                [8, 2],
+                [9, 2],
+                [10, 2],
+                [10, 3],
+                [10, 4],
+                [10, 5],
+                [10, 6],
+                [10, 7],
+                [10, 6],
+                [10, 5],
+                [10, 4],
+                [10, 3],
+                [10, 2]
+            ]
+        },
+
+        {
+            "id": "sp05",
+            "type": "spectre_blue",
+            "position": [14, 2],
+            "direction": "south",
+            "routeVelocity": 0,
+            "persuitVelocity": 0,
+            "visionRange": 0,
+            "patrolRoute": [
+                [15, 2],
+                [16, 2],
+                [15, 2],
+                [14, 2],
+                [13, 2],
+                [12, 2],
+                [13, 2],
+                [14, 2]
+            ]
+        },
+
+        {
+            "id": "sp06",
+            "type": "spectre_blue",
+            "position": [16, 17],
+            "direction": "north",
+            "routeVelocity": 0,
+            "persuitVelocity": 0,
+            "visionRange": 0,
+            "patrolRoute": [
+                [15, 17],
+                [14, 17],
+                [13, 17],
+                [14, 17],
+                [15, 17],
+                [16, 17],
+                [16, 16],
+                [16, 15],
+                [16, 14],
+                [16, 13],
+                [16, 12],
+                [16, 11],
+                [16, 12],
+                [16, 13],
+                [16, 14],
+                [16, 15],
+                [16, 16],
+                [16, 17]
+            ]
+        },
+
+        {
+            "id": "sp07",
+            "type": "spectre_blue",
+            "position": [19, 9],
+            "direction": "east",
+            "routeVelocity": 0,
+            "persuitVelocity": 0,
+            "visionRange": 0,
+            "patrolRoute": [
+                [19, 10],
+                [19, 11],
+                [19, 12],
+                [19, 13],
+                [19, 12],
+                [19, 11],
+                [19, 10],
+                [19, 9],
+                [18, 9],
+                [19, 9]
+            ]
+        }
+    ],
+
+    "objects": [
+        {
+            "id": "tr01",
+            "type": "treasure",
+            "scorePoints": 25,
+            "position": [4, 6]
+        },
+        {
+            "id": "tr02",
+            "type": "treasure",
+            "scorePoints": 35,
+            "position": [8, 19]
+        },
+        {
+            "id": "tr03",
+            "type": "treasure",
+            "scorePoints": 45,
+            "position": [14, 0]
+        },
+        {
+            "id": "ja01",
+            "type": "jarron",
+            "scorePoints": 5,
+            "heartQuantity": 2,
+            "position": [2, 19]
+        },
+        {
+            "id": "ja02",
+            "type": "jarron",
+            "scorePoints": 5,
+            "heartQuantity": 1,
+            "position": [8, 0]
+        },
+        {
+            "id": "ja03",
+            "type": "jarron",
+            "scorePoints": 5,
+            "heartQuantity": 1,
+            "position": [14, 19]
+        },
+        {
+            "id": "ja04",
+            "type": "jarron",
+            "scorePoints": 5,
+            "heartQuantity": 2,
+            "position": [19, 19]
+        }
+    ],
+    "simpleEnemies": [
+        {
+            "id": "se01",
+            "type": "spectralEye",
+            "visionRange": 3,
+            "position": [3, 11]
+        },
+        {
+            "id": "se02",
+            "type": "spectralEye",
+            "visionRange": 3,
+            "position": [10, 9]
+        },
+        {
+            "id": "se03",
+            "type": "spectralEye",
+            "visionRange": 3,
+            "position": [15, 6]
+        },
+        {
+            "id": "ch01",
+            "type": "chuchu",
+            "position": [4, 0]
+        },
+        {
+            "id": "mo01",
+            "type": "mouse",
+            "position": [19, 4]
+        }
+    ]
+}

@@ -9,12 +9,16 @@ public class Node : MonoBehaviour
     private int column;
     private int row;
     private bool isTraversable;
-    private bool isTrap;
+    private bool isFalseFloorTrap;
+    private bool isLavaFloorTrap;
     public String type;
 
     public Color32 normalCellColor;
     public Color32 obstacleCellColor;
     public Color32 safeZoneCellColor;
+    public Color32 falseFloorZoneCellColor;
+    public Color32 lavaZoneCellColor;
+
     public float nodeObsAltitude;
     public float nodePathAltitude;
 
@@ -37,9 +41,13 @@ public class Node : MonoBehaviour
             PlayerMovement.row = row;
             PlayerMovement.column = column;
 
-            if (this.isTrap) {
+            if (this.isFalseFloorTrap) {
                 Debug.Log("Me destruyo!!!");
                 Destroy(this.GetComponent<GameObject>());
+            }
+            if (this.isLavaFloorTrap) {
+                collision.gameObject.GetComponent<PlayerMovement>().lostLifes++;
+                Debug.Log("Ay!, me quemo!!!");
             }
         }
         //Debug.Log("Column: " + column + " row: + " + row);
@@ -78,9 +86,17 @@ public class Node : MonoBehaviour
     public void convertToTrap()
     {
         this.isTraversable = true;
-        this.isTrap = true;
+        this.isFalseFloorTrap = true;
         Destroy(this.GetComponent<Collider>());
-        this.GetComponent<Renderer>().material.color = normalCellColor;
+        this.GetComponent<Renderer>().material.color = falseFloorZoneCellColor;
+        this.transform.localScale = new Vector3(transform.localScale.x, nodePathAltitude, transform.localScale.z);
+    }
+
+    public void convertToLava()
+    {
+        this.isTraversable = true;
+        this.isLavaFloorTrap = true;
+        this.GetComponent<Renderer>().material.color = lavaZoneCellColor;
         this.transform.localScale = new Vector3(transform.localScale.x, nodePathAltitude, transform.localScale.z);
     }
 
