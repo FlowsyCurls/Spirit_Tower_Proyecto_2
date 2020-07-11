@@ -308,5 +308,9 @@ string Spectre::toString() {
     return "";
 }
 
+string Spectre::getId() {
+    return Entity::getId();
+}
+
 
 

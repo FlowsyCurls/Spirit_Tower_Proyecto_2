@@ -1,3 +1,4 @@
+#include <iomanip>
 #include "Spectrum.h"
 #include "GeneticManager.h"
 
@@ -10,12 +11,12 @@ Spectrum::Spectrum(string pId, double pRouteSpeed, double pChaseSpeed, int pSigh
 }
 
 void Spectrum::toString() {
-    cout <<
+    cout << std::setprecision(0) << std::fixed <<
          //    "  Spectrum\n\t" <<
          //         "\t" <<
-         id << " | " <<
-         routeSpeed << "  " <<
-         chaseSpeed << "  " <<
+         id << " |\t" <<
+         routeSpeed << "   " <<
+         chaseSpeed << "   " <<
          sightRange << endl;
 }
 
@@ -31,7 +32,7 @@ double Spectrum::getRouteSpeed() const {
     return routeSpeed;
 }
 
-vector<Spectrum *> *Spectrum::getSiblingsList() const {
+vector<Spectrum *> *Spectrum::getBrotherhoodList() const {
     return siblingsList;
 }
 
@@ -47,14 +48,14 @@ void Spectrum::setSightRange(int pSightRange) {
     Spectrum::sightRange = pSightRange;
 }
 
-void Spectrum::setSiblingsList(vector<Spectrum *> *pSiblingsList) {
-    Spectrum::siblingsList = pSiblingsList;
+void Spectrum::setBrotherhoodList(vector<Spectrum *> *pBrotherhoodList) {
+    Spectrum::siblingsList = pBrotherhoodList;
 
 }
 
 double Spectrum::sum() const {
     double sum;
-    sum = routeSpeed + sightRange + chaseSpeed;
+    sum = routeSpeed + chaseSpeed;
     return sum;
 }
 

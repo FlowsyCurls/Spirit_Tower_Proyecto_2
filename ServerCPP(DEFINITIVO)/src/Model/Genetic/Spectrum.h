@@ -19,12 +19,12 @@ public:
     double getChaseSpeed() const;
     double getRouteSpeed() const;
     int getSightRange() const;
-    vector<Spectrum *> *getSiblingsList() const;
+    vector<Spectrum *> *getBrotherhoodList() const;
 
     void setChaseSpeed(double pChaseSpeed);
     void setRouteSpeed(double pRouteSpeed);
     void setSightRange(int pSightRange);
-    void setSiblingsList(vector<Spectrum *> *pSiblingsList);
+    void setBrotherhoodList(vector<Spectrum *> *pBrotherhoodList);
     double sum() const;
 
     void toString() override;

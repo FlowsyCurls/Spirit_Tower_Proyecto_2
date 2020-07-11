@@ -1,83 +1,119 @@
+#include <iomanip>
 #include "GeneticManager.h"
 #include "Tools/Utility.h"
 #include "../Spectres/Spectre.h"
 
-int GeneticManager::totalSpectres = 1;
-
-/*
- * Pass the genetic attributes from SpectrumList to SpectreList, received in param, to be used in game.
- */
-void GeneticManager::setGroup()
-{
-    if (isFirst)
-    {
-        isFirst = false;
-        return setPrimaryGroup();
-    }
-    auto* spectres =  Spectre::listOfSpectres;
-    for (int i = 0; i < spectres->size(); i++)
-    {
-        auto* spectre = spectres->at(i);
-        spectre->setRouteVelocity(spectrumGroup->at(i)->getRouteSpeed());
-        spectre->setPersuitVelocity(spectrumGroup->at(i)->getChaseSpeed());
-        spectre->setVisionRange(spectrumGroup->at(i)->getSightRange());
-        cout << "SetGroup" << endl;
-        spectre->printSpectre();
-    }
-}
+int GeneticManager::totalSample = 10;
+int GeneticManager::totalSpectres = 0;
+int GeneticManager::minRandom = 5;
+int GeneticManager::maxRandom = 6;
 
 /*
  * Set the attributes of the first population.
  */
 void GeneticManager::setPrimaryGroup()
 {
-    cout << "[MANAGER-START]\tFIRST GENERATION" << endl;
-    auto *genList = new vector<Spectrum *>;
+    printListOfSpectres();
+//    cout << "============> [MANAGER-START] <============ "<< endl;
+    cout << "~~~~~~~~~~~~~~> \' GEN " << Crossbreed::generationMarker++ << " \'<~~~~~~~~~~~~~~"<< endl;
 
-    for (int j = 0; j < this->spectresPerLvl; j++)
+    auto *temporalList = new vector<Spectrum *>;
+
+    // Por cada Spectre (interfaz) en la lista estática listOfSpectres, genero un Spectrum en la lista temporal.
+    for (int j = 0; j < Spectre::listOfSpectres->size();  j++)
+    //    for (int j = 0; j < Spectre::listOfSpectres->size();  j++)
     {
-        //First Spectrum.
-        auto *spectrum = new Spectrum(generateId(),getRandom(), getRandom(), getRandom());
-        vector<Spectrum *> *list = spectrum->getSiblingsList();
-        list->push_back(spectrum);
 
-//        cout << "\nGroup "<<j+1 << endl;
-//        spectrum->toString();
+    // PRIMERO CREO 10 ESPECTROS EN UNA LISTA POR CADA SPECTRUM NECESITADO EN LA LISTA DE SPECTRES.
+        auto *list = new vector<Spectrum *>(); // lista en donde meto los espectros.
 
-        //Siblings of the foregoing spectrum :
-        for (int k = 0; k < this->totalSample; k++)
+        for (int k = 0; k < GeneticManager::totalSample; k++)  // totalSample es el tamaño de la muestra.
         {
             // Create List of Spectrum with random attributes.
-            auto *siblingsList = new vector<Spectrum *>;
-            auto *sibling = new Spectrum(generateId(), getRandom(), getRandom(), getRandom());
-            list->push_back(sibling);
-//            sibling->toString();
+            auto *spectrum = new Spectrum(generateId(), getRandom(), getRandom(), Utility::Random(1, 2));
+            list->push_back(spectrum);
+//            spectrum->toString();
         }
-        // Return the best spectrum as the main one.
-        genList->push_back(chooseBestDescendant(spectrum->getSiblingsList()));
 
+    // SEGUNDO : SELECCIONO EL MEJOR DE LOS 10 ESPECTROS EN LA LISTA.
+        Spectrum* chosen = chooseBestSpectrum(list);
+    // TERCERO : SETEAR LA LISTA DE HERMANOS A LA LISTA DE TODA LA MUESTRA, INCLUYENDO AL MEJOR.
+        chosen->setBrotherhoodList(list); // Utilizada más adelante para la reproducción.
+        temporalList->push_back(chosen);
     }
-    spectrumGroup = genList;
-    setGroup();
-    cout << endl << "[MANAGER-END]"<<endl;
+    listOfSpectrums = temporalList;
+    assignToSpectre(temporalList);
+
+//    cout << "============> [MANAGER-END] <============"<<endl;
+}
+
+/*
+ * Set the attributes of the next population.
+ */
+void GeneticManager::setGroup()
+{
+    listOfSpectrums = crossbreed->getNextGenOfSpectrums(listOfSpectrums);
+    assignToSpectre(listOfSpectrums);
 }
 
 /**
- * Choose best spectrum of the sample
- * @param pDescendantSiblings
+ * Choose best spectrum of the sampl
+ * @param pList
  * @return
  */
-Spectrum* GeneticManager::chooseBestDescendant(vector<Spectrum *> *pDescendantSiblings) {
-    Spectrum *best = pDescendantSiblings->at(0);
-    for (auto & descendant : *pDescendantSiblings)
+Spectrum* GeneticManager::chooseBestSpectrum(vector<Spectrum *> *pList) {
+//    cout << "{\n";
+    Spectrum *goat = pList->at(0); // El mejor empieza siendo el primero.
+//    goat->toString();
+
+    for (int h = 1; h < pList->size(); h++)
     {
-        double sum1 = best->sum();
-        double sum2 = descendant->sum();
-        if (sum1 < sum2) best = descendant;
+        auto* spectrum = pList->at(h);
+//        spectrum->toString();
+
+        // Compare each attribute.
+        // FIRST GET THE FASTEST
+        int betterSpeed = 0;
+        if ( spectrum->getRouteSpeed() <= goat->getRouteSpeed() )
+            betterSpeed++;
+        if ( spectrum->getChaseSpeed() < goat->getChaseSpeed() )
+            betterSpeed++;
+        if (betterSpeed == 2){
+            goat = spectrum;
+        }
     }
-    cout << "\n    * BestOne : "; best->toString();
-    best->setSiblingsList(pDescendantSiblings);
-    return best;
+//    cout << "}\n";
+//    cout << "+ Better Speed  > "; goat->toString();
+    // THEN GET THE FASTEST WITH LONGEST VISION RANGE
+    for (auto & g : *pList)
+    {
+        if (g->getSightRange() > goat->getSightRange())
+            if (g->getChaseSpeed() <= goat->getChaseSpeed()  && g->getRouteSpeed() <= goat->getRouteSpeed() ) {
+//                cout << "+ Better Vision > "; g->toString();
+                goat = g;
+            }
+    }
+
+    goat->setBrotherhoodList(pList);
+//    cout << "* GOAT : "; goat->toString(); cout << endl;
+    return goat;
+}
+
+
+/**
+ * Assign attributes of each spectrum in the parameter list to each spectre in the static list, respectively.
+ * @param pList
+ */
+void GeneticManager::assignToSpectre(vector<Spectrum *> *pList) {
+    for (int j = 0; j < Spectre::listOfSpectres->size(); j++)
+    {
+        auto* spectre = Spectre::listOfSpectres->at(j);
+        auto* spectrum = pList->at(j);
+        spectre->setRouteVelocity(speedsDiccionary[spectrum->getRouteSpeed()]);
+        spectre->setPersuitVelocity(speedsDiccionary[spectrum->getChaseSpeed()]);
+        spectre->setVisionRange(spectrum->getSightRange());
+    }
+    printListOfSpectres();
 }
 
 /**
@@ -85,7 +121,7 @@ Spectrum* GeneticManager::chooseBestDescendant(vector<Spectrum *> *pDescendantSi
  * @return
  */
 string GeneticManager::generateId(){
-    string id = "spectre_" + to_string(totalSpectres);
+    string id = "spectrum_" + to_string(totalSpectres);
     return id;
 }
 
@@ -101,6 +137,42 @@ void GeneticManager::increaseTotalSpectrums()
  * Get a random number using utility class.
  * @return
  */
-int GeneticManager::getRandom() const {
-    return Utility::Random(1,initialVariability);
+int GeneticManager::getRandom() {
+    return Utility::Random(minRandom, maxRandom);
 }
+
+/**
+ * Print the list of spectres.
+ */
+void GeneticManager::printListOfSpectres() {
+//    cout << "------------> Spectres Static List <------------" << endl;
+    for(auto & spectre : *Spectre::listOfSpectres)
+    {
+        cout << std::setprecision(1) << std::fixed <<
+             spectre->getId() << " |\t" <<
+             spectre->getRouteVelocity() << "   " <<
+             spectre->getPersuitVelocity() << "   " <<
+             spectre->getVisionRange() << endl;
+    }
+    cout <<endl;
+}
+
+/**
+ * Setter for attribute listOfSpectrum.
+ * @param listOfSpectrum
+ */
+void GeneticManager::setListOfSpectrum(vector<Spectrum *> *listOfSpectrum) {
+    GeneticManager::listOfSpectrums = listOfSpectrum;
+}
+
+void GeneticManager::loadGenetic() {
+    if (isPrimary){
+        isPrimary = false;
+        return setPrimaryGroup();
+    }
+    setGroup();
+}
+
+
+
+
