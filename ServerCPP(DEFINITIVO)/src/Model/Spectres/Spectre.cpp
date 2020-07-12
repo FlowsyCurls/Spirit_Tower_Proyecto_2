@@ -95,6 +95,24 @@ void Spectre::calculateAStar() {
 }
 
 /**
+ * Calcula el algoritmo BreadCrumbing
+ */
+
+void Spectre::calculateBreadcrumbing() {
+    //Punto de partida
+    Pair src = make_pair(getPosition()->getRow(), getPosition()->getColumn());
+
+    //Punto destino
+    Entity *e = Entity::getEntityByID("ju01");
+    Pair dest = make_pair(e->getPosition()->getRow(), e->getPosition()->getColumn());
+
+    persuitRoute =  breadcrumbing->breadcrumbing(src, dest, routeInUse);
+    routeInUse = persuitRoute;
+    routeCounter = 0;
+}
+
+
+/**
  * Mueve el espectro a su siguiente posicion
  */
 void Spectre::moveNext() {
@@ -104,7 +122,20 @@ void Spectre::moveNext() {
         if(isOnPersuit){
             sleep(persuitVelocity);
             if(useBreadcrumbing){//En caso de ser el espectro que vio al jugador usa breadcrumbing
-                
+                if(persuitRoute->size() == 0){
+                    //Calcular BreadCrumbing*
+                    calculateBreadcrumbing();
+
+                }else{
+                    if(Board::playerHasMoved){
+                        //Calcular BreadCrumbing*
+                        calculateBreadcrumbing();
+                        //Este condicional permite al espectro moverse incluso cuando el jugador se esta moviendo
+                        if(routeInUse->size()>0 && getPosition()->compare(routeInUse->at(0))){
+                            routeCounter++;
+                        }
+                    }
+                }
             }else{//Se usa A*
                 if(persuitRoute->size() == 0){
                     //Calcular A*

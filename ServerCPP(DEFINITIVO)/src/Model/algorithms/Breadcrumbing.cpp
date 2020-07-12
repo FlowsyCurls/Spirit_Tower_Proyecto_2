@@ -68,10 +68,6 @@ vector<Position*>* Breadcrumbing::calculateChaseRoute(Pair src, Pair destination
      * @return Vector con la ruta a seguir
      */
 vector<Position*>* Breadcrumbing::breadcrumbing(Pair src, Pair dest, vector<Position*>* currentRoute) {
-
-    cout << "[" << originalDestination.first << ", " << originalDestination.second << "]" << endl;
-    printVector(currentRoute);
-
     // If the source is out of range
     if (!isValid(src.first, src.second)) {
         printf("Source is invalid\n");
@@ -89,18 +85,20 @@ vector<Position*>* Breadcrumbing::breadcrumbing(Pair src, Pair dest, vector<Posi
 
     if (isFirstSight) { //Si es la primera vez que lo ve
         cout << "Es mi prmera vez" << endl;
-        //this->originalDestination = dest;
         vector<Position*>* partialRoute;
         partialRoute = calculateChaseRoute(src, dest);
         this->totalRoute = partialRoute;
         this->isFirstSight = false;
+        cout << "Se ha calculado Breadcrumbing: "; printVector(partialRoute);
         return partialRoute;
     }
     if (!isFirstSight) { //Si no es la primera vez que lo ve
         cout << "Ya no es mi prmera vez" << endl;
         //this->totalRoute->insert(totalRoute->end(), breadCrumbs->begin(), breadCrumbs->end());
         Position* newnewPosition = new Position(newDest->getRow(), newDest->getColumn());
+        currentRoute->clear();
         currentRoute->push_back(newnewPosition);
+        cout << "Se ha calculado Breadcrumbing: "; printVector(currentRoute);
         return currentRoute;
     }
 }

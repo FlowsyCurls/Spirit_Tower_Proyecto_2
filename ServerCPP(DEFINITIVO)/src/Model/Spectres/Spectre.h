@@ -11,6 +11,8 @@
 #include <thread>
 #include <unistd.h>
 #include "../Board/Board.h"
+#include "../algorithms/Breadcrumbing.h"
+#include "../algorithms/Bresenham.h"
 
 
 using namespace std;
@@ -38,6 +40,8 @@ private:
     bool isOnPersuit = false;
     SpectreType spectreType;
     bool useBreadcrumbing = false;
+    Breadcrumbing* breadcrumbing = new Breadcrumbing;
+    Bresenham* bresenham = new Bresenham;
 
 public:
 
@@ -83,6 +87,9 @@ public:
     string toString();
     void printSpectre();
 
+    void calculateBreadcrumbing();
+
+    void calculateBresenham();
 };
 
 

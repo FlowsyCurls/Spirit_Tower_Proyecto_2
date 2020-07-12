@@ -7,7 +7,7 @@
 
 #include<bits/stdc++.h>
 #include <iostream>
-#include "Position.h"
+#include "../Board/Position.h"
 using namespace std;
 
 #define ROW 20
@@ -16,7 +16,6 @@ using namespace std;
 class Breadcrumbing {
 public:
     typedef pair<int, int> Pair;
-    Pair originalDestination;
     vector<Position*>* breadCrumbs = new vector<Position*>;
     vector<Position*>* totalRoute = new vector<Position*>;
     bool isFirstSight = true;
