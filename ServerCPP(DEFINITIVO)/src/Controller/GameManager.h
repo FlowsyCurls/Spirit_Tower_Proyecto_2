@@ -27,14 +27,16 @@ class GameManager {
 
 private:
 
+
     static GameManager* instance;
+    unsigned int updateFrequency = static_cast<unsigned int>(0.5);
     Board board;
     int score;
     int lifes;
+    int currentLvl;
     string matrizJSONString;
     string entitysJSONString;
     GeneticManager * controller = new GeneticManager();
-
 
     //Constructor
     GameManager();
@@ -57,6 +59,7 @@ private:
     void checkSpectresVision();
     void updateGame();
     void checkSpectresPlayerInteract();
+    void checkPlayerInVictorySpot();
 
 
 public:
@@ -75,6 +78,8 @@ public:
     string getEntitysJsonString();
     void updatePlayerPosition(string pJson);
 
+    static map<string, int> levelDictionary;
+    static map<int, CellType> numberDictionary;
 };
 
 

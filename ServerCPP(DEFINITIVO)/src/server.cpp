@@ -146,25 +146,9 @@ int main(int argc, char **argv){
                 receiveMessage();
 
                 if(!gameIsStarted){
-                    if(strcmp(buffer, "play_level01") == 0){
-                        gameManager->loadGame(1);
-
-                    }
-                    else if(strcmp(buffer, "play_level02") == 0) {
-                        gameManager->loadGame(2);
-
-                    }
-                    else if(strcmp(buffer, "play_level03") == 0) {
-                        gameManager->loadGame(3);
-
-                    }
-                    else if(strcmp(buffer, "play_level04") == 0) {
-                        gameManager->loadGame(4);
-
-                    }
-
-                    cout << "El cliente solicita el"<< buffer << endl;
-                    cout << "Enviando el"<< buffer << endl;
+                    gameManager->loadGame(GameManager::levelDictionary[buffer]);
+                    cout << "El cliente solicita el "<< buffer << endl;
+                    cout << "Enviando el "<< buffer << endl;
 
                     gameManager->getBoard().printMatrizStar();
 

@@ -34,6 +34,7 @@ public:
     string parseBoardToJSON();
     static void assignMatrizEntity(Position * pPosition, string pEntityID);
     bool checkPlayerOfSafeZone();
+    bool checkPlayerOnVictorySpot();
     static void updateMatrizStar();
 
 

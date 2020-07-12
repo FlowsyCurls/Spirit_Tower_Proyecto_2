@@ -124,6 +124,24 @@ bool Board::checkPlayerOfSafeZone() {
     return false;
 }
 
+/**
+ * Checkea si el jugador se encuentra en una zona de victoria.
+ * @return
+ */
+bool Board::checkPlayerOnVictorySpot() {
+
+    Entity *player = Entity::getEntityByID("ju01");
+
+    if(player != nullptr){
+        if(matriz[player->getPosition()->getRow()][player->getPosition()->getColumn()]->getCellType() == VICTORYSPOT){
+            cout << "********************El jugador ha pasado de nivel********************"<< endl;
+            return true;
+        }
+    }
+
+    return false;
+}
+
 string Board::parseBoardToJSON() {
     return "";
 }

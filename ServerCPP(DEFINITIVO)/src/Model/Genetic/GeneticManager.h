@@ -14,7 +14,7 @@ private:
     bool isPrimary = true;
     vector<Spectrum *>* listOfSpectrums = new vector<Spectrum*>; /* List for population */
     Crossbreed *crossbreed = new Crossbreed(); // Class in charge of reproducing the spectre.
-    map<double, double> speedsDiccionary = {
+    map<double, double> speedsDictionary = {
             { 1, 0.5 },
             { 2, 1.0 },
             { 3, 1.5 },

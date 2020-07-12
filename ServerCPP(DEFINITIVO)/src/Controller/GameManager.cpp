@@ -10,6 +10,23 @@
 #include "../Model/SimpleEnemies/SpectralEye.h"
 #include "../Model/SimpleEnemies/Chuchu.h"
 #include "../Model/SimpleEnemies/Mouse.h"
+
+map<string,int> GameManager::levelDictionary = {
+        { "play_level01", 1},
+        { "play_level02", 2},
+        { "play_level03", 3},
+        { "play_level04", 4},
+        { "play_level05", 5},
+};
+
+map<int,CellType> GameManager::numberDictionary = {
+        {0, NORMAL},
+        {1, OBSTACLE},
+        {2, SAFEZONE},
+        {3, NORMAL},
+        {8, VICTORYSPOT}
+};
+
 /**
  * Da comienzo al movimiento de los espectros (threads)
  */
@@ -39,7 +56,7 @@ void GameManager::checkSpectresVision() {
  * @param pLevel
  */
 void GameManager::loadGame(int pLevel) {
-
+    currentLvl = pLevel;
     cout << "Iniciando carga del nivel: " << pLevel << endl;
     ifstream file("..\\src\\resources\\maps\\level_0" + to_string(pLevel) + "\\level0" + to_string(pLevel) +".json");
     ostringstream tmp;
@@ -75,14 +92,26 @@ void GameManager::checkSpectresPlayerInteract() {
         }
     }
 }
+void GameManager::checkPlayerInVictorySpot()
+{
+    if(board.checkPlayerOnVictorySpot()){
+        currentLvl++;
+        currentLvl =4 ; // para pruebas. con nivel 4.
+        cout << "\n\n\nNEXT lVL"<< currentLvl<<"\n\n\n" << endl;
+        loadGame(currentLvl);
+    };
+
+}
+
 /**
  * Actualiza el juego cada 0.5 segundos, este es el thread principal del juego
  */
 void GameManager::updateGame() {
-    while(1){
-        sleep(0.5);
+    while(true){
+        sleep(updateFrequency);
         generateEntityLastStatusJSON();
         checkSpectresPlayerInteract();
+        checkPlayerInVictorySpot();
         //board.printBoardEntity();
     }
 }
@@ -131,24 +160,12 @@ void GameManager::parseMatrizJSON(json pJSON) {
             //cout << id << endl;
             CellType cellType;
 
-            if(pJSON["matriz"].at(i).at(e) == 0){
-                cellType = NORMAL;
-                //board.matrizStar[i][e] = 1;
-            }else{
-                if(pJSON["matriz"].at(i).at(e) == 1){
-                    cellType = OBSTACLE;
-                    //board.matrizStar[i][e] = 0;
-                }else{
-                    if(pJSON["matriz"].at(i).at(e) == 2){
-                        cellType = SAFEZONE;
-                        //board.matrizStar[i][e] = 0;
-                    }else{
-                        if(pJSON["matriz"].at(i).at(e) == 3){
-                            cellType = NORMAL;
-                            //board.matrizStar[i][e] = 1;
-                        }
-                    }
-                }
+            auto cellValue = numberDictionary.find(pJSON["matriz"].at(i).at(e));
+            if (cellValue != numberDictionary.end()) { // found
+                cellType = cellValue->second;
+            }
+            else { // not found, means thats is not a cell.
+                //do stuff
             }
 
             Cell* c = new Cell(i, e, id, cellType);

@@ -109,8 +109,8 @@ void GeneticManager::assignToSpectre(vector<Spectrum *> *pList) {
     {
         auto* spectre = Spectre::listOfSpectres->at(j);
         auto* spectrum = pList->at(j);
-        spectre->setRouteVelocity(speedsDiccionary[spectrum->getRouteSpeed()]);
-        spectre->setPersuitVelocity(speedsDiccionary[spectrum->getChaseSpeed()]);
+        spectre->setRouteVelocity(speedsDictionary[spectrum->getRouteSpeed()]);
+        spectre->setPersuitVelocity(speedsDictionary[spectrum->getChaseSpeed()]);
         spectre->setVisionRange(spectrum->getSightRange());
     }
     printListOfSpectres();
