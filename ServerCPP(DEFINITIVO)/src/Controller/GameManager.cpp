@@ -49,6 +49,7 @@ void GameManager::loadGame(int pLevel) {
     board.printBoardCellType();
     board.printBoardEntity();
     generateEntityLastStatusJSON();
+//    controller->loadGenetic();
 
 }
 /**
@@ -195,7 +196,6 @@ void GameManager::parseSpectresJSON(json pJSON) {
         }
         Spectre *spectre = new Spectre(id, type, patrolRoute, direction, routeVelocity, persuitVelocity, visionRange, position, spectreType);
     }
-    //controller->setGroup();
 }
 /**
  * Parsea los objetos que se encuentran el archivo json del mapa

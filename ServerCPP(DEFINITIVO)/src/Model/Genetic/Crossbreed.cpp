@@ -2,73 +2,72 @@
 #include "Tools/Utility.h"
 #include "GeneticManager.h"
 
-vector<Spectrum *> *Crossbreed::getNewGroup(vector<Spectrum *> *pSpectreGroup)
+int Crossbreed::generationMarker = 0;
+/**
+ * Retorna la nueva generacion generada a partir del parametro de entrada.
+ * @param pListOfSpectrums
+ *
+ * @return
+ */
+vector<Spectrum *> *Crossbreed::getNextGenOfSpectrums(vector<Spectrum *> *pListOfSpectrums)
 {
-    cout << "___________________________________________________" <<endl;
-    cout << "[CROSS"<<groupNumber++<<"-START]";
-    newSpectrumGroup =  new vector<Spectrum*>;
-    return matchEachSpectrum(pSpectreGroup);
+//    cout << "============> [CROSS" << generationMarker++ << "-START] <============\n";
+    newListOfSpectrums =  new vector<Spectrum*>; //Release the spaces from the list, in case another generation has been generated before.
+    matchEachSpectrum(pListOfSpectrums);
+    return newListOfSpectrums;
 }
 
-vector<Spectrum *>* Crossbreed::matchEachSpectrum(vector<Spectrum *> *pSpectreGroup)
-{
+void Crossbreed::matchEachSpectrum(vector<Spectrum *> *pListOfSpectrums) const {
     // Cross between each parent.
-    for (int i = 0; i < pSpectreGroup->size(); i++){
+    for (int i = 0; i < pListOfSpectrums->size(); i++){
         Spectrum *first, *second;
-        if (i == pSpectreGroup->size() - 1){
-            first = pSpectreGroup->at(i);
-            second = pSpectreGroup->at(0);
+        if (i == pListOfSpectrums->size() - 1)
+        {
+            first = pListOfSpectrums->at(i);
+            second = pListOfSpectrums->at(0);
         }
-        else{
-            first = pSpectreGroup->at(i);
-            second = pSpectreGroup->at(i + 1);
+        else
+        {
+            first = pListOfSpectrums->at(i);
+            second = pListOfSpectrums->at(i + 1);
         }
-        matchEachSibling(first, second);
+        matchBrotherhood(first, second);
     }
-    printGroup();
-    cout << "[CROSS-END]  " <<endl;
-    return newSpectrumGroup;
+//    cout << "============> [CROSS-END] <============" <<endl;
+    cout << "~~~~~~~~~~~~~~> \' GEN " << generationMarker++ << " \' <~~~~~~~~~~~~~~"<< endl;
 }
 
-void Crossbreed::matchEachSibling(Spectrum *pParent1, Spectrum *pParent2)
+void Crossbreed::matchBrotherhood(Spectrum *pParent1, Spectrum *pParent2) const
 {
-    auto *siblings1 = pParent1->getSiblingsList();
-    auto *siblings2 = pParent2->getSiblingsList();
+    auto *brotherhood1 = pParent1->getBrotherhoodList();
+    auto *brotherhood2 = pParent2->getBrotherhoodList();
 
-    auto *descendantSiblings = new vector<Spectrum *>;
-    for (int i = 0; i < siblings1->size(); i++) {
-        string genes1, genes2;
-        Spectrum *descendant1, *descendant2;
-        // Descendant 1 Process
-        genes1 = Cross(decToBinSpectrum(siblings1->at(i)), decToBinSpectrum(siblings2->at(i)));
-        descendant1 = binToDecString(genes1);
-        descendantSiblings->push_back(descendant1);
-        // Descendant 2 Process
-        genes2 = Cross(decToBinSpectrum(siblings2->at(i)), decToBinSpectrum(siblings1->at(i)));
-        descendant2 = binToDecString(genes2);
-        descendantSiblings->push_back(descendant2);
-    }
-    newSpectrumGroup->push_back(chooseBestSibling(descendantSiblings));
-}
+    auto *bothCreations = new vector<Spectrum *>;
+    auto* bestCreations = new vector<Spectrum *>;
 
-Spectrum* Crossbreed::chooseBestSibling(vector<Spectrum *> *pDescendantSiblings) {
-    Spectrum *best = pDescendantSiblings->at(0);
-    for (auto & descendant : *pDescendantSiblings)
-    {
-        double sum1 = best->sum();
-        double sum2 = descendant->sum();
-        if (sum1 < sum2) best = descendant;
+    for (int i = 0; i < GeneticManager::totalSample; i++) {
+        string firstCreation, secondCreation;
+        Spectrum *firstGenes, *secondGenes;
+
+        // firstCreation 1 Process
+        firstCreation = Cross(decToBinSpectrum(brotherhood1->at(i)), decToBinSpectrum(brotherhood2->at(i)));
+        firstGenes = binToDecString(firstCreation);
+        bothCreations->push_back(firstGenes);
+        // secondCreation 2 Process
+        secondCreation = Cross(decToBinSpectrum(brotherhood2->at(i)), decToBinSpectrum(brotherhood1->at(i)));
+        secondGenes = binToDecString(secondCreation);
+        bothCreations->push_back(secondGenes);
+        bestCreations->push_back(GeneticManager::chooseBestSpectrum(bothCreations));
     }
-    cout << "\n    * BestOne : "; best->toString();
-    best->setSiblingsList(pDescendantSiblings);
-    return best;
+//    cout << " BEST LS " << bestCreations->size();
+    newListOfSpectrums->push_back(GeneticManager::chooseBestSpectrum(bestCreations));
 }
 
 string Crossbreed::decToBinSpectrum(Spectrum *pSpectrum)
 {
     string adn = '0' +
-                 Utility::decToBinary(pSpectrum->getRouteSpeed()) +
-                 Utility::decToBinary(pSpectrum->getChaseSpeed()) +
+                 Utility::decToBinary((int) pSpectrum->getRouteSpeed()) +
+                 Utility::decToBinary((int) pSpectrum->getChaseSpeed()) +
                  Utility::decToBinary(pSpectrum->getSightRange());
 //    cout << "\t[DecToBin] - "<< pSpectrum->getId() <<"  " << adn << endl;
     return adn;
@@ -76,21 +75,20 @@ string Crossbreed::decToBinSpectrum(Spectrum *pSpectrum)
 
 Spectrum *Crossbreed::binToDecString(const string& pAdnChain)
 {
-    auto *childSpectrum = new Spectrum(GeneticManager::generateId());
-    childSpectrum->setRouteSpeed(verifyBin(stoi(pAdnChain.substr(1, 3))));
-    childSpectrum->setChaseSpeed(verifyBin(stoi(pAdnChain.substr(4, 3))));
-    childSpectrum->setSightRange(verifyBin(stoi(pAdnChain.substr(7, 3))));
-//    cout << "\n\t\t  Child: "; childSpectrum->toString();
-    return childSpectrum;
+    auto *sonSpectrum = new Spectrum(GeneticManager::generateId());
+    sonSpectrum->setRouteSpeed(verifyBin(stoi(pAdnChain.substr(1, 3))));
+    sonSpectrum->setChaseSpeed(verifyBin(stoi(pAdnChain.substr(4, 3))));
+    sonSpectrum->setSightRange(verifyBin(stoi(pAdnChain.substr(7, 3))));
+//    cout << "\n\tBestSon: "; sonSpectrum->toString();
+    return sonSpectrum;
 }
 int Crossbreed::verifyBin(int pBin)
 {
     int dec = Utility::binToDec(pBin);
-    if (dec == 0) return 1;
-    if (dec > 9) return 9;
+    if (dec == 0) return GeneticManager::minRandom;
+    if (dec > GeneticManager::maxRandom) return GeneticManager::maxRandom;
     return dec;
 }
-
 string Crossbreed::Cross(const string& pGen1, const string& pGen2) const
 {
     string adn = pGen1.substr(0, 5) + pGen2.substr (5);
@@ -106,6 +104,7 @@ string Crossbreed::CrossProbability(string& pAdn) const
     if (mutationProbability >= gen)
     {
 //        cout<< "\n\t * M % "<<gen;
+
         pAdn = Mutation(pAdn);
     }
 // Probability for Inversion : 4%
@@ -154,17 +153,6 @@ string Crossbreed::replace(int &pPos, int pLen, string &pStr)
     }
     return temp;
 }
-
-void Crossbreed::printGroup()
-{
-    cout << "\n * Population :"<<endl << "\t[";
-    for (auto & newPopulationSpectrum : *newSpectrumGroup)
-    {
-        cout<<"  "<<newPopulationSpectrum->getId();
-    }
-    cout << "  ]"<<endl;
-}
-
 
 
 

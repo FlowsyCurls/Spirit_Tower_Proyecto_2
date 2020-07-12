@@ -33,7 +33,7 @@ private:
     int lifes;
     string matrizJSONString;
     string entitysJSONString;
-    //GeneticManager * controller = new GeneticManager();
+    GeneticManager * controller = new GeneticManager();
 
 
     //Constructor

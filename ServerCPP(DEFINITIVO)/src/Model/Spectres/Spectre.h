@@ -77,6 +77,7 @@ public:
     void setVisionRange(int pVisionRange);
     int getVisionRange();
     Spectre* getSpectreByID(string pId);
+    string getId();
 
     //toString, prints, logs
     string toString();
