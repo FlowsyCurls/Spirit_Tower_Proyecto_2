@@ -24,14 +24,23 @@ bool Breadcrumbing::isDestination(int row, int col, Pair dest)
         return (false);
 }
 
+void Breadcrumbing::printVector(vector<Position*>* toPrint){
+    if (toPrint->empty()){
+        cout << "[empty]" << endl;
+    } else{
+        cout << "[";
+        for (auto & i : *toPrint){
+            i->printPosition();
+            cout << ", ";
+        }
+        cout << "]" << endl;
+    }
+}
+
 vector<Position*>* Breadcrumbing::calculateChaseRoute(Pair src, Pair destination){
-    auto* chaseRoute = new vector<Position*>;
-    auto* newPosition = new Position;
-    newPosition->setRow(src.first);
-    newPosition->setColumn(src.second);
+    vector<Position*>* chaseRoute = new vector<Position*>;
+    Position* newPosition = new Position(src.first, src.second);
     while ((newPosition->getRow() != destination.first) && (newPosition->getColumn() != destination.second)){
-        newPosition->printPosition();
-        cout << destination.first << ", " << destination.second << endl;
         int currentRow = newPosition->getRow();
         int currentColumn = newPosition->getColumn();
         if (currentRow < destination.first){
@@ -44,7 +53,8 @@ vector<Position*>* Breadcrumbing::calculateChaseRoute(Pair src, Pair destination
         } else if (currentColumn > destination.second){
             newPosition->setColumn(currentColumn-1);
         }
-        newPosition->printPosition();
+        Position* newnewPosition = new Position(newPosition->getRow(), newPosition->getColumn());
+        chaseRoute->push_back(newnewPosition);
     }
     return chaseRoute;
 }
@@ -52,60 +62,45 @@ vector<Position*>* Breadcrumbing::calculateChaseRoute(Pair src, Pair destination
 /**
      *
      *
+     * @param grid
      * @param src Posición del espectro
-     * @param dest Posición del jugador
+     * @param dest Posición del jugador CUANDO LO VE
      * @return Vector con la ruta a seguir
      */
-vector<Position*>* Breadcrumbing::breadcrumbing(Pair src, Pair dest, vector<Position*>* currentRoute){
+vector<Position*>* Breadcrumbing::breadcrumbing(Pair src, Pair dest, vector<Position*>* currentRoute) {
+
+    cout << "[" << originalDestination.first << ", " << originalDestination.second << "]" << endl;
+    printVector(currentRoute);
 
     // If the source is out of range
-    if (!isValid(src.first, src.second)){
-        printf ("Source is invalid\n");
+    if (!isValid(src.first, src.second)) {
+        printf("Source is invalid\n");
         return nullptr;
     }
 
     // If the destination is out of range
-    if (!isValid(dest.first, dest.second)){
-        printf ("Destination is invalid\n");
+    if (!isValid(dest.first, dest.second)) {
+        printf("Destination is invalid\n");
         return nullptr;
     }
 
-    // If the destination cell is the same as source cell
-    if (isDestination(src.first, src.second, dest)){
-        printf ("We are already at the destination\n");
-        return nullptr;
-    }
+    Position *newDest = new Position(dest.first, dest.second);
+    this->breadCrumbs->push_back(newDest);
 
-    Position* newBreadCrumb;
-    newBreadCrumb->setRow(dest.first);
-    newBreadCrumb->setColumn(dest.second);
-    breadCrumbs->push_back(newBreadCrumb);
-
-    if (isFirstSight){ //Si es la primera vez que lo ve
-        this->originalDestination = dest;
-        vector<Position*>* partialRoute = calculateChaseRoute(src, originalDestination);
-        totalRoute = partialRoute;
-        isFirstSight = false;
+    if (isFirstSight) { //Si es la primera vez que lo ve
+        cout << "Es mi prmera vez" << endl;
+        //this->originalDestination = dest;
+        vector<Position*>* partialRoute;
+        partialRoute = calculateChaseRoute(src, dest);
+        this->totalRoute = partialRoute;
+        this->isFirstSight = false;
         return partialRoute;
     }
-    if (!isFirstSight){ //Si no es la primera vez que lo ve
-        //Si ya llegó a la posición original
-        if (dest.first == originalDestination.first && dest.second == originalDestination.second){
-            Position* newDest;
-            newDest->setRow(dest.first);
-            newDest->setColumn(dest.second);
-            currentRoute->push_back(newDest);
-            totalRoute->push_back(newDest);
-            return currentRoute;
-        } else{ //Si no ha llegado a la posición original
-            vector<Position*>* partialRoute = calculateChaseRoute(src, originalDestination);
-            return partialRoute;
-        }
+    if (!isFirstSight) { //Si no es la primera vez que lo ve
+        cout << "Ya no es mi prmera vez" << endl;
+        //this->totalRoute->insert(totalRoute->end(), breadCrumbs->begin(), breadCrumbs->end());
+        Position* newnewPosition = new Position(newDest->getRow(), newDest->getColumn());
+        currentRoute->push_back(newnewPosition);
+        return currentRoute;
     }
-
-    /*
-     if (zonasegura){
-        breadCrumbs.clear();
-     }
-    */
 }
