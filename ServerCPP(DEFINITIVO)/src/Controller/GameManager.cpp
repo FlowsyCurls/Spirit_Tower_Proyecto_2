@@ -2,7 +2,6 @@
 // Created by carlo on 6/29/2020.
 //
 
-
 #include "GameManager.h"
 #include "../Model/Objects/Treasure.h"
 #include "../Model/Objects/Jarron.h"
@@ -10,6 +9,7 @@
 #include "../Model/SimpleEnemies/SpectralEye.h"
 #include "../Model/SimpleEnemies/Chuchu.h"
 #include "../Model/SimpleEnemies/Mouse.h"
+#include "../Model/Genetic/Tools/Utility.h"
 
 map<string,int> GameManager::levelDictionary = {
         { "play_level01", 1},
@@ -24,6 +24,7 @@ map<int,CellType> GameManager::numberDictionary = {
         {1, OBSTACLE},
         {2, SAFEZONE},
         {3, NORMAL},
+        {4, NORMAL},
         {8, VICTORYSPOT}
 };
 
@@ -32,10 +33,9 @@ map<int,CellType> GameManager::numberDictionary = {
  */
 void GameManager::initSpectresMovement() {
 
-    for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-
-        Spectre::listOfSpectres->at(i)->startMovement();
-
+    for(auto & listOfSpectre : *Spectre::listOfSpectres)
+    {
+        listOfSpectre->startMovement();
     }
 
 }
@@ -44,10 +44,9 @@ void GameManager::initSpectresMovement() {
  */
 void GameManager::checkSpectresVision() {
 
-    for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-
-        Spectre::listOfSpectres->at(i)->checkVisionRange();
-
+    for(auto & listOfSpectre : *Spectre::listOfSpectres)
+    {
+        listOfSpectre->checkVisionRange();
     }
 
 }
@@ -55,16 +54,16 @@ void GameManager::checkSpectresVision() {
  * Carga los datos del nivel que se le pasa por parametro
  * @param pLevel
  */
-void GameManager::loadGame(int pLevel) {
-    currentLvl = pLevel;
-    cout << "Iniciando carga del nivel: " << pLevel << endl;
-    ifstream file("..\\src\\resources\\maps\\level_0" + to_string(pLevel) + "\\level0" + to_string(pLevel) +".json");
+void GameManager::loadGame() {
+    currentLvl=1;
+//    cout << "Iniciando carga del nivel: " << currentLvl << endl;
+    ifstream file(R"(..\src\resources\maps\level_0)" + to_string(currentLvl) + "\\level0" + to_string(currentLvl) + ".json");
     ostringstream tmp;
     tmp<<file.rdbuf();
     string JSON = tmp.str();
     loadGameFromJSON(JSON);
     board.printBoardCellType();
-    board.printBoardEntity();
+    Board::printBoardEntity();
     generateEntityLastStatusJSON();
 //    controller->loadGenetic();
 
@@ -73,9 +72,10 @@ void GameManager::loadGame(int pLevel) {
  * Inicia el juego cargando los datos que se encuentran en el json del nivel
  * @param pLevel
  */
-void GameManager::startGame() {
-    score = 0;
-    lifes = 5;
+void GameManager::  startGame() {
+    //cleanJson();
+    startingStats->score = 0;
+    startingStats->lifes = 5;
     initSpectresMovement();
     thread(&GameManager::updateGame, this).detach();
 }
@@ -95,10 +95,10 @@ void GameManager::checkSpectresPlayerInteract() {
 void GameManager::checkPlayerInVictorySpot()
 {
     if(board.checkPlayerOnVictorySpot()){
-        currentLvl++;
-        currentLvl =4 ; // para pruebas. con nivel 4.
-        cout << "\n\n\nNEXT lVL"<< currentLvl<<"\n\n\n" << endl;
-        loadGame(currentLvl);
+//        currentLvl++;
+//        currentLvl = 4 ; // para pruebas. con nivel 4.
+//        cout << "\n\n\nNEXT lVL"<< currentLvl<<"\n\n\n" << endl;
+//        loadGame(currentLvl);
     };
 
 }
@@ -126,6 +126,7 @@ void GameManager::parseJugadorJSON(json pJSON) {
     string id = pJSON["jugador"]["id"];
     string type = pJSON["jugador"]["type"];
     Position *position = new Position(pJSON["jugador"]["position"][0], pJSON["jugador"]["position"][1]);
+    startingStats->pos = position;
     Jugador *jugador = new Jugador(id, type, position, 1);
 
 }
@@ -135,9 +136,10 @@ void GameManager::parseJugadorJSON(json pJSON) {
  */
 void GameManager::createMatrizJsonString(json pJSON) {
 
-    matrizJSONString = "{\"matriz\":";
-    matrizJSONString += pJSON["matriz"].dump();
-    matrizJSONString += "}";
+    matrixJson["matriz"]=pJSON["matriz"];
+//    matrizJSONString = "{\"matriz\":";
+//    matrizJSONString += pJSON["matriz"].dump();
+//    matrizJSONString += "}";
 
 }
 /**
@@ -169,7 +171,7 @@ void GameManager::parseMatrizJSON(json pJSON) {
             }
 
             Cell* c = new Cell(i, e, id, cellType);
-            board.matriz[i][e] = c;
+            Board::matriz[i][e] = c;
         }
     }
 
@@ -186,32 +188,32 @@ void GameManager::parseSpectresJSON(json pJSON) {
 
         string id = pJSON["spectres"].at(i)["id"];
         string type = pJSON["spectres"].at(i)["type"];
-        Position *position = new Position(pJSON["spectres"].at(i)["position"][0],pJSON["spectres"].at(i)["position"][1]);
+        auto *position = new Position(pJSON["spectres"].at(i)["position"][0],pJSON["spectres"].at(i)["position"][1]);
 
         string direction = pJSON["spectres"].at(i)["direction"];
         double routeVelocity = pJSON["spectres"].at(i)["routeVelocity"];
         double persuitVelocity = pJSON["spectres"].at(i)["persuitVelocity"];
         int visionRange = pJSON["spectres"].at(i)["visionRange"];
-        vector<Position*>* patrolRoute = new vector<Position*>();
+        auto* patrolRoute = new vector<Position*>();
         SpectreType spectreType;
 
-        if(type.compare("spectre_gray") == 0){
+        if(type == "spectre_gray"){
             spectreType = GRAY;
         }else{
-            if(type.compare("spectre_blue") == 0){
+            if(type == "spectre_blue"){
                 spectreType = BLUE;
             } else{
-                if(type.compare("spectre_red") == 0){
+                if(type == "spectre_red"){
                     spectreType = RED;
                 }
             }
         }
 
         for(int e = 0; e < pJSON["spectres"].at(i)["patrolRoute"].size(); e++){
-            Position *tmpPosition = new Position(pJSON["spectres"].at(i)["patrolRoute"].at(e)[0], pJSON["spectres"].at(i)["patrolRoute"].at(e)[1]);
+            auto *tmpPosition = new Position(pJSON["spectres"].at(i)["patrolRoute"].at(e)[0], pJSON["spectres"].at(i)["patrolRoute"].at(e)[1]);
             patrolRoute->push_back(tmpPosition);
         }
-        Spectre *spectre = new Spectre(id, type, patrolRoute, direction, routeVelocity, persuitVelocity, visionRange, position, spectreType);
+        auto *spectre = new Spectre(id, type, patrolRoute, direction, routeVelocity, persuitVelocity, visionRange, position, spectreType);
     }
 }
 /**
@@ -224,18 +226,18 @@ void GameManager::parseObjectsJSON(json pJSON) {
         string id = pJSON["objects"].at(i)["id"];
         string type = pJSON["objects"].at(i)["type"];
         int scorePoints = pJSON["objects"].at(i)["scorePoints"];
-        Position *position = new Position(pJSON["objects"].at(i)["position"][0], pJSON["objects"].at(i)["position"][1]);
-        if(type.compare("treasure") == 0){
+        auto *position = new Position(pJSON["objects"].at(i)["position"][0], pJSON["objects"].at(i)["position"][1]);
+        if(type == "treasure"){
 
-            Treasure *treasure = new Treasure(id, type, scorePoints, position);
+            auto *treasure = new Treasure(id, type, scorePoints, position);
             //board.getListOfObjects()->push_back(treasure);
 
         }else{
 
-            if(type.compare("jarron") == 0){
+            if(type == "jarron"){
 
                 int heartQuantity = pJSON["objects"].at(i)["heartQuantity"];
-                Jarron *jarron = new Jarron(id, type, scorePoints, heartQuantity, position);
+                auto *jarron = new Jarron(id, type, scorePoints, heartQuantity, position);
 
             }
 
@@ -251,16 +253,16 @@ void GameManager::parseSimpleEnemiesJSON(json pJSON) {
 
         string id = pJSON["simpleEnemies"].at(i)["id"];
         string type = pJSON["simpleEnemies"].at(i)["type"];
-        Position *position = new Position(pJSON["simpleEnemies"].at(i)["position"][0], pJSON["simpleEnemies"].at(i)["position"][1]);
-        if(type.compare("spectralEye") == 0){
+        auto *position = new Position(pJSON["simpleEnemies"].at(i)["position"][0], pJSON["simpleEnemies"].at(i)["position"][1]);
+        if(type == "spectralEye"){
 
             int visionRange = pJSON["simpleEnemies"].at(i)["visionRange"];
-            SpectralEye *spectralEye = new SpectralEye(id, type, visionRange, position);
+            auto *spectralEye = new SpectralEye(id, type, visionRange, position);
 
-        }else if(type.compare("chuchu") == 0){
-                Chuchu *chuchu = new Chuchu(id, type, position);
-        }else if(type.compare("mouse") == 0){
-            Mouse *mouse = new Mouse(id, type, position);
+        }else if(type == "chuchu"){
+                auto *chuchu = new Chuchu(id, type, position);
+        }else if(type == "mouse"){
+            auto *mouse = new Mouse(id, type, position);
         }
     }
 }
@@ -268,7 +270,7 @@ void GameManager::parseSimpleEnemiesJSON(json pJSON) {
  * Carga los datos del json al juego
  * @param pJSON
  */
-void GameManager::loadGameFromJSON(string pJSON) {
+void GameManager::loadGameFromJSON(const string& pJSON) {
 
     cout << "Cargando datos desde el archivo JSON..." << endl;
     json jsonObj;
@@ -288,53 +290,110 @@ void GameManager::loadGameFromJSON(string pJSON) {
 void GameManager::generateEntityLastStatusJSON() {
 
     json j;
-    j["listOfEntitys"] = {};
+    j["listOfEntities"] = {};
 
     //cout << "SEPARATOR" << endl << endl;
 
     for(int i = 1; i < Entity::listOfEntitys->size(); i++){
 
         json j2;
-        Position * position = new Position(Entity::listOfEntitys->at(i).getPosition()->getRow(), Entity::listOfEntitys->at(i).getPosition()->getColumn());
+        auto * position = new Position(Entity::listOfEntitys->at(i).getPosition()->getRow(), Entity::listOfEntitys->at(i).getPosition()->getColumn());
 
         j2["id"] =  Entity::listOfEntitys->at(i).getId();
         j2["type"] =  Entity::listOfEntitys->at(i).getType();
         j2["position"] = {};
         j2["position"][0] = position->getRow();
         j2["position"][1] = position->getColumn();
-        j["listOfEntitys"][i-1] = j2;
+        j["listOfEntities"][i-1] = j2;
 
     }
 
-    entitysJSONString = j.dump();
+    entitiesJson = j;
 }
+
+
+
+/**
+ * Write a json with the stats and position to respawn.
+ */
+void GameManager::parseRespawnStats() {
+
+    json jStats;
+    jStats["position"][0] = startingStats->pos->getRow();
+    jStats["position"][1] = startingStats->pos->getColumn();
+    jStats["lostLifes"] = 5-startingStats->lifes;
+    jStats["score"] = startingStats->score;
+    jStats["hasFall"] = false;
+    statsJson=jStats;
+//    cout << respawnJson.dump() << endl;
+
+}
+
+/**
+ * Write a json with the current stats and position in which the player must be at the beginning of each level.
+ */
+void GameManager::parseLvlStats() {
+
+    json jStats;
+    jStats["position"][0] = startingStats->pos->getRow();
+    jStats["position"][1] = startingStats->pos->getColumn();
+    jStats["lostLifes"] = 5-inGameStats->lifes;
+    jStats["score"] = inGameStats->score;
+    jStats["hasFall"] = false;
+
+    statsJson=jStats;
+//    cout << lvlStatsJson.dump() << endl;
+
+}
+
+/**
+ * Devuelve la matriz jsonString
+ * @return
+ */
+string GameManager::getMatrizJsonString() {
+//    cout << matrixJson.dump() << endl;
+    return matrixJson.dump();
+}
+
+
+string GameManager::getEntitysJsonString() {
+//    cout  << entitiesJson.dump() << endl;
+    return entitiesJson.dump();
+}
+
+string GameManager::getStatsJsonString() {
+    return statsJson.dump();
+}
+
 /**
  * Actualiza la posicion del jugador que se recibe del cliente, además de otros parámetros como vidas y puntaje
  * @param pJson
  */
-void GameManager::updatePlayerPosition(string pJson) {
+void GameManager::updatePlayerPosition(json jsonObj) {
 
     Entity * e = Entity::getEntityByID("ju01");
 
     if(e != nullptr){
+        inGameStats->lifes = startingStats->lifes - (int) jsonObj["lostLifes"];
+        inGameStats->score = jsonObj["score"];
 
-        json jsonObj;
-        stringstream(pJson) >> jsonObj;
+        bool hasFall = jsonObj["hasFall"];
 
-        cout << "Vidas:" <<lifes - (int) jsonObj["playerLostLives"] << endl;
-        cout << "Puntaje: " << (int) jsonObj["playerScore"] << endl;
-        
-        //Revisar cuándo el jugador se muere, por vidas o por una trampa
-        if(lifes - (int) jsonObj["playerLostLives"] <= 0){
-            cout << "El jugador perdió todas las vidas" << endl;
+        cout << "Vidas   : " << inGameStats->lifes << endl;
+        cout << "Puntaje : " << inGameStats->score << endl;
+
+        // Revisar la cantidad de vidas restantes del jugador.
+        if ( (inGameStats->lifes <= 0) || hasFall )
+        {
+            cout << "** Game Over **" << endl;
+            parseRespawnStats();
+            isDead = true;
         }
-
-        if((bool)jsonObj["hasFall"]) cout << "El jugador cayó en una trampa" << endl;
 
         //No se movio
         if(e->getPosition()->getRow() == jsonObj["position"][0] && e->getPosition()->getColumn() == jsonObj["position"][1]){
 
-            board.playerHasMoved = false;
+            Board::playerHasMoved = false;
             //cout << "El jugador no se movio" << endl;
 
         }else{
@@ -343,34 +402,94 @@ void GameManager::updatePlayerPosition(string pJson) {
             Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity("");
             e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
             Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
-            board.playerHasMoved = true;
+            Board::playerHasMoved = true;
         }
-
-
 
         //cout << "Se ha actualizado la posicion del jugador a: ";
         //e->getPosition()->printPosition();
         //cout << endl;
 
+    }
+}
+
+
+
+
+string GameManager::clientMsgManager(const string& pJson){
+
+    cout << "Server : Analyzing what the client asked for...." << endl;
+    cout << "Buffer >>  " << pJson << endl;
+
+    // FIRST SEPARATE THE FUNCTION AND THE DATA.
+    auto split = Utility::split(pJson,".");
+    string action = split[0];
+    string data = split[1];
+    string reply;
+
+    // SECOND WORK ON THE DATA, PARSE TO JSON.
+    json jsonObj;
+    stringstream(data) >> jsonObj;
+    cout << "Action : " << action << endl;
+    cout << "Data  : " << jsonObj << endl;
+
+    // 1 MATRIX
+    if ( action == "matrix")
+    {
+        currentLvl = 1;
+        cout << "Loading level " << currentLvl <<"request..." << endl;
+        loadGame();
+        cout << "Loading matrix request..."<< endl;
+        Board::printMatrizStar();
+
+        matrixLoaded = true;
+
+        reply = getMatrizJsonString();
 
     }
 
+    // 2 ENTITIES
+    else if( action == "entities")
+    {
+        cout << "Loading entities request..."<< endl;
+
+        entitiesLoaded = true;
+
+        reply = getEntitysJsonString();
+    }
+
+    // 4 PLAYER STATS
+    else if ( action == "playerStats" )
+    {
+        cout << "Updating server player statistics with client statistics..."<< endl;
+        updatePlayerPosition(jsonObj);
+        if (isDead){
+            cout << "Player has died, respawning in....  3   2   1"<< endl;
+            reply = getStatsJsonString();
+        }
+        else
+            reply = "successfullyUpdated";
+    }
+
+    // 3 START GAME
+    if (!isGameStarted && matrixLoaded && entitiesLoaded)
+    {
+        startGame();
+        isGameStarted = true;
+        cout << "Server : all ready..." << endl;
+        cout << "Server : The game has just begun...!" << endl;
+    }
+    cout << "* Server :\n"<< reply << endl << endl;
+    return reply;
 }
-/**
- * Devuelve la matriz jsonString
- * @return
- */
-string GameManager::getMatrizJsonString() {
-    return matrizJSONString;
-}
+
 
 
 /* Null, because instance will be initialized on demand. */
-GameManager* GameManager::instance = 0;
+GameManager* GameManager::instance = nullptr;
 
 GameManager* GameManager::getInstance()
 {
-    if (instance == 0)
+    if (instance == nullptr)
     {
         instance = new GameManager();
     }
@@ -378,30 +497,19 @@ GameManager* GameManager::getInstance()
     return instance;
 }
 
-GameManager::GameManager()
-{
-
-}
+GameManager::GameManager() = default;
 
 Board GameManager::getBoard() {
     return board;
 }
 
 int GameManager::getScore() {
-    return score;
+    return inGameStats->score;
 }
 
 int GameManager::getLifes() {
-    return lifes;
+    return inGameStats->lifes;
 }
-
-string GameManager::getEntitysJsonString() {
-    return entitysJSONString;
-}
-
-
-
-
 
 
 

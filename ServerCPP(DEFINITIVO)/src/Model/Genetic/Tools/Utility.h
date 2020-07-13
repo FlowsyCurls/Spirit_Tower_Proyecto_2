@@ -39,6 +39,13 @@ public:
      * @return resultado
      */
     static int binToDec(int pBinary);
+
+    /**
+     * Receive a string and split it based on given delimiter.
+     * @param pString
+     * @return
+     */
+    static vector<string> split(string pString, string delimiter);
 };
 
 

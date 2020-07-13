@@ -104,7 +104,7 @@ void Board::printMatrizStar() {
         }
         cout <<"]" << endl;
     }
-
+    cout<<endl;
 }
 /**
  * Checkea si el jugador se encuentra en una zona segura.

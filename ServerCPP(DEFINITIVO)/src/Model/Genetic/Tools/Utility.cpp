@@ -48,3 +48,20 @@ int Utility::binToDec(int pBinary)
 //    cout << endl << "Decimal: " << decimal << endl;
     return (int)decimal;
 }
+
+vector<string> Utility::split(string pString, string delimiter) {
+    size_t pos = 0;
+    string token;
+    vector<string> split;
+
+    while ((pos = pString.find(delimiter)) != std::string::npos) {
+        token = pString.substr(0, pos);
+        pString.erase(0, pos + delimiter.length());
+    }
+    split.push_back(token);
+    split.push_back(pString);
+
+//    cout << "Split: " << split[0] << "  |  " << split[1] << std::endl;
+
+    return split;
+}

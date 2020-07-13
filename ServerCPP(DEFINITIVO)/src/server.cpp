@@ -12,6 +12,7 @@
 //void algoritmTests();
 //void timeTest();
 void printBuffer();
+bool gameIsStarted=false;
 
 // Declare and initialize variables
 
@@ -22,7 +23,7 @@ struct addrinfo hints, * res=NULL, * ptr=NULL;
 char buffer[BUFFERSIZE];
 int ByteReceived, i;
 int rc;
-bool gameIsStarted = false;
+
 
 GameManager *gameManager = GameManager::getInstance();
 
@@ -80,8 +81,12 @@ void receiveMessage(){
 
 void pruebaGameManager(){
 
-    //gameManager->startGame(1);
-    //gameManager->getBoard().printBoardBlocksType();
+//    gameManager->loadGame();
+    gameManager->clientMsgManager("matrix.{}");
+    gameManager->clientMsgManager("entities.{}");
+
+    string p = R"(playerStats.{"position":[0,3],"lostLifes":0,"score":0,"hasFall":true}")";
+    gameManager->clientMsgManager(p);
 
 }
 
@@ -91,7 +96,7 @@ int main(int argc, char **argv){
 
     // Initialize Winsock
 
-    //pruebaGameManager();
+//    pruebaGameManager();
 
     //algoritmTests();
 
@@ -108,7 +113,7 @@ int main(int argc, char **argv){
 
     ptr = res;
 
-    while (ptr){
+    while (ptr) {
 
 
         // Use the res struct info for listening...
@@ -121,19 +126,40 @@ int main(int argc, char **argv){
         rc = listen(s, 10);
 
 
-        if (rc == SOCKET_ERROR){
+        if (rc == SOCKET_ERROR) {
 
             //printf("Server: listen() failed with error code %ld\n", WSAGetLastError());
             WSACleanup();
             return 1;
-        }else{
-
+        } else {
             //printf("Server: listen() is OK...\n");
             NewConnection = SOCKET_ERROR;
             // While the NewConnection socket equal to SOCKET_ERROR
             // which is always true in this case...
 
-            while(NewConnection == SOCKET_ERROR){
+//            while(NewConnection == SOCKET_ERROR){
+//
+//                // Accept connection on the s socket and assign
+//                // it to the NewConnection socket, let the s
+//                // do the listening for more connection
+//
+//                NewConnection = accept(s, NULL, NULL);
+//
+//                clearBuffer();
+//
+//                receiveMessage();
+//
+//                sendMessage(gameManager->clientMsgManager(buffer));
+//
+////                if(strcmp(buffer, "getLifes") == 0){
+////
+////                    cout << "El cliente solicita cantidad de vidas" << endl;
+////                }
+//
+//            }
+
+
+            while (NewConnection == SOCKET_ERROR) {
 
                 // Accept connection on the s socket and assign
                 // it to the NewConnection socket, let the s
@@ -145,47 +171,91 @@ int main(int argc, char **argv){
 
                 receiveMessage();
 
-                if(!gameIsStarted){
-                    gameManager->loadGame(GameManager::levelDictionary[buffer]);
-                    cout << "El cliente solicita el "<< buffer << endl;
-                    cout << "Enviando el "<< buffer << endl;
+<<<<<<< HEAD
+                sendMessage(gameManager->clientMsgManager(buffer));
+=======
+                if (!gameIsStarted) {
+                    gameManager->loadGame();
+
+                    cout << "El cliente solicita el" << buffer << endl;
+                    cout << "Enviando el" << buffer << endl;
 
                     gameManager->getBoard().printMatrizStar();
 
                     sendMessage(gameManager->getMatrizJsonString());
 
-                    cout << "Esperando request de entidades"<< endl;
+                    cout << "Esperando request de entidades" << endl;
 
                     clearBuffer();
+>>>>>>> ShakimeTesting
 
-                    receiveMessage();
+//                if(strcmp(buffer, "getLifes") == 0){
+//
+//                    cout << "El cliente solicita cantidad de vidas" << endl;
+//                }
 
+<<<<<<< HEAD
+            }
+
+
+//            while (NewConnection == SOCKET_ERROR) {
+//
+//                // Accept connection on the s socket and assign
+//                // it to the NewConnection socket, let the s
+//                // do the listening for more connection
+//
+//                NewConnection = accept(s, NULL, NULL);
+//
+//                clearBuffer();
+//
+//                receiveMessage();
+//
+//                if (!gameIsStarted) {
+//                    gameManager->loadGame();
+//
+//                    cout << "El cliente solicita el" << buffer << endl;
+//                    cout << "Enviando el" << buffer << endl;
+//
+//                    gameManager->getBoard().printMatrizStar();
+//
+//                    sendMessage(gameManager->getMatrizJsonString());
+//
+//                    cout << "Esperando request de entidades" << endl;
+//
+//                    clearBuffer();
+//
+//                    receiveMessage();
+//
+//                    clearBuffer();
+//
+//                    gameManager->startGame();
+//
+//                    gameIsStarted = true;
+//
+//                } else {
+//                    cout << "aqui" << endl;
+//                    sendMessage(gameManager->clientMsgManager(buffer));
+//                }
+//            }
+//        }
+//        closesocket(s);
+//    }
+=======
                     clearBuffer();
-
-                    sendMessage(gameManager->getEntitysJsonString());
 
                     gameManager->startGame();
 
                     gameIsStarted = true;
 
-                    if(strcmp(buffer, "getLifes") == 0){
-
-                        cout << "El cliente solicita cantidad de vidas" << endl;
-                    }
-                }
-                else{
-                    string s(buffer);
-                    string temp = s.substr(2,8);
-
-                    if(temp.compare("position")==0){
-                        gameManager->updatePlayerPosition(s);
-                    }
-                    sendMessage(gameManager->getEntitysJsonString());
+                } else {
+                    cout << "aqui" << endl;
+                    sendMessage(gameManager->clientMsgManager(buffer));
                 }
             }
         }
         closesocket(s);
     }
+>>>>>>> ShakimeTesting
 
     freeaddrinfo(res);
     WSACleanup();
