@@ -13,6 +13,13 @@
 /**
  * Da comienzo al movimiento de los espectros (threads)
  */
+
+void GameManager::clearAll() {
+
+    Entity::listOfEntitys->clear();
+
+}
+
 void GameManager::initSpectresMovement() {
 
     for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
@@ -49,7 +56,6 @@ void GameManager::loadGame(int pLevel) {
     board.printBoardCellType();
     board.printBoardEntity();
     generateEntityLastStatusJSON();
-//    controller->loadGenetic();
 
 }
 /**
@@ -142,11 +148,6 @@ void GameManager::parseMatrizJSON(json pJSON) {
                     if(pJSON["matriz"].at(i).at(e) == 2){
                         cellType = SAFEZONE;
                         //board.matrizStar[i][e] = 0;
-                    }else{
-                        if(pJSON["matriz"].at(i).at(e) == 3){
-                            cellType = NORMAL;
-                            //board.matrizStar[i][e] = 1;
-                        }
                     }
                 }
             }
@@ -196,6 +197,7 @@ void GameManager::parseSpectresJSON(json pJSON) {
         }
         Spectre *spectre = new Spectre(id, type, patrolRoute, direction, routeVelocity, persuitVelocity, visionRange, position, spectreType);
     }
+
 }
 /**
  * Parsea los objetos que se encuentran el archivo json del mapa
@@ -288,11 +290,10 @@ void GameManager::generateEntityLastStatusJSON() {
         j["listOfEntitys"][i-1] = j2;
 
     }
-
     entitysJSONString = j.dump();
 }
 /**
- * Actualiza la posicion del jugador que se recibe del cliente, además de otros parámetros como vidas y puntaje
+ * Actualiza la posicion del jugador que se recibe del cliente
  * @param pJson
  */
 void GameManager::updatePlayerPosition(string pJson) {
@@ -303,16 +304,6 @@ void GameManager::updatePlayerPosition(string pJson) {
 
         json jsonObj;
         stringstream(pJson) >> jsonObj;
-
-        cout << "Vidas:" <<lifes - (int) jsonObj["playerLostLives"] << endl;
-        cout << "Puntaje: " << (int) jsonObj["playerScore"] << endl;
-        
-        //Revisar cuándo el jugador se muere, por vidas o por una trampa
-        if(lifes - (int) jsonObj["playerLostLives"] <= 0){
-            cout << "El jugador perdió todas las vidas" << endl;
-        }
-
-        if((bool)jsonObj["hasFall"]) cout << "El jugador cayó en una trampa" << endl;
 
         //No se movio
         if(e->getPosition()->getRow() == jsonObj["position"][0] && e->getPosition()->getColumn() == jsonObj["position"][1]){

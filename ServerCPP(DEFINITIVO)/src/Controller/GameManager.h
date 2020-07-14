@@ -14,7 +14,6 @@
 #include <iostream>
 #include <thread>
 #include <unistd.h>
-#include "../Model/Genetic/GeneticManager.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -33,7 +32,6 @@ private:
     int lifes;
     string matrizJSONString;
     string entitysJSONString;
-    GeneticManager * controller = new GeneticManager();
 
 
     //Constructor
@@ -46,6 +44,8 @@ private:
     void parseObjectsJSON(json pJSON);
     void parseJugadorJSON(json pJSON);
     void parseSimpleEnemiesJSON(json pJSON);
+
+
 
     //Methods parsing from memory to JSON
     void createMatrizJsonString(json pJSON);
@@ -74,6 +74,7 @@ public:
     string getMatrizJsonString();
     string getEntitysJsonString();
     void updatePlayerPosition(string pJson);
+    void clearAll();
 
 };
 

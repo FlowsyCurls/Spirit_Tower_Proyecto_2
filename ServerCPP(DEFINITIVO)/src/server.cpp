@@ -23,6 +23,7 @@ char buffer[BUFFERSIZE];
 int ByteReceived, i;
 int rc;
 bool gameIsStarted = false;
+int lvl = 1;
 
 GameManager *gameManager = GameManager::getInstance();
 
@@ -64,7 +65,7 @@ void sendMessage(string msg){
     strcpy(buffer,msg.c_str());
 
     ByteReceived = send( NewConnection, buffer, sizeof(buffer), 0 );
-//    cout << "Se ha enviado un mensaje al cliente: " << msg.substr(0,30) << "..." <<endl;
+    cout << "Se ha enviado un mensaje al cliente: " << msg.substr(0,30) << "..." <<endl;
 
 }
 /**
@@ -72,7 +73,7 @@ void sendMessage(string msg){
  */
 void receiveMessage(){
 
-//    cout << "En espera de un mensaje del cliente..." << endl;
+    cout << "En espera de un mensaje del cliente..." << endl;
     ByteReceived = recv(NewConnection, buffer, sizeof(buffer), 0);
     printBuffer();
 
@@ -146,57 +147,41 @@ int main(int argc, char **argv){
                 receiveMessage();
 
                 if(!gameIsStarted){
-                    if(strcmp(buffer, "play_level01") == 0){
-                        gameManager->loadGame(1);
+                    if(strcmp(buffer, "play") == 0){
+
+                        gameManager->clearAll();
+                        gameManager->loadGame(lvl);
+                        gameManager->getBoard().printMatrizStar();
+
+                        sendMessage(gameManager->getMatrizJsonString());
+
+                        cout << "Esperando request de entidades"<< endl;
+
+                        clearBuffer();
+
+                        receiveMessage();
+
+                        clearBuffer();
+
+                        sendMessage(gameManager->getEntitysJsonString());
+
+                        gameManager->startGame();
+
+                        gameIsStarted = true;
 
                     }
-                    else if(strcmp(buffer, "play_level02") == 0) {
-                        gameManager->loadGame(2);
+                }else{
+                        string s(buffer);
+                        string temp = s.substr(2,8);
 
-                    }
-                    else if(strcmp(buffer, "play_level03") == 0) {
-                        gameManager->loadGame(3);
-
-                    }
-                    else if(strcmp(buffer, "play_level04") == 0) {
-                        gameManager->loadGame(4);
-
-                    }
-
-                    cout << "El cliente solicita el"<< buffer << endl;
-                    cout << "Enviando el"<< buffer << endl;
-
-                    gameManager->getBoard().printMatrizStar();
-
-                    sendMessage(gameManager->getMatrizJsonString());
-
-                    cout << "Esperando request de entidades"<< endl;
-
-                    clearBuffer();
-
-                    receiveMessage();
-
-                    clearBuffer();
-
-                    sendMessage(gameManager->getEntitysJsonString());
-
-                    gameManager->startGame();
-
-                    gameIsStarted = true;
-
-                    if(strcmp(buffer, "getLifes") == 0){
-
-                        cout << "El cliente solicita cantidad de vidas" << endl;
-                    }
-                }
-                else{
-                    string s(buffer);
-                    string temp = s.substr(2,8);
-
-                    if(temp.compare("position")==0){
-                        gameManager->updatePlayerPosition(s);
-                    }
-                    sendMessage(gameManager->getEntitysJsonString());
+                        if(temp.compare("position")==0){
+                            gameManager->updatePlayerPosition(s);
+                            sendMessage(gameManager->getEntitysJsonString());
+                        }else if(strcmp(buffer, "getNextLevel") == 0){
+                            gameIsStarted = false;
+                            lvl = 4;
+                            sendMessage("readyToPlay");
+                        }
                 }
             }
         }
