@@ -20,7 +20,7 @@ private:
 
 public:
     //Atributos
-    static vector<Entity> *listOfEntitys;
+    static vector<Entity*> *listOfEntitys;
 
     //Constructor
     Entity(string pId, string pType, Position* pPosition);
@@ -36,7 +36,7 @@ public:
     void setPosition(int row, int column);
     static Entity* getEntityByID(string id);
     void setDirection(string pDirection);
-
+    string getDirection();
 
 };
 

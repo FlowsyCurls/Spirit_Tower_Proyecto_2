@@ -25,7 +25,7 @@ public:
     //Atributos
     static Cell* matriz[20][20];
     static int matrizStar[20][20];
-    vector<Entity> * listOfEntitys;
+    vector<Entity*> * listOfEntitys;
     static bool playerOnPersuit;
     static bool playerHasMoved;
     static queue<Position*>* queueBreadCrumbingPlayer;
@@ -43,7 +43,7 @@ public:
     //Setters and getters
     string getMatrizJson();
     void setMatrizJson(string pMatrizJson);
-    vector<Entity> * getListOfEntity();
+    vector<Entity*> * getListOfEntity();
 
 
     //toStrings y prints
