@@ -107,7 +107,7 @@ void Spectre::moveNext() {
                 routeCounter = 0;
                 //Algoritmo que haga que la persuitRoute tenga en el primer indice la posicion que debo moverme
 
-                
+
                 Position * p = Board::queueBreadCrumbingPlayer->front();
                 Board::queueBreadCrumbingPlayer->pop();
                 routeInUse->push_back(p);
