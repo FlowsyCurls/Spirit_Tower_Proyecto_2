@@ -105,6 +105,7 @@ void GameManager::parseJugadorJSON(json pJSON) {
     Position *position = new Position(pJSON["jugador"]["position"][0], pJSON["jugador"]["position"][1]);
     Jugador *jugador = new Jugador(id, type, position, 1);
 
+    matrizJSON["startPos"] = pJSON["jugador"]["position"];
 }
 /**
  * Crea una matriz string de los tipos de casillas predisenado
@@ -112,10 +113,8 @@ void GameManager::parseJugadorJSON(json pJSON) {
  */
 void GameManager::createMatrizJsonString(json pJSON) {
 
-    matrizJSONString = "{\"matriz\":";
-    matrizJSONString += pJSON["matriz"].dump();
-    matrizJSONString += "}";
-
+    matrizJSON["matriz"] = pJSON["matriz"];
+//    cout << matrizJSON.dump();
 }
 /**
  * Parsea la matriz desde el archivo json del mapa y ademas carga una matriz que se utilizara para el algoritmo a star
@@ -153,7 +152,7 @@ void GameManager::parseMatrizJSON(json pJSON) {
             }
 
             Cell* c = new Cell(i, e, id, cellType);
-            board.matriz[i][e] = c;
+            Board::matriz[i][e] = c;
         }
     }
 
@@ -353,7 +352,8 @@ void GameManager::updatePlayerPosition(string pJson) {
  * @return
  */
 string GameManager::getMatrizJsonString() {
-    return matrizJSONString;
+//    cout << "SALE:  " << matrizJSON.dump() << endl;
+    return matrizJSON.dump();
 }
 
 
@@ -388,6 +388,7 @@ int GameManager::getLifes() {
 }
 
 string GameManager::getEntitysJsonString() {
+//    cout << "SALE :  "<< entitysJSONString << endl;
     return entitysJSONString;
 }
 
