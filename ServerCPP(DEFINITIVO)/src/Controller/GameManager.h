@@ -31,7 +31,7 @@ private:
     int score;
     int lifes;
     bool isDead = false;
-    string matrizJSONString;
+    json matrizJSON;
     string entitysJSONString;
 
 
