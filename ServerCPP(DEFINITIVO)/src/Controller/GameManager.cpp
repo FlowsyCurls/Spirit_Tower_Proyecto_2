@@ -314,11 +314,8 @@ void GameManager::updatePlayerPosition(string pJson) {
         stringstream(pJson) >> jsonObj;
 
         //
-        if(jsonObj["playerLostLives"] >= 5){
+        if(jsonObj["lifes"] == 0){
             cout << "Mori xdxd" << endl;
-            Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity("");
-            e->setPosition(0, 0);
-            Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
             isDead = true;
         }else{
             //No se movio
