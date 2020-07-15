@@ -12,3 +12,11 @@ SimpleEnemy::SimpleEnemy(string pId, string pType, Position* pPosition) : Entity
 void SimpleEnemy::moveNext() {
 
 }
+
+Position *SimpleEnemy::getEntityPosition() {
+    return getPosition();
+}
+
+string SimpleEnemy::getEntityDirection() {
+    return getDirection();
+}

@@ -15,7 +15,6 @@
  */
 
 void GameManager::clearAll() {
-
     Entity::listOfEntitys->clear();
     for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
         //Spectre::listOfSpectres->at(i)->destroy = true;
@@ -29,25 +28,24 @@ void GameManager::clearAll() {
 
 void GameManager::initSpectresMovement() {
 
-    for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-
-        Spectre::listOfSpectres->at(i)->startMovement();
-
+    for(auto & spectre : *Spectre::listOfSpectres){
+        spectre->startMovement();
     }
 
 }
 /**
  * Hace un checkeo del rango de vision de los espectros para verificar si el jugador nse encuentra dentro
  */
-void GameManager::checkSpectresVision() {
+void GameManager::checkEntitiesVision() {
 
-    for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-
-        Spectre::listOfSpectres->at(i)->checkVisionRange();
-
+    for(auto & spectre : *Spectre::listOfSpectres){
+        spectre->checkVisionRange();
     }
-
+    for(auto & eye : *SpectralEye::listOfSpectralEyes){
+        eye->checkVisionRange();
+    }
 }
+
 /**
  * Carga los datos del nivel que se le pasa por parametro
  * @param pLevel
@@ -81,7 +79,7 @@ void GameManager::startGame() {
  */
 void GameManager::checkSpectresPlayerInteract() {
     if(!Board::playerOnPersuit){
-        checkSpectresVision();
+        checkEntitiesVision();
     }else{
         if(board->checkPlayerOfSafeZone()){
             Spectre::sendSignalToStopPersuit();
