@@ -38,6 +38,9 @@ private:
     int visionRange;
     int routeCounter = 0;
     bool isOnPersuit = false;
+
+
+private:
     SpectreType spectreType;
     bool useBreadcrumbing = false;
 
@@ -81,6 +84,7 @@ public:
     void setVisionRange(int pVisionRange);
     int getVisionRange();
     Spectre* getSpectreByID(string pId);
+    void setIsOnPersuit(bool pIsOnPersuit);
 
     //toString, prints, logs
     string toString();

@@ -314,7 +314,11 @@ string Spectre::toString() {
 }
 
 void Spectre::setNewDirection(string pDirection) {
-    setDirection(pDirection);
+    setDirection(std::move(pDirection));
+}
+
+void Spectre::setIsOnPersuit(bool pIsOnPersuit) {
+    Spectre::isOnPersuit = pIsOnPersuit;
 }
 
 

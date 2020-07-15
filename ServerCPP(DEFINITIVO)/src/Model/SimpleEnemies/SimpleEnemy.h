@@ -17,6 +17,8 @@ public:
 
     //Methods
     void moveNext();
+    Position* getEntityPosition();
+    string getEntityDirection();
 
 
 };

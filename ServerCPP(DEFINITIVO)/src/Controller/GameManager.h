@@ -56,7 +56,7 @@ private:
 
     //General methods
     void initSpectresMovement();
-    void checkSpectresVision();
+    void checkEntitiesVision();
     void updateGame();
     void checkSpectresPlayerInteract();
 
@@ -76,7 +76,7 @@ public:
     string getMatrizJsonString();
     string getEntitysJsonString();
     void updatePlayerPosition(string pJson);
-    void clearAll();
+    static void clearAll();
 
 };
 
