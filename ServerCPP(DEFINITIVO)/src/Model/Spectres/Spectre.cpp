@@ -104,7 +104,20 @@ void Spectre::moveNext() {
         if(isOnPersuit){
             sleep(persuitVelocity);
             if(useBreadcrumbing){//En caso de ser el espectro que vio al jugador usa breadcrumbing
-                
+
+                //Algoritmo que haga que la persuitRoute tenga en el primer indice la posicion que debo moverme
+
+
+
+                /*
+                routeInUse = persuitRoute;
+                updateDirection();
+                updateMatriz();
+                setPosition(routeInUse->at(routeCounter)->getRow(), routeInUse->at(routeCounter)->getColumn());
+                Board::updateMatrizStar();
+                routeCounter++;
+                 */
+
             }else{//Se usa A*
                 if(persuitRoute->size() == 0){
                     //Calcular A*
