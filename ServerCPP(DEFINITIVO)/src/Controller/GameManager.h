@@ -27,7 +27,7 @@ class GameManager {
 private:
 
     static GameManager* instance;
-    Board board;
+    Board * board;
     int score;
     int lifes;
     bool isDead = false;
@@ -61,15 +61,15 @@ private:
     void checkSpectresPlayerInteract();
 
 
+
 public:
 
     static GameManager* getInstance();
     void startGame();
     void loadGame(int pLevel);
 
-
     //Getters and setters
-    Board getBoard();
+    Board * getBoard();
     int getScore();
     int getLifes();
 

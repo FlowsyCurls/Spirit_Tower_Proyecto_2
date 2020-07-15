@@ -18,7 +18,6 @@ public:
     //Methods
     void moveNext();
 
-
 };
 
 

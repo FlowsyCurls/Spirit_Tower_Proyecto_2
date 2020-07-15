@@ -17,6 +17,13 @@
 void GameManager::clearAll() {
 
     Entity::listOfEntitys->clear();
+    for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+        //Spectre::listOfSpectres->at(i)->destroy = true;
+    }
+    Spectre::listOfSpectres->clear();
+    entitysJSONString = "";
+    //matrizJSON = "";
+    board = new Board();
 
 }
 
@@ -53,8 +60,8 @@ void GameManager::loadGame(int pLevel) {
     tmp<<file.rdbuf();
     string JSON = tmp.str();
     loadGameFromJSON(JSON);
-    board.printBoardCellType();
-    board.printBoardEntity();
+    board->printBoardCellType();
+    board->printBoardEntity();
     generateEntityLastStatusJSON();
 
 }
@@ -76,7 +83,7 @@ void GameManager::checkSpectresPlayerInteract() {
     if(!Board::playerOnPersuit){
         checkSpectresVision();
     }else{
-        if(board.checkPlayerOfSafeZone()){
+        if(board->checkPlayerOfSafeZone()){
             Spectre::sendSignalToStopPersuit();
         }
     }
@@ -86,7 +93,7 @@ void GameManager::checkSpectresPlayerInteract() {
  */
 void GameManager::updateGame() {
     while(1){
-        sleep(0.5);
+        sleep(0.4);
         generateEntityLastStatusJSON();
         checkSpectresPlayerInteract();
         //board.printBoardEntity();
@@ -282,6 +289,7 @@ void GameManager::generateEntityLastStatusJSON() {
         json j2;
         Position * position = new Position(Entity::listOfEntitys->at(i)->getPosition()->getRow(), Entity::listOfEntitys->at(i)->getPosition()->getColumn());
 
+
         j2["id"] =  Entity::listOfEntitys->at(i)->getId();
         j2["type"] =  Entity::listOfEntitys->at(i)->getType();
         j2["direction"] = Entity::listOfEntitys->at(i)->getDirection();
@@ -289,6 +297,7 @@ void GameManager::generateEntityLastStatusJSON() {
         j2["position"][0] = position->getRow();
         j2["position"][1] = position->getColumn();
         j["listOfEntitys"][i-1] = j2;
+
 
     }
     entitysJSONString = j.dump();
@@ -306,7 +315,6 @@ void GameManager::updatePlayerPosition(string pJson) {
 
         json jsonObj;
         stringstream(pJson) >> jsonObj;
-
         //
         if(jsonObj["lifes"] == 0){
             cout << "Mori xdxd" << endl;
@@ -315,7 +323,7 @@ void GameManager::updatePlayerPosition(string pJson) {
             //No se movio
             if(e->getPosition()->getRow() == jsonObj["position"][0] && e->getPosition()->getColumn() == jsonObj["position"][1]){
 
-                board.playerHasMoved = false;
+                board->playerHasMoved = false;
                 //cout << "El jugador no se movio" << endl;
 
 
@@ -325,7 +333,10 @@ void GameManager::updatePlayerPosition(string pJson) {
                 Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity("");
                 e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
                 Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
-                board.playerHasMoved = true;
+                board->playerHasMoved = true;
+                if(Board::playerOnPersuit){
+                    Board::queueBreadCrumbingPlayer->push(e->getPosition());
+                }
             }
         }
 
@@ -366,10 +377,10 @@ GameManager* GameManager::getInstance()
 
 GameManager::GameManager()
 {
-
+    board = new Board();
 }
 
-Board GameManager::getBoard() {
+Board * GameManager::getBoard() {
     return board;
 }
 

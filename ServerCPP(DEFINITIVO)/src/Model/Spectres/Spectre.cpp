@@ -104,19 +104,19 @@ void Spectre::moveNext() {
         if(isOnPersuit){
             sleep(persuitVelocity);
             if(useBreadcrumbing){//En caso de ser el espectro que vio al jugador usa breadcrumbing
-
+                routeCounter = 0;
                 //Algoritmo que haga que la persuitRoute tenga en el primer indice la posicion que debo moverme
 
-
-
-                /*
-                routeInUse = persuitRoute;
+                
+                Position * p = Board::queueBreadCrumbingPlayer->front();
+                Board::queueBreadCrumbingPlayer->pop();
+                routeInUse->push_back(p);
                 updateDirection();
                 updateMatriz();
-                setPosition(routeInUse->at(routeCounter)->getRow(), routeInUse->at(routeCounter)->getColumn());
-                Board::updateMatrizStar();
-                routeCounter++;
-                 */
+                setPosition(p->getRow(), p->getColumn());
+                routeInUse->clear();
+
+
 
             }else{//Se usa A*
                 if(persuitRoute->size() == 0){
@@ -221,6 +221,7 @@ void Spectre::sendSignalToPersuit() {
     }
     Board::playerOnPersuit = true;
     useBreadcrumbing = true;
+    Board::queueBreadCrumbingPlayer = new queue<Position*>();
     cout << "********************Se ha enviado una senal para de seguir al jugador********************" << endl;
 }
 /**

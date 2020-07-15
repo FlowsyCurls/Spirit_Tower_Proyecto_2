@@ -151,8 +151,8 @@ int main(int argc, char **argv){
 
                         gameManager->clearAll();
                         //Load game es para cargar el nivel
-                        gameManager->loadGame(lvl);
-                        gameManager->getBoard().printMatrizStar();
+                        gameManager->loadGame(1);
+                        gameManager->getBoard()->printMatrizStar();
 
                         sendMessage(gameManager->getMatrizJsonString());
 
