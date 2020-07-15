@@ -67,7 +67,7 @@ void Board::printBoardCellType() {
  * Retorna la lista de entidades
  * @return
  */
-vector<Entity*> *Board::getListOfEntity() {
+vector<Entity> *Board::getListOfEntity() {
     return listOfEntitys;
 }
 /**

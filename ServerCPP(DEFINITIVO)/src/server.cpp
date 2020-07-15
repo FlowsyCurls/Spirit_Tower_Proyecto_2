@@ -65,7 +65,7 @@ void sendMessage(string msg){
     strcpy(buffer,msg.c_str());
 
     ByteReceived = send( NewConnection, buffer, sizeof(buffer), 0 );
-    cout << "Se ha enviado un mensaje al cliente: " << msg <<endl;
+    cout << "Se ha enviado un mensaje al cliente: " << msg.substr(0,30) << "..." <<endl;
 
 }
 /**

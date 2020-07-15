@@ -7,11 +7,12 @@
 
 vector<Spectre*> *Spectre::listOfSpectres = new vector<Spectre*>();
 
-Spectre::Spectre(string pId, string pType, vector<Position*>* pPatrolRoute,  double pRouteVelocity,
+Spectre::Spectre(string pId, string pType, vector<Position*>* pPatrolRoute, string pDirection, double pRouteVelocity,
                  double pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType) : Entity(pId, pType, pPosition) {
 
     patrolRoute = pPatrolRoute;
     routeInUse = patrolRoute;
+    direction = pDirection;
     routeVelocity = pRouteVelocity;
     persuitVelocity = pPersuitVelocity;
     visionRange = pVisionRange;
@@ -57,7 +58,6 @@ void Spectre::updateMatriz() {
  * Cambia la direccion del espectro dependiendo de la posicion hacia la que se mueva
  */
 void Spectre::updateDirection() {
-
 
     //Con eje y
     if(routeInUse->at(routeCounter)->getRow() > getPosition()->getRow()){
@@ -168,7 +168,7 @@ void Spectre::printSpectre() {
 
     cout << "id: " << getId() << endl;
     cout << "type: " << getType() << endl;
-    cout << "direction: " << getDirection() << endl;
+    cout << "direction: " << direction << endl;
     cout << "routeVelocity: " << routeVelocity << endl;
     cout << "persuitVelocity: " << persuitVelocity << endl;
     cout << "visionRange: " << visionRange << endl;
@@ -233,7 +233,7 @@ void Spectre::checkVisionRange() {
         for(int i = 0; i < visionRange; i++){
 
             //North
-            if(getDirection() == "north"){
+            if(direction == "north"){
                 posTemp = getPosition()->getRow() - i;
                 posTemp--;
                 if(posTemp >= 0 && posTemp < 20 && Board::matriz[posTemp][getPosition()->getColumn()]->getEntity().compare("ju01") == 0){
@@ -242,7 +242,7 @@ void Spectre::checkVisionRange() {
                     break;
                 }
 
-            }else if(getDirection() == "south"){
+            }else if(direction == "south"){
                 posTemp = getPosition()->getRow() + i;
                 posTemp++;
                 if(posTemp >= 0 && posTemp < 20 && Board::matriz[posTemp][getPosition()->getColumn()]->getEntity().compare("ju01") == 0){
@@ -251,7 +251,7 @@ void Spectre::checkVisionRange() {
                     break;
                 }
 
-            }else if(getDirection() == "east"){
+            }else if(direction == "east"){
                 posTemp = getPosition()->getColumn() + i;
                 posTemp++;
                 if(posTemp >= 0 && posTemp < 20 && Board::matriz[getPosition()->getRow()][posTemp]->getEntity().compare("ju01") == 0){
@@ -260,7 +260,7 @@ void Spectre::checkVisionRange() {
                     break;
                 }
 
-            }else if(getDirection() == "west"){
+            }else if(direction == "west"){
                 posTemp = getPosition()->getColumn() - i;
                 posTemp--;
                 if(posTemp >= 0 && posTemp < 20 && Board::matriz[getPosition()->getRow()][posTemp]->getEntity().compare("ju01") == 0){
@@ -282,6 +282,14 @@ void Spectre::setPatrolRoute(vector<Position*> *pPatrolRoute) {
 
 vector<Position*>* Spectre::getPatrolRoute() {
     return patrolRoute;
+}
+
+void Spectre::setDirection(string pDirection) {
+    direction = pDirection;
+}
+
+string Spectre::getDirection() {
+    return direction;
 }
 
 void Spectre::setRouteVelocity(double pRouteVelocity) {
@@ -313,8 +321,10 @@ string Spectre::toString() {
     return "";
 }
 
-void Spectre::setNewDirection(string pDirection) {
-    setDirection(pDirection);
+string Spectre::getDireccion() {
+
+    return direction;
+
 }
 
 

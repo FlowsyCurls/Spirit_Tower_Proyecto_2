@@ -32,7 +32,7 @@ private:
     vector<Position*>* persuitRoute;
 
 
-    //string direction;
+    string direction;
     double routeVelocity;
     double persuitVelocity;
     int visionRange;
@@ -44,7 +44,7 @@ private:
 public:
 
     //Constructor
-    Spectre(string pId, string pType, vector<Position*>* pPatrolRoute, double pRouteVelocity,
+    Spectre(string pId, string pType, vector<Position*>* pPatrolRoute, string pDirection, double pRouteVelocity,
             double pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType);
 
     static vector<Spectre*> *listOfSpectres;
@@ -66,14 +66,12 @@ public:
     void paralizeCuzMouse();
     void calculateAStar();
 
-    void setNewDirection(string pDirection);
-
 
     //Setters and getters
     void setPatrolRoute(vector<Position*>* pPatrolRoute);
     vector<Position*>* getPatrolRoute();
-    //void setDirection(string pDirection);
-    //string getDirection();
+    void setDirection(string pDirection);
+    string getDirection();
     void setRouteVelocity(double pRouteVelocity);
     double getRouteVelocity();
     void setPersuitVelocity(double pPersuitVelocity);
@@ -81,6 +79,7 @@ public:
     void setVisionRange(int pVisionRange);
     int getVisionRange();
     Spectre* getSpectreByID(string pId);
+    string getDireccion();
 
     //toString, prints, logs
     string toString();
