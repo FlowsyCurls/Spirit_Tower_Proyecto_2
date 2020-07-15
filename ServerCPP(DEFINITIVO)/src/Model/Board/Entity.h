@@ -16,6 +16,7 @@ private:
      string id;
      string type;
      Position *position;
+     string direction;
 
 public:
     //Atributos
@@ -34,6 +35,8 @@ public:
     void setPosition(Position *pPosition);
     void setPosition(int row, int column);
     static Entity* getEntityByID(string id);
+    void setDirection(string pDirection);
+
 
 };
 

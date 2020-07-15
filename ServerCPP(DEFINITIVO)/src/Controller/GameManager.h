@@ -30,6 +30,7 @@ private:
     Board board;
     int score;
     int lifes;
+    bool isDead = false;
     string matrizJSONString;
     string entitysJSONString;
 

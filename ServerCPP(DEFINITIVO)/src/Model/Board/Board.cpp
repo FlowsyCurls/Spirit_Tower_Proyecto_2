@@ -8,6 +8,7 @@ Cell *Board::matriz[20][20] = {};
 int Board::matrizStar[20][20] = {};
 bool Board::playerOnPersuit = false;
 bool Board::playerHasMoved = false;
+queue<Position*>* Board::queueBreadCrumbingPlayer = new queue<Position*>();
 
 /**
  * Actualiza la matriz que se utiliza en el algoritmo a star

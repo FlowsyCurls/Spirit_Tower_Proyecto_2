@@ -151,7 +151,7 @@ int main(int argc, char **argv){
 
                         gameManager->clearAll();
                         //Load game es para cargar el nivel
-                        gameManager->loadGame(2);
+                        gameManager->loadGame(lvl);
                         gameManager->getBoard().printMatrizStar();
 
                         sendMessage(gameManager->getMatrizJsonString());
@@ -180,7 +180,7 @@ int main(int argc, char **argv){
                             sendMessage(gameManager->getEntitysJsonString());
                         }else if(strcmp(buffer, "getNextLevel") == 0){
                             gameIsStarted = false;
-                            lvl = 4;
+                            lvl++;
                             sendMessage("readyToPlay");
                         }
                 }

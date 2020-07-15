@@ -10,6 +10,7 @@
 #include "Entity.h"
 #include <iostream>
 #include <vector>
+#include <queue>
 
 using namespace std;
 
@@ -27,6 +28,8 @@ public:
     vector<Entity> * listOfEntitys;
     static bool playerOnPersuit;
     static bool playerHasMoved;
+    static queue<Position*>* queueBreadCrumbingPlayer;
+
     //Constructor
     Board();
 
