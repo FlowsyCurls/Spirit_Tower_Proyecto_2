@@ -5,7 +5,7 @@
 #include "Entity.h"
 #include "Board.h"
 
-vector<Entity> *Entity::listOfEntitys = new vector<Entity>();
+vector<Entity*> *Entity::listOfEntitys = new vector<Entity*>();
 
 string Entity::getId() {
     return id;
@@ -29,12 +29,14 @@ void Entity::setType(string pType) {
  * @param pPosition
  */
 Entity::Entity(string pId, string pType, Position* pPosition) : id(pId), type(pType), position(pPosition) {
-    listOfEntitys->push_back(*this);
+    listOfEntitys->push_back(this);
     Board::assignMatrizEntity(position, id);
+    direction = "";
 }
 
 Entity::Entity() {
-    listOfEntitys->push_back(*this);
+    listOfEntitys->push_back(this);
+    direction = "";
 }
 
 Position* Entity::getPosition() {
@@ -55,10 +57,20 @@ void Entity::setPosition(int row, int column) {
 Entity * Entity::getEntityByID(string id) {
 
     for(int i = 0; i <listOfEntitys->size(); i++){
-        if(listOfEntitys->at(i).getId().compare(id)==0){
-            return &listOfEntitys->at(i);
+        if(listOfEntitys->at(i)->getId().compare(id)==0){
+            return listOfEntitys->at(i);
         }
     }
 
     return nullptr;
+}
+
+void Entity::setDirection(string pDirection) {
+
+    direction = pDirection;
+
+}
+
+string Entity::getDirection() {
+    return direction;
 }

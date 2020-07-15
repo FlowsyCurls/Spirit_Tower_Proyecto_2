@@ -35,6 +35,7 @@ private:
     string entitysJSONString;
 
 
+
     //Constructor
     GameManager();
 

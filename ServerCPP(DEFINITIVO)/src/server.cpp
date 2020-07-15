@@ -65,7 +65,7 @@ void sendMessage(string msg){
     strcpy(buffer,msg.c_str());
 
     ByteReceived = send( NewConnection, buffer, sizeof(buffer), 0 );
-    cout << "Sent : " << msg.substr(0,30) << "..." <<endl;
+    cout << "Se ha enviado un mensaje al cliente: " << msg <<endl;
 
 }
 /**
@@ -83,8 +83,6 @@ void pruebaGameManager(){
 
     //gameManager->startGame(1);
     //gameManager->getBoard().printBoardBlocksType();
-//    gameManager->loadGame(4);
-//    gameManager->getMatrizJsonString();
 
 }
 
@@ -94,7 +92,7 @@ int main(int argc, char **argv){
 
     // Initialize Winsock
 
-//    pruebaGameManager();
+    //pruebaGameManager();
 
     //algoritmTests();
 
@@ -202,7 +200,7 @@ int main(int argc, char **argv){
  */
 void printBuffer(){
 
-    printf("Received: %s\n",buffer );
+    printf("Se ha recibido un mensaje del cliente: %s\n",buffer );
 
 }
 

@@ -88,7 +88,7 @@ void GameManager::updateGame() {
     while(1){
         sleep(0.5);
         generateEntityLastStatusJSON();
-        //checkSpectresPlayerInteract();
+        checkSpectresPlayerInteract();
         //board.printBoardEntity();
     }
 }
@@ -104,7 +104,6 @@ void GameManager::parseJugadorJSON(json pJSON) {
     string type = pJSON["jugador"]["type"];
     Position *position = new Position(pJSON["jugador"]["position"][0], pJSON["jugador"]["position"][1]);
     Jugador *jugador = new Jugador(id, type, position, 1);
-
     matrizJSON["startPos"] = pJSON["jugador"]["position"];
 }
 /**
@@ -114,7 +113,7 @@ void GameManager::parseJugadorJSON(json pJSON) {
 void GameManager::createMatrizJsonString(json pJSON) {
 
     matrizJSON["matriz"] = pJSON["matriz"];
-//    cout << matrizJSON.dump();
+
 }
 /**
  * Parsea la matriz desde el archivo json del mapa y ademas carga una matriz que se utilizara para el algoritmo a star
@@ -194,7 +193,8 @@ void GameManager::parseSpectresJSON(json pJSON) {
             Position *tmpPosition = new Position(pJSON["spectres"].at(i)["patrolRoute"].at(e)[0], pJSON["spectres"].at(i)["patrolRoute"].at(e)[1]);
             patrolRoute->push_back(tmpPosition);
         }
-        Spectre *spectre = new Spectre(id, type, patrolRoute, direction, routeVelocity, persuitVelocity, visionRange, position, spectreType);
+        Spectre *spectre = new Spectre(id, type, patrolRoute, routeVelocity, persuitVelocity, visionRange, position, spectreType);
+        spectre->setNewDirection(direction);
     }
 
 }
@@ -280,16 +280,11 @@ void GameManager::generateEntityLastStatusJSON() {
     for(int i = 1; i < Entity::listOfEntitys->size(); i++){
 
         json j2;
-        Position * position = new Position(Entity::listOfEntitys->at(i).getPosition()->getRow(), Entity::listOfEntitys->at(i).getPosition()->getColumn());
+        Position * position = new Position(Entity::listOfEntitys->at(i)->getPosition()->getRow(), Entity::listOfEntitys->at(i)->getPosition()->getColumn());
 
-        j2["id"] =  Entity::listOfEntitys->at(i).getId();
-        j2["type"] =  Entity::listOfEntitys->at(i).getType();
-
-
-
-        //j2["direction"] = Entity::listOfEntitys->at(i)
-
-
+        j2["id"] =  Entity::listOfEntitys->at(i)->getId();
+        j2["type"] =  Entity::listOfEntitys->at(i)->getType();
+        j2["direction"] = Entity::listOfEntitys->at(i)->getDirection();
         j2["position"] = {};
         j2["position"][0] = position->getRow();
         j2["position"][1] = position->getColumn();
@@ -352,7 +347,6 @@ void GameManager::updatePlayerPosition(string pJson) {
  * @return
  */
 string GameManager::getMatrizJsonString() {
-//    cout << "SALE:  " << matrizJSON.dump() << endl;
     return matrizJSON.dump();
 }
 
@@ -388,7 +382,6 @@ int GameManager::getLifes() {
 }
 
 string GameManager::getEntitysJsonString() {
-//    cout << "SALE :  "<< entitysJSONString << endl;
     return entitysJSONString;
 }
 
