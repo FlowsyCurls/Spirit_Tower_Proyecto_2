@@ -284,6 +284,11 @@ void GameManager::generateEntityLastStatusJSON() {
 
         j2["id"] =  Entity::listOfEntitys->at(i).getId();
         j2["type"] =  Entity::listOfEntitys->at(i).getType();
+
+
+        //j2["direction"] = Entity::listOfEntitys->at(i)
+        
+
         j2["position"] = {};
         j2["position"][0] = position->getRow();
         j2["position"][1] = position->getColumn();

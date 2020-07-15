@@ -308,5 +308,11 @@ string Spectre::toString() {
     return "";
 }
 
+string Spectre::getDireccion() {
+
+    return direction;
+
+}
+
 
 

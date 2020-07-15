@@ -150,7 +150,8 @@ int main(int argc, char **argv){
                     if(strcmp(buffer, "play") == 0){
 
                         gameManager->clearAll();
-                        gameManager->loadGame(lvl);
+                        //Load game es para cargar el nivel
+                        gameManager->loadGame(2);
                         gameManager->getBoard().printMatrizStar();
 
                         sendMessage(gameManager->getMatrizJsonString());
