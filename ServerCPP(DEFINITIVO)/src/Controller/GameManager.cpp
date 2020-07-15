@@ -88,7 +88,7 @@ void GameManager::updateGame() {
     while(1){
         sleep(0.5);
         generateEntityLastStatusJSON();
-        checkSpectresPlayerInteract();
+        //checkSpectresPlayerInteract();
         //board.printBoardEntity();
     }
 }
