@@ -20,9 +20,9 @@ void GameManager::clearAll() {
         //Spectre::listOfSpectres->at(i)->destroy = true;
     }
     Spectre::listOfSpectres->clear();
-    entitysJSONString = "";
+    //entitysJSONString = "";
     //matrizJSON = "";
-    board = new Board();
+    //board = new Board();
 
 }
 
