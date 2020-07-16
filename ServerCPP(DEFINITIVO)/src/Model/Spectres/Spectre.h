@@ -38,6 +38,7 @@ private:
     int visionRange;
     int routeCounter = 0;
     bool isOnPersuit = false;
+    bool teleport = false;
 
 
 private:
@@ -85,10 +86,13 @@ public:
     int getVisionRange();
     Spectre* getSpectreByID(string pId);
     void setIsOnPersuit(bool pIsOnPersuit);
+    void setTeleport(bool pTeleport);
+
 
     //toString, prints, logs
     string toString();
     void printSpectre();
+    string getSpectreId();
 
 };
 

@@ -20,17 +20,30 @@ void GameManager::clearAll() {
         //Spectre::listOfSpectres->at(i)->destroy = true;
     }
     Spectre::listOfSpectres->clear();
+    SpectralEye::listOfSpectralEyes->clear();
+    Mouse::listOfMice->clear();
+
     //entitysJSONString = "";
     //matrizJSON = "";
     //board = new Board();
 
 }
 
-void GameManager::initSpectresMovement() {
+void GameManager::initEntitiesMovement() {
 
     for(auto & spectre : *Spectre::listOfSpectres){
         spectre->startMovement();
     }
+
+    for(auto & mouse : *Mouse::listOfMice){
+        mouse->startMovement();
+    }
+
+//    for(auto & eye : *SpectralEye::listOfSpectralEyes){
+//        eye->startCheckingVisionRange();
+//    }
+
+
 
 }
 /**
@@ -51,7 +64,6 @@ void GameManager::checkEntitiesVision() {
  * @param pLevel
  */
 void GameManager::loadGame(int pLevel) {
-
     cout << "Iniciando carga del nivel: " << pLevel << endl;
     ifstream file("..\\src\\resources\\maps\\level_0" + to_string(pLevel) + "\\level0" + to_string(pLevel) +".json");
     ostringstream tmp;
@@ -60,8 +72,8 @@ void GameManager::loadGame(int pLevel) {
     loadGameFromJSON(JSON);
     board->printBoardCellType();
     board->printBoardEntity();
+    SpectralEye::setGraphForAll();
     generateEntityLastStatusJSON();
-
 }
 /**
  * Inicia el juego cargando los datos que se encuentran en el json del nivel
@@ -70,7 +82,7 @@ void GameManager::loadGame(int pLevel) {
 void GameManager::startGame() {
     score = 0;
     lifes = 5;
-    initSpectresMovement();
+    initEntitiesMovement();
     thread(&GameManager::updateGame, this).detach();
 }
 /**
@@ -240,15 +252,23 @@ void GameManager::parseSimpleEnemiesJSON(json pJSON) {
 
         string id = pJSON["simpleEnemies"].at(i)["id"];
         string type = pJSON["simpleEnemies"].at(i)["type"];
-        Position *position = new Position(pJSON["simpleEnemies"].at(i)["position"][0], pJSON["simpleEnemies"].at(i)["position"][1]);
-        if(type.compare("spectralEye") == 0){
+        auto *position = new Position(pJSON["simpleEnemies"].at(i)["position"][0], pJSON["simpleEnemies"].at(i)["position"][1]);
 
+        // EYE
+        if(type == "spectralEye")
+        {
             int visionRange = pJSON["simpleEnemies"].at(i)["visionRange"];
-            SpectralEye *spectralEye = new SpectralEye(id, type, visionRange, position);
+            auto* eye = new SpectralEye(id, type, visionRange, position);
+        }
 
-        }else if(type.compare("chuchu") == 0){
+
+
+
+
+
+        else if(type == "chuchu"){
                 Chuchu *chuchu = new Chuchu(id, type, position);
-        }else if(type.compare("mouse") == 0){
+        }else if(type == "mouse"){
             Mouse *mouse = new Mouse(id, type, position);
         }
     }

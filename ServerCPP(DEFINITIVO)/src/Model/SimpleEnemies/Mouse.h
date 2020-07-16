@@ -7,17 +7,20 @@
 
 
 #include "SimpleEnemy.h"
+#include <thread>
 
 class Mouse: SimpleEnemy {
 
 
 public:
+    static vector<Mouse*> *listOfMice;
+
     //Constructor
     Mouse(string pId, string pType, Position* pPosition);
 
     //Methods
+    void startMovement();
     void moveRandomly();
-
 
 };
 

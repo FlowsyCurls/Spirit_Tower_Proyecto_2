@@ -55,7 +55,7 @@ private:
 
 
     //General methods
-    void initSpectresMovement();
+    void initEntitiesMovement();
     void checkEntitiesVision();
     void updateGame();
     void checkSpectresPlayerInteract();

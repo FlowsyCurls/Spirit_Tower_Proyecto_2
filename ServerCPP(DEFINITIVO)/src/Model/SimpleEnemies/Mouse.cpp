@@ -4,8 +4,25 @@
 
 #include "Mouse.h"
 
-void Mouse::moveRandomly() {
+#include <utility>
 
+
+vector<Mouse*> *Mouse::listOfMice = new vector<Mouse*>();
+
+
+
+/**
+ * Start thread for the mouse movement.
+ */
+void Mouse::startMovement() {
+    thread(&Mouse::moveRandomly, this).detach();
 }
 
-Mouse::Mouse(string pId, string pType, Position* pPosition) : SimpleEnemy(pId, pType, pPosition) {}
+void Mouse::moveRandomly() {
+    while(true){
+
+    }
+}
+
+
+Mouse::Mouse(string pId, string pType, Position* pPosition) : SimpleEnemy(std::move(pId), std::move(pType), pPosition) {}

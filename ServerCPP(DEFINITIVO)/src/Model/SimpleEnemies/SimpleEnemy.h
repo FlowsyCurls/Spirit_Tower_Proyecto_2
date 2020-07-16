@@ -12,14 +12,11 @@ class SimpleEnemy: Entity {
 
 public:
     //Constructor
-    SimpleEnemy(string pId, string pType, Position *pPosition);
+    SimpleEnemy(const string &pId, const string &pType, Position *pPosition);
 
-
-    //Methods
-    void moveNext();
+//Methods
     Position* getEntityPosition();
-    string getEntityDirection();
-
+    string getEntityId();
 };
 
 

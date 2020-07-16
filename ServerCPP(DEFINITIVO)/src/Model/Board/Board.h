@@ -20,7 +20,6 @@ private:
 
     string matrizJSON;
 
-
 public:
     //Atributos
     static Cell* matriz[20][20];
@@ -38,6 +37,8 @@ public:
     static void assignMatrizEntity(Position * pPosition, string pEntityID);
     bool checkPlayerOfSafeZone();
     static void updateMatrizStar();
+    static bool isBlocked(int row, int col);
+
 
 
     //Setters and getters

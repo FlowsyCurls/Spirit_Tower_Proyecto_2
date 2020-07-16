@@ -140,3 +140,7 @@ void Board::setMatrizJson(string pMatrizJson) {
 Board::Board() {
     listOfEntitys = Entity::listOfEntitys;
 }
+
+bool Board::isBlocked(int row, int col) {
+    return matriz[row][col]->getCellType() != NORMAL;
+}

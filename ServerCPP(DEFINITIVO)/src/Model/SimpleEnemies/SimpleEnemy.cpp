@@ -4,12 +4,9 @@
 
 #include "SimpleEnemy.h"
 
-SimpleEnemy::SimpleEnemy(string pId, string pType, Position* pPosition) : Entity(pId, pType, pPosition) {
-
-
-}
-
-void SimpleEnemy::moveNext() {
+SimpleEnemy::SimpleEnemy(const string& pId, const string& pType, Position *pPosition)
+: Entity(pId, pType, pPosition)
+{
 
 }
 
@@ -17,6 +14,6 @@ Position *SimpleEnemy::getEntityPosition() {
     return getPosition();
 }
 
-string SimpleEnemy::getEntityDirection() {
-    return getDirection();
+string SimpleEnemy::getEntityId() {
+    return getId();
 }
