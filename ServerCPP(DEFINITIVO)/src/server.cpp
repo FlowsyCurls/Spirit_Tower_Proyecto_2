@@ -180,6 +180,7 @@ int main(int argc, char **argv){
                             sendMessage(gameManager->getEntitysJsonString());
                         }else if(strcmp(buffer, "getNextLevel") == 0){
                             gameIsStarted = false;
+                            gameManager->pause = true;
                             lvl++;
                             sendMessage("readyToPlay");
                         }

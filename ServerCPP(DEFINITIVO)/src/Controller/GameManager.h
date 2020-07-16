@@ -30,6 +30,7 @@ private:
     json matrizJSON;
     string entitysJSONString;
 
+
     //Constructor
     GameManager();
 
@@ -55,6 +56,8 @@ private:
 
 public:
     //StartUp Methods
+    bool pause = false;
+
     void startGame();
     void loadGame(int pLevel);
 
@@ -66,7 +69,7 @@ public:
     string getMatrizJsonString();
     string getEntitysJsonString();
     void updatePlayerPosition(const string& pJson);
-    static void clearAll();
+    void clearAll();
 
 
 };

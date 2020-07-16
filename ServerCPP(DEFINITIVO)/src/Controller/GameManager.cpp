@@ -85,6 +85,7 @@ void GameManager::loadGame(int pLevel) {
     Board::printBoardEntity();
     GameManager::setGraphs();
     generateEntityLastStatusJSON();
+    pause = false;
 }
 /**
  * Static method for calling the simple enemies graph setter.
@@ -92,9 +93,11 @@ void GameManager::loadGame(int pLevel) {
 void GameManager::setGraphs()
 {
 //    SimpleEnemy::setGlobalGraph();
+/*
     for(auto & eye : *SpectralEye::listOfSpectralEyes){
         eye->setEyeGraph();
     }
+    */
 }
 
 /**
@@ -112,12 +115,16 @@ void GameManager::startGame() {
  * Actualiza el juego cada 0.5 segundos, este es el thread principal del juego
  */
 void GameManager::updateGame() {
-    while(true){
+
+
+    while(!pause){
         sleep(updateLapse);
         generateEntityLastStatusJSON();
         checkSpectresPlayerInteract();
         //board.printBoardEntity();
     }
+
+
 }
 
 /**
@@ -141,9 +148,11 @@ void GameManager::initialEntitiesFunctions() {
     for(auto & spectre : *Spectre::listOfSpectres){
         spectre->startMovement();
     }
+    /*
     for(auto & simple : *SimpleEnemy::listOfSimpleEnemies){
         simple->startMovement();
     }
+     */
 }
 
 /**
@@ -153,9 +162,11 @@ void GameManager::checkEntitiesVision() {
     for(auto & spectre : *Spectre::listOfSpectres){
         spectre->checkVisionRange();
     }
+    /*
     for(auto & eye : *SpectralEye::listOfSpectralEyes){
         eye->checkVisionRange();
     }
+    */
 }
 
 /**
@@ -342,17 +353,21 @@ void GameManager::generateEntityLastStatusJSON() {
     j["isDead"] = isDead;
     //cout << "SEPARATOR" << endl << endl;
 
-    for(int i = 1; i < Entity::listOfEntitys->size(); i++){
-        json j2;
-        auto * position = new Position(Entity::listOfEntitys->at(i)->getPosition()->getRow(), Entity::listOfEntitys->at(i)->getPosition()->getColumn());
-        j2["id"] =  Entity::listOfEntitys->at(i)->getId();
-        j2["type"] =  Entity::listOfEntitys->at(i)->getType();
-        j2["direction"] = Entity::listOfEntitys->at(i)->getDirection();
-        j2["position"] = {};
-        j2["position"][0] = position->getRow();
-        j2["position"][1] = position->getColumn();
-        j["listOfEntitys"][i-1] = j2;
+    if(!Entity::listOfEntitys->empty()){
+        for(int i = 1; i < Entity::listOfEntitys->size(); i++){
+            json j2;
+            auto * position = new Position(Entity::listOfEntitys->at(i)->getPosition()->getRow(), Entity::listOfEntitys->at(i)->getPosition()->getColumn());
+            j2["id"] =  Entity::listOfEntitys->at(i)->getId();
+            j2["type"] =  Entity::listOfEntitys->at(i)->getType();
+            j2["direction"] = Entity::listOfEntitys->at(i)->getDirection();
+            j2["position"] = {};
+            j2["position"][0] = position->getRow();
+            j2["position"][1] = position->getColumn();
+            j["listOfEntitys"][i-1] = j2;
+        }
     }
+
+
     entitysJSONString = j.dump();
     isDead = false;
 }
