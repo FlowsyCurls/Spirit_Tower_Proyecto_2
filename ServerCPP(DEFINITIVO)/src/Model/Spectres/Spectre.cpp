@@ -100,10 +100,10 @@ void Spectre::calculateAStar() {
  */
 void Spectre::moveNext() {
 
-    while(1){
+    while(true){
 
         if(isOnPersuit){
-            sleep(persuitVelocity);
+            sleep((int)persuitVelocity);
             if(useBreadcrumbing){//En caso de ser el espectro que vio al jugador usa breadcrumbing
                 routeCounter = 0;
                 //Algoritmo que haga que la persuitRoute tenga en el primer indice la posicion que debo moverme
@@ -119,58 +119,36 @@ void Spectre::moveNext() {
 
 
 
-            }else {
-                // si es el espectro que debe teletransportarse.
+            }else  {
+                // if it is the spectrum to be teleported.
                 if (teleport) {
-                    // obtener la posicion de donde teletransportarse
-                    auto* position = SpectralEye::getWhereToTeleport();
-
-                    // teletrasportarse
-                    this->setPosition(position);
-                    Board::assignMatrizEntity(position, this->getId());
-
-                    //---------
-                    //Se usa A*
-                    if (persuitRoute->size() == 0) {
-                        //Calcular A*
-                        calculateAStar();
-
-                    } else {
-                        if (Board::playerHasMoved) {
-                            //Calcular A*
-                            calculateAStar();
-                            //Este condicional permite al espectro moverse incluso cuando el jugador se esta moviendo
-                            if (routeInUse->size() > 0 && getPosition()->compare(routeInUse->at(0))) {
-                                routeCounter++;
-                            }
-                        }
-                    }
+                    cout << "=============== TELEPORT ===============" << endl;
+                    this->setPosition(SpectralEye::getWhereToTeleport());
+                    Board::assignMatrizEntity(SpectralEye::getWhereToTeleport(), this->getId());
+                    cout << ">>  TELEPORT ACTIVE << " << SpectralEye::getWhereToTeleport()->getRow() << " "
+                         << SpectralEye::getWhereToTeleport()->getColumn() << endl;
                 }
-                // si es el espectro que debe teletransportarse.
-                else{
-                    //Se usa A*
-                    if (persuitRoute->size() == 0) {
+
+                //Se usa A*
+                if(persuitRoute->empty()){
+                    //Calcular A*
+                    calculateAStar();
+
+                }else{
+                    if(Board::playerHasMoved){
                         //Calcular A*
                         calculateAStar();
-
-                    } else {
-                        if (Board::playerHasMoved) {
-                            //Calcular A*
-                            calculateAStar();
-                            //Este condicional permite al espectro moverse incluso cuando el jugador se esta moviendo
-                            if (routeInUse->size() > 0 && getPosition()->compare(routeInUse->at(0))) {
-                                routeCounter++;
-                            }
+                        //Este condicional permite al espectro moverse incluso cuando el jugador se esta moviendo
+                        if(!routeInUse->empty() && getPosition()->compare(routeInUse->at(0))){
+                            routeCounter++;
                         }
                     }
                 }
             }
         }else{
-            sleep(routeVelocity);
+            sleep((int)routeVelocity);
             routeInUse = patrolRoute;
-
         }
-        teleport = false;
         if(routeCounter != routeInUse->size()) {
 
             updateDirection();
@@ -185,15 +163,31 @@ void Spectre::moveNext() {
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Empieza el thread del movimiento del espectro
  */
 void Spectre::startMovement() {
-
     thread(&Spectre::moveNext, this).detach();
     thread(&Spectre::checkVisionRange, this).detach();
-
 }
+
 /**
  * Imprime la informacion del espectro
  */
@@ -206,9 +200,9 @@ void Spectre::printSpectre() {
     cout << "persuitVelocity: " << persuitVelocity << endl;
     cout << "visionRange: " << visionRange << endl;
     cout << "patrolRoute: " << endl;
-    for(int i = 0; i < patrolRoute->size(); i++){
+    for(auto & step : *patrolRoute){
 
-        patrolRoute->at(i)->printPosition();
+        step->printPosition();
         cout << ", ";
 
     }
@@ -221,9 +215,9 @@ void Spectre::printSpectre() {
  * @return
  */
 Spectre *Spectre::getSpectreByID(string pId) {
-    for(int i = 0; i < listOfSpectres->size(); i++){
-        if(listOfSpectres->at(i)->getId().compare(pId)==0){
-            return listOfSpectres->at(i);
+    for(auto & spectre : *listOfSpectres){
+        if(spectre->getId()==pId){
+            return spectre;
         }
     }
     return nullptr;
@@ -232,11 +226,11 @@ Spectre *Spectre::getSpectreByID(string pId) {
  * Envia una senal a todos los espectros para que dejen la persecucion
  */
 void Spectre::sendSignalToStopPersuit() {
-    for(int i = 0; i < listOfSpectres->size();i++){
+    for(auto & spectre : *listOfSpectres){
 
-        listOfSpectres->at(i)->isOnPersuit = false;
-        listOfSpectres->at(i)->useBreadcrumbing = false;
-        listOfSpectres->at(i)->persuitRoute->clear();
+        spectre->isOnPersuit = false;
+        spectre->useBreadcrumbing = false;
+        spectre->persuitRoute->clear();
 
     }
     Board::playerOnPersuit = false;
@@ -373,4 +367,8 @@ void Spectre::setTeleport(bool pTeleport) {
 
 string Spectre::getSpectreId() {
     return getId();
+}
+
+string Spectre::getSpectreType() {
+    return getType();
 }

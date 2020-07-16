@@ -18,65 +18,56 @@
 using json = nlohmann::json;
 using namespace std;
 
-
-
 class GameManager {
 
-
-
 private:
-
+    const unsigned int updateLapse = static_cast<unsigned int>(0.4);
     static GameManager* instance;
     Board * board;
-    int score;
-    int lifes;
+    int score = 0;
+    int lifes = 5;
     bool isDead = false;
     json matrizJSON;
     string entitysJSONString;
-
-
 
     //Constructor
     GameManager();
 
     //Methods parsing from JSON to memory
-    void loadGameFromJSON(string pJSON);
+    void loadGameFromJSON(const string& pJSON);
     void parseMatrizJSON(json pJSON);
-    void parseSpectresJSON(json pJSON);
-    void parseObjectsJSON(json pJSON);
+    static void parseSpectresJSON(json pJSON);
+    static void parseObjectsJSON(json pJSON);
     void parseJugadorJSON(json pJSON);
-    void parseSimpleEnemiesJSON(json pJSON);
-
-
+    static void parseSimpleEnemiesJSON(json pJSON);
 
     //Methods parsing from memory to JSON
     void createMatrizJsonString(json pJSON);
     void generateEntityLastStatusJSON();
 
-
     //General methods
-    void initEntitiesMovement();
-    void checkEntitiesVision();
+    static void setGraphs();
+    static void initialEntitiesFunctions();
+    static void checkEntitiesVision();
     void updateGame();
-    void checkSpectresPlayerInteract();
-
+    static void checkSpectresPlayerInteract();
 
 
 public:
-
-    static GameManager* getInstance();
+    //StartUp Methods
     void startGame();
     void loadGame(int pLevel);
 
     //Getters and setters
+    static GameManager* getInstance();
     Board * getBoard();
-    int getScore();
-    int getLifes();
-
+    int getScore() const;
+    int getLifes() const;
     string getMatrizJsonString();
     string getEntitysJsonString();
-    void updatePlayerPosition(string pJson);
+    void updatePlayerPosition(const string& pJson);
     static void clearAll();
+
 
 };
 

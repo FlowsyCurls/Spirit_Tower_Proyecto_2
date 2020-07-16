@@ -27,7 +27,7 @@
   },
   "spectres":[
     {"id":"sp01",
-    "type":"spectre_gray",
+    "type":"spectre_blue",
     "position":[17,19],
     "direction": "west",
     "routeVelocity": 1.5,
@@ -125,11 +125,16 @@
     {
       "id": "se01",
       "type": "spectralEye",
-      "visionRange": 1,
+      "visionRange": 2,
       "position": [6,4],
       "direction": "east"
     },
-        {
+    {
+      "id": "mo01",
+      "type": "mouse",
+      "position": [9,7]
+    },
+    {
       "id": "ch01",
       "type": "chuchu",
       "position": [5,10]
@@ -138,11 +143,6 @@
       "id": "ch02",
       "type": "chuchu",
       "position": [16,9]
-    },
-        {
-      "id": "mo01",
-      "type": "mouse",
-      "position": [9,7]
     }
     
     ]

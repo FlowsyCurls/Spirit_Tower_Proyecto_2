@@ -10,12 +10,22 @@
 
 class Chuchu: SimpleEnemy {
 
-public:
-    //Constructor
-    Chuchu(string pId, string pType, Position* pPosition);
+private:
+    //ATTRIBUTES
 
-    //Methods
+
+    //METHODS
+    void startMovement() override;
     void findPlayer();
+
+public:
+    //CONSTRUCTOR
+    Chuchu(const string &pId, const string &pType, Position* pPosition);
+
+    //ATTRIBUTES
+    static vector<Chuchu*> *listOfChuchus;
+
+
 
 };
 

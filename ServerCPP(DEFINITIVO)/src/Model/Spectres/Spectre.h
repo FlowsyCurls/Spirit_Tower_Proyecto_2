@@ -93,6 +93,7 @@ public:
     string toString();
     void printSpectre();
     string getSpectreId();
+    string getSpectreType();
 
 };
 

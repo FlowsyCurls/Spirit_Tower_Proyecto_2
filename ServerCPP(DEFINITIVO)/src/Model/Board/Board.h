@@ -17,13 +17,18 @@ using namespace std;
 class Board {
 
 private:
-
+    static const int rows = 20;
+    static const int columns = 20;
     string matrizJSON;
+public:
+    static int getRows();
 
 public:
+
+
     //Atributos
-    static Cell* matriz[20][20];
-    static int matrizStar[20][20];
+    static Cell* matriz[rows][columns];
+    static int matrizStar[rows][columns];
     vector<Entity*> * listOfEntitys;
     static bool playerOnPersuit;
     static bool playerHasMoved;
@@ -33,9 +38,9 @@ public:
     Board();
 
     //Methods
-    string parseBoardToJSON();
-    static void assignMatrizEntity(Position * pPosition, string pEntityID);
-    bool checkPlayerOfSafeZone();
+    static string parseBoardToJSON();
+    static void assignMatrizEntity(Position * pPosition, const string &pEntityID);
+    static bool checkPlayerOfSafeZone();
     static void updateMatrizStar();
     static bool isBlocked(int row, int col);
 
@@ -43,14 +48,16 @@ public:
 
     //Setters and getters
     string getMatrizJson();
-    void setMatrizJson(string pMatrizJson);
-    vector<Entity*> * getListOfEntity();
+    void setMatrizJson(const string &pMatrizJson);
+    vector<Entity*> * getListOfEntity() const;
 
 
     //toStrings y prints
-    void printBoardCellType();
+    static void printBoardCellType();
     static void printBoardEntity();
     static void printMatrizStar();
+
+    static int getColumns();
 
 };
 

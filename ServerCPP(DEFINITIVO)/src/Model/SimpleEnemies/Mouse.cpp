@@ -4,11 +4,21 @@
 
 #include "Mouse.h"
 
-#include <utility>
-
-
 vector<Mouse*> *Mouse::listOfMice = new vector<Mouse*>();
 
+Mouse::Mouse(const string &pId, const string &pType, Position* pPosition)
+: SimpleEnemy(pId, pType, pPosition)
+{
+    listOfMice->push_back(this);
+}
+
+/* ===============================  GETTERS  ========================================
+ * =============================== & SETTERS ======================================== */
+
+
+
+/* =============================== FUNCTION =======================================
+ * ===============================          ======================================= */
 
 
 /**
@@ -18,6 +28,9 @@ void Mouse::startMovement() {
     thread(&Mouse::moveRandomly, this).detach();
 }
 
+/**
+ * Get a random place to where to move.
+ */
 void Mouse::moveRandomly() {
     while(true){
 
@@ -25,4 +38,3 @@ void Mouse::moveRandomly() {
 }
 
 
-Mouse::Mouse(string pId, string pType, Position* pPosition) : SimpleEnemy(std::move(pId), std::move(pType), pPosition) {}

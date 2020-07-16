@@ -11,17 +11,17 @@
 
 class Mouse: SimpleEnemy {
 
-
-public:
-    static vector<Mouse*> *listOfMice;
-
-    //Constructor
-    Mouse(string pId, string pType, Position* pPosition);
-
-    //Methods
-    void startMovement();
+private:
+    //METHODS
+    void startMovement() override;
     void moveRandomly();
 
+public:
+    //CONSTRUCTOR
+    Mouse(const string &pId, const string &pType, Position* pPosition);
+
+    //ATTRIBUTES
+    static vector<Mouse*> *listOfMice;
 };
 
 
