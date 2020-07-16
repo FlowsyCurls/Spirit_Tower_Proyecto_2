@@ -7,8 +7,8 @@
 #include <string>
 #include "Position.h"
 #include <vector>
-using namespace std;
 
+using namespace std;
 class Entity {
 
 private:

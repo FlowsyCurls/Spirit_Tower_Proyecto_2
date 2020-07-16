@@ -5,31 +5,34 @@
 #ifndef SERVER_SPECTRALEYE_H
 #define SERVER_SPECTRALEYE_H
 
-#include <utility>
 
 #include "SimpleEnemy.h"
-#include "../Board/Board.h"
-#include "../Spectres/Spectre.h"
 
-class SpectralEye: SimpleEnemy {
+class SpectralEye: public SimpleEnemy {
 
 private:
-    int visionRange;
+    //ATTRIBUTES
+    int visionRange = 0;
+    static Position *tpSpot;
+
+    //METHODS
+    vector<int> *getStartPos();
+    void setEyeEdge();
+    void setWhereToTeleport();
+    void callSpectres();
 
 public:
+    SpectralEye(const string &pId, const string &pType, int pVisionRange, Position *pPosition);
+
+    //ATTRIBUTES
     static vector<SpectralEye*> *listOfSpectralEyes;
 
-    SpectralEye(string pId, string pType, int visionRange, Position* pPosition);
-
-    //Methods
+    //METHODS
+    void setEyeGraph();
     void checkVisionRange();
-    static void callSpectres();
 
-    //Setters and getters
-    void setVisionRange(int pVisionRange);
-    int getVisionRange() const;
-
+    //SETTER & GETTERS
+    static Position * getWhereToTeleport();
 };
-
 
 #endif //SERVER_SPECTRALEYE_H

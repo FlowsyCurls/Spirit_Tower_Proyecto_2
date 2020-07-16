@@ -19,9 +19,9 @@ void Board::updateMatrizStar() {
         for(int e = 0; e < 20; e++){
             if(matriz[i][e]->getCellType() == NORMAL ){
 
-                if(!matriz[i][e]->getEntity().compare("") == 0){
+                if(!matriz[i][e]->getEntity().empty()){
                     //cout << board.matriz[i][e]->getEntity().substr(0,2) << endl;
-                    if(matriz[i][e]->getEntity().compare("ju01") == 0 || matriz[i][e]->getEntity().substr(0,2).compare("sp") == 0){
+                    if(matriz[i][e]->getEntity() == "ju01" || matriz[i][e]->getEntity().substr(0,2) == "sp"){
                         matrizStar[i][e] = 1;
                     }
                 }else{
@@ -40,7 +40,7 @@ void Board::updateMatrizStar() {
  * @param pPosition
  * @param pEntityID
  */
-void Board::assignMatrizEntity(Position *pPosition, string pEntityID) {
+void Board::assignMatrizEntity(Position *pPosition, const string &pEntityID) {
 
     matriz[pPosition->getRow()][pPosition->getColumn()]->setEntity(pEntityID);
 
@@ -49,15 +49,10 @@ void Board::assignMatrizEntity(Position *pPosition, string pEntityID) {
  * Imprime la matriz mostrando el tipo de cada casilla
  */
 void Board::printBoardCellType() {
-
     cout << "Mostrando las celdas de la tabla" << endl;
-
-    for(int i = 0; i < 20; i++){
-
-        for(int e = 0; e < 20; e++){
-
-            cout << matriz[i][e]->getCellType() << " ";
-
+    for(auto & row : matriz){
+        for(auto & col : row){
+            cout << col->getCellType() << " ";
         }
         cout << endl;
     }
@@ -67,7 +62,7 @@ void Board::printBoardCellType() {
  * Retorna la lista de entidades
  * @return
  */
-vector<Entity*> *Board::getListOfEntity() {
+vector<Entity*> *Board::getListOfEntity() const {
     return listOfEntitys;
 }
 /**
@@ -77,14 +72,12 @@ void Board::printBoardEntity() {
 
     cout << "Mostrando las entidades de la tabla" << endl;
 
-    for(int i = 0; i < 20; i++){
-
-        for(int e = 0; e < 20; e++){
-
-            if(matriz[i][e]->getEntity().compare("") == 0){
+    for(auto & row : matriz){
+        for(auto & col : row){
+            if(col->getEntity().empty()){
                 cout << "0    ";
             }else{
-                cout << matriz[i][e]->getEntity() << " ";
+                cout << col->getEntity() << " ";
             }
         }
         cout << endl;
@@ -98,10 +91,10 @@ void Board::printMatrizStar() {
 
     cout << "Printing matriz star:" << endl;
 
-    for(int i = 0; i < 20; i++){
+    for(auto & row : matrizStar){
         cout << "[";
-        for(int e = 0; e < 20; e++){
-            cout << matrizStar[i][e] << ",";
+        for(int col : row){
+            cout << col << ",";
         }
         cout <<"]" << endl;
     }
@@ -133,10 +126,22 @@ string Board::getMatrizJson(){
     return matrizJSON;
 }
 
-void Board::setMatrizJson(string pMatrizJson) {
+void Board::setMatrizJson(const string &pMatrizJson) {
     matrizJSON = pMatrizJson;
 }
 
 Board::Board() {
     listOfEntitys = Entity::listOfEntitys;
+}
+
+bool Board::isBlocked(int row, int col) {
+    return matriz[row][col]->getCellType() != NORMAL;
+}
+
+int Board::getRows() {
+    return rows;
+}
+
+int Board::getColumns() {
+    return columns;
 }
