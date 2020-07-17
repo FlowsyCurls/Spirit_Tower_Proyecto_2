@@ -135,7 +135,7 @@ void Spectre::moveNext() {
  */
 void Spectre::startMovement() {
     thread(&Spectre::moveNext, this).detach();
-    thread(&Spectre::checkVisionRange, this).detach();
+    //thread(&Spectre::checkVisionRange, this).detach();
 }
 
 /**
