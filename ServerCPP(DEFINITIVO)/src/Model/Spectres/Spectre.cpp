@@ -62,18 +62,14 @@ void Spectre::updateDirection(Position * pPosition) {
     //Con eje y
     if(pPosition->getRow() > getPosition()->getRow()){
         setDirection("south");
-    }else{
-        if(pPosition->getRow() < getPosition()->getRow()){
-            setDirection("north");
-        }
     }
-    //Con eje x
-    if(pPosition->getColumn() > getPosition()->getColumn()){
+    else if(pPosition->getRow() < getPosition()->getRow()){
+        setDirection("north");
+    }else if(pPosition->getColumn() > getPosition()->getColumn()){
         setDirection("east");
-    }else{
-        if(pPosition->getColumn() < getPosition()->getColumn()){
-            setDirection("west");
-        }
+    }
+    else if(pPosition->getColumn() < getPosition()->getColumn()){
+        setDirection("west");
     }
 
 }
@@ -139,7 +135,7 @@ void Spectre::moveNext() {
  */
 void Spectre::startMovement() {
     thread(&Spectre::moveNext, this).detach();
-    //thread(&Spectre::checkVisionRange, this).detach();
+    thread(&Spectre::checkVisionRange, this).detach();
 }
 
 /**
