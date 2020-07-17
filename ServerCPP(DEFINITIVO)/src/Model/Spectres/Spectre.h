@@ -30,7 +30,7 @@ private:
     vector<Position*>* patrolRoute;
     vector<Position*>* routeInUse;
     vector<Position*>* persuitRoute;
-
+    queue<Position*>* queueBackTracking;
 
     //string direction;
     double routeVelocity;

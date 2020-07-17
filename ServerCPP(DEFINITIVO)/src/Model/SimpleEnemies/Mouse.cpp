@@ -76,6 +76,7 @@ void Mouse::moveRandomly() {
         }
         Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()]->setEntity("");
         setEntityPosition(nextPos);
+        Board::matriz[nextPos->getRow()][nextPos->getColumn()]->setEntity(getEntityId());
 
     }
 }

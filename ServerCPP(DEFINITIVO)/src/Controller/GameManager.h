@@ -52,6 +52,7 @@ private:
     static void checkEntitiesVision();
     void updateGame();
     static void checkSpectresPlayerInteract();
+    void threadVision();
 
 
 public:

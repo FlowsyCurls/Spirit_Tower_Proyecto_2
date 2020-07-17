@@ -109,6 +109,7 @@ void GameManager::startGame() {
     lifes = 5;
     initialEntitiesFunctions();
     thread(&GameManager::updateGame, this).detach();
+    thread(&GameManager::threadVision, this).detach();
 }
 
 /**
@@ -120,12 +121,22 @@ void GameManager::updateGame() {
     while(!pause){
         sleep(updateLapse);
         generateEntityLastStatusJSON();
-        checkSpectresPlayerInteract();
+
         //board.printBoardEntity();
     }
 
 
 }
+
+void GameManager::threadVision() {
+    while(true){
+        sleep(0.2);
+        checkSpectresPlayerInteract();
+    }
+
+
+}
+
 
 /**
  * Da comienzo al movimiento de los espectros (threads)
@@ -421,3 +432,4 @@ void GameManager::updatePlayerPosition(const string& pJson) {
         }
     }
 }
+
