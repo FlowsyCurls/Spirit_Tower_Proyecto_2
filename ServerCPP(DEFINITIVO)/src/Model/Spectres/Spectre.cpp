@@ -217,7 +217,7 @@ void Spectre::checkVisionRange() {
 
             //North
             if(getDirection() == "north"){
-                posTemp = getPosition()->getRow() - i;
+                posTemp = getPosition()->getRow();
                 posTemp--;
                 if (Board::isBlocked(posTemp,getPosition()->getColumn())){
                     break;
@@ -230,10 +230,8 @@ void Spectre::checkVisionRange() {
                     //cout << getId() << " paralized because saw the mouse "<< Board::matriz[getPosition()->getRow()][posTemp]->getEntity() << endl;
                     paralize = true;
                 }
-
-
             }else if(getDirection() == "south"){
-                posTemp = getPosition()->getRow() + i;
+                posTemp = getPosition()->getRow();
                 posTemp++;
                 if (Board::isBlocked(posTemp,getPosition()->getColumn())){
                     break;
@@ -248,7 +246,7 @@ void Spectre::checkVisionRange() {
                 }
 
             }else if(getDirection() == "east"){
-                posTemp = getPosition()->getColumn() + i;
+                posTemp = getPosition()->getColumn();
                 posTemp++;
                 if (Board::isBlocked(getPosition()->getRow(),posTemp)){
                     break;
@@ -263,7 +261,7 @@ void Spectre::checkVisionRange() {
                 }
 
             }else if(getDirection() == "west"){
-                posTemp = getPosition()->getColumn() - i;
+                posTemp = getPosition()->getColumn();
                 posTemp--;
                 if (Board::isBlocked(getPosition()->getRow(),posTemp)){
                     break;
