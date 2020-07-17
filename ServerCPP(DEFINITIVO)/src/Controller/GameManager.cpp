@@ -119,7 +119,7 @@ void GameManager::updateGame() {
 
 
     while(!pause){
-        sleep(0.5);
+        this_thread::sleep_for(chrono::milliseconds(500));
         generateEntityLastStatusJSON();
         //checkSafeZone();
     }

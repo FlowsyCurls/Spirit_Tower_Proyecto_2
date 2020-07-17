@@ -65,7 +65,7 @@ void sendMessage(string msg){
     strcpy(buffer,msg.c_str());
 
     ByteReceived = send( NewConnection, buffer, sizeof(buffer), 0 );
-    cout << "Se ha enviado un mensaje al cliente: " << msg <<endl;
+    //cout << "Se ha enviado un mensaje al cliente: " << msg <<endl;
 
 }
 /**
@@ -73,9 +73,9 @@ void sendMessage(string msg){
  */
 void receiveMessage(){
 
-    cout << "En espera de un mensaje del cliente..." << endl;
+    //cout << "En espera de un mensaje del cliente..." << endl;
     ByteReceived = recv(NewConnection, buffer, sizeof(buffer), 0);
-    printBuffer();
+    //printBuffer();
 
 }
 
