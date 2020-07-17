@@ -109,7 +109,7 @@ void GameManager::startGame() {
     lifes = 5;
     initialEntitiesFunctions();
     thread(&GameManager::updateGame, this).detach();
-    thread(&GameManager::threadVision, this).detach();
+    //thread(&GameManager::threadVision, this).detach();
 }
 
 /**
@@ -119,24 +119,31 @@ void GameManager::updateGame() {
 
 
     while(!pause){
-        sleep(updateLapse);
+        sleep(0.5);
         generateEntityLastStatusJSON();
-
-        //board.printBoardEntity();
+        //checkSafeZone();
     }
 
 
 }
 
-void GameManager::threadVision() {
-    while(!pause){
+void GameManager::checkSafeZone() {
+    if(Board::checkPlayerOfSafeZone()){
+        Spectre::sendSignalToStopPersuit();
+        for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+            Spectre::listOfSpectres->at(i)->backtracking = true;
+        }
 
-
-        sleep(0.2);
-        checkSpectresPlayerInteract();
     }
+}
+
+void GameManager::threadVision() {
+    //while(!pause){
 
 
+    //    sleep(0.2);
+    //    checkSpectresPlayerInteract();
+    //}
 }
 
 
@@ -152,9 +159,6 @@ void GameManager::clearAll() {
     Spectre::listOfSpectres->clear();
     SpectralEye::listOfSpectralEyes->clear();
     Mouse::listOfMice->clear();
-    //entitysJSONString = "";
-    //matrizJSON = "";
-    //board = new Board();
 }
 
 void GameManager::initialEntitiesFunctions() {
@@ -190,20 +194,18 @@ void GameManager::checkEntitiesVision() {
  * si lo vieron o si entro en zona segura y lo deben dejar de seguir
  */
 void GameManager::checkSpectresPlayerInteract() {
-    if(!Board::playerOnPersuit){
-        checkEntitiesVision();
-    }else{
-        if(Board::checkPlayerOfSafeZone()){
-            Spectre::sendSignalToStopPersuit();
-            for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-                Spectre::listOfSpectres->at(i)->backtracking = true;
-            }
+    //if(!Board::playerOnPersuit){
+        //checkEntitiesVision();
+    //}else{
+    //    if(Board::checkPlayerOfSafeZone()){
+    //        Spectre::sendSignalToStopPersuit();
+    //        for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+    //            Spectre::listOfSpectres->at(i)->backtracking = true;
+    //        }
 
-        }
-    }
+    //    }
+    //}
 }
-
-
 
 /* ===============================  PARSING  =======================================
  * =============================== FROM JSON ======================================= */
@@ -249,6 +251,10 @@ void GameManager::parseMatrizJSON(json pJSON) {
             } else if (pJSON["matriz"].at(i).at(e) == 2) {
                 cellType = SAFEZONE;
                 //board.matrizStar[i][e] = 0;
+            }else if(pJSON["matriz"].at(i).at(e) == 3){
+                cellType = TRAP;
+            }else if(pJSON["matriz"].at(i).at(e) == 4){
+                cellType = TRAP;
             }
             Cell *c = new Cell(i, e, id, cellType);
             Board::matriz[i][e] = c;

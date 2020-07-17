@@ -56,10 +56,11 @@ public:
     //Methods
     void moveNext();
     void startMovement();
-    void updateDirection();
+    void updateDirection(Position * pPosition);
     void updateMatriz();
     void checkVisionRange();
-
+    void moveRoutePatrol();
+    void moveToPos(Position * pPosition);
 
     void persuitPlayer();
     void sendSignalToPersuit();

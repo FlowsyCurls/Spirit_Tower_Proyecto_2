@@ -13,7 +13,8 @@ enum CellType{
 
     NORMAL,
     OBSTACLE,
-    SAFEZONE
+    SAFEZONE,
+    TRAP
 
 };
 

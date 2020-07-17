@@ -65,7 +65,7 @@ void sendMessage(string msg){
     strcpy(buffer,msg.c_str());
 
     ByteReceived = send( NewConnection, buffer, sizeof(buffer), 0 );
-//    cout << "Se ha enviado un mensaje al cliente: " << msg <<endl;
+    cout << "Se ha enviado un mensaje al cliente: " << msg <<endl;
 
 }
 /**
@@ -73,7 +73,7 @@ void sendMessage(string msg){
  */
 void receiveMessage(){
 
-//    cout << "En espera de un mensaje del cliente..." << endl;
+    cout << "En espera de un mensaje del cliente..." << endl;
     ByteReceived = recv(NewConnection, buffer, sizeof(buffer), 0);
     printBuffer();
 
@@ -152,16 +152,11 @@ int main(int argc, char **argv){
                         gameManager->clearAll();
                         //Load game es para cargar el nivel
                         gameManager->loadGame(lvl);
-//                        gameManager->getBoard()->printMatrizStar();
 
                         sendMessage(gameManager->getMatrizJsonString());
 
-//                        cout << "Esperando request de entidades"<< endl;
-
                         clearBuffer();
-
                         receiveMessage();
-
                         clearBuffer();
 
                         sendMessage(gameManager->getEntitysJsonString());
@@ -183,7 +178,12 @@ int main(int argc, char **argv){
                             gameIsStarted = false;
                             gameManager->pause = true;
                             lvl++;
-                            sendMessage("readyToPlay");
+                            if(lvl==6){
+                                sendMessage("win");
+                            }else{
+                                sendMessage("readyToPlay");
+                            }
+
                         }
                 }
             }

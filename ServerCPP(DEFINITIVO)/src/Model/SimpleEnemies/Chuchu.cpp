@@ -26,4 +26,14 @@ void Chuchu::startMovement() {
 
 void Chuchu::findPlayer() {
 
+    while(true){
+
+        if(Board::playerHasMoved){
+
+
+
+        }
+
+    }
+
 }

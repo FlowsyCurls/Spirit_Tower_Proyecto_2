@@ -21,7 +21,7 @@ using namespace std;
 class GameManager {
 
 private:
-    const unsigned int updateLapse = static_cast<unsigned int>(0.4);
+    //const unsigned int updateLapse = static_cast<unsigned int>(0.4);
     static GameManager* instance;
     Board * board;
     int score = 0;
@@ -53,6 +53,7 @@ private:
     void updateGame();
     static void checkSpectresPlayerInteract();
     void threadVision();
+    void checkSafeZone();
 
 
 public:
