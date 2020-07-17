@@ -16,7 +16,7 @@ void Board::updateMatrizStar() {
 
     for(int i = 0; i < 20; i++){
         for(int e = 0; e < 20; e++){
-            if(matriz[i][e]->getCellType() == NORMAL ){
+            if(matriz[i][e] != nullptr && matriz[i][e]->getCellType() == NORMAL ){
 
                 if(!matriz[i][e]->getEntity().empty()){
                     //cout << board.matriz[i][e]->getEntity().substr(0,2) << endl;
@@ -103,9 +103,8 @@ void Board::printMatrizStar() {
  * Checkea si el jugador se encuentra en una zona segura.
  * @return
  */
-bool Board::checkPlayerOfSafeZone() {
+bool Board::checkPlayerOfSafeZone(Entity * player) {
 
-    Entity *player = Entity::getEntityByID("ju01");
 
     if(player != nullptr){
         if(matriz[player->getPosition()->getRow()][player->getPosition()->getColumn()]->getCellType() == SAFEZONE){
@@ -134,7 +133,12 @@ Board::Board() {
 }
 
 bool Board::isBlocked(int row, int col) {
-    return matriz[row][col]->getCellType() != NORMAL;
+
+    if(row <20 && col <20){
+        return matriz[row][col]->getCellType() != NORMAL;
+    }
+
+
 }
 
 int Board::getRows() {

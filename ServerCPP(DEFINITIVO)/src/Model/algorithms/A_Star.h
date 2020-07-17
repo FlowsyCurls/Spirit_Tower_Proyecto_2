@@ -75,7 +75,7 @@ queue<Position*>* tracePath(cell cellDetails[][COL], Pair dest)
     printf ("\nSe ha calculado una ruta A* nuevamente: ");
     int row = dest.first;
     int col = dest.second;
-
+    int count = 0;
     stack<Pair> Path;
 
     while (!(cellDetails[row][col].parent_i == row
@@ -90,12 +90,13 @@ queue<Position*>* tracePath(cell cellDetails[][COL], Pair dest)
 
     Path.push (make_pair (row, col));
     queue<Position*> * astarRoute = new queue<Position*>();
-    while (!Path.empty())
+    while (!Path.empty() && count <3)
     {
         pair<int,int> p = Path.top();
         astarRoute->push(new Position(p.first,p.second));
         Path.pop();
         printf("-> (%d,%d) ",p.first,p.second);
+        count++;
     }
     cout << endl;
     return astarRoute;

@@ -31,6 +31,7 @@ private:
     queue<Position*>* queuePatrolRoute;
     queue<Position*>* queueAStar;
     queue<Position*>* queueBackTracking = new queue<Position*>();
+    vector<Position*>* auxVec = new vector<Position*>();
 
     //string direction;
     int routeVelocity;
@@ -44,6 +45,7 @@ private:
     bool useBreadcrumbing = false;
 
 public:
+
     bool backtracking = false;
     static bool isOnPersuit;
     //Constructor
@@ -65,7 +67,6 @@ public:
     void moveBacktracking();
     void teleportToSpectre();
     void resetPatrolQueue();
-    void cutQueueStar();
 
     void persuitPlayer();
     void sendSignalToPersuit();

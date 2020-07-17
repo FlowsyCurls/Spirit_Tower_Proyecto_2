@@ -78,7 +78,7 @@ void Spectre::calculateAStar() {
     Pair dest = make_pair(e->getPosition()->getRow(), e->getPosition()->getColumn());
 
     queueAStar =  aStarSearch(Board::matrizStar, src, dest);
-
+    //cutQueueStar();
 }
 
 void Spectre::moveToPos(Position * pPosition){
@@ -96,7 +96,8 @@ void Spectre::moveRoutePatrol(){
     if(queuePatrolRoute->empty()){
         resetPatrolQueue();
     }else{
-        this_thread::sleep_for(chrono::milliseconds(routeVelocity));
+        //this_thread::sleep_for(chrono::milliseconds(routeVelocity));
+        sleep(1);
         moveToPos(queuePatrolRoute->front());
         queuePatrolRoute->pop();
     }
@@ -106,7 +107,8 @@ void Spectre::moveRoutePatrol(){
 
 void Spectre::movePersuit(){
 
-    this_thread::sleep_for(chrono::milliseconds(persuitVelocity));
+    //this_thread::sleep_for(chrono::milliseconds(persuitVelocity));
+    sleep(1);
     if(useBreadcrumbing){
         moveBreadcrumbing();
     }else{
@@ -138,6 +140,12 @@ void Spectre::moveAStar(){
 }
 
 void Spectre::moveBacktracking(){
+    //this_thread::sleep_for(chrono::milliseconds(persuitVelocity));
+    sleep(1);
+    if(queueBackTracking != nullptr && !queueBackTracking->empty()){
+        moveToPos(queueBackTracking->front());
+        queueBackTracking->pop();
+    }
 
 }
 
@@ -147,10 +155,18 @@ void Spectre::moveBacktracking(){
 void Spectre::moveNext() {
 
     while(true){
-        if(!isOnPersuit){
-            moveRoutePatrol();
+        if(paralize){
+            sleep(5);
+            paralize = false;
+        }
+        if(queueBackTracking != nullptr && backtracking && !queueBackTracking->empty()){
+            moveBacktracking();
         }else{
-            movePersuit();
+            if(!isOnPersuit){
+                moveRoutePatrol();
+            }else{
+                movePersuit();
+            }
         }
     }
 }
@@ -162,6 +178,7 @@ void Spectre::moveNext() {
 void Spectre::startMovement() {
     thread(&Spectre::moveNext, this).detach();
     thread(&Spectre::checkVisionRange, this).detach();
+    //thread t1(Spectre::sendSignalToStopPersuit);
 }
 
 /**
@@ -202,10 +219,10 @@ Spectre *Spectre::getSpectreByID(string pId) {
  * Envia una senal a todos los espectros para que dejen la persecucion
  */
 void Spectre::sendSignalToStopPersuit() {
+    isOnPersuit = false;
     for(auto & spectre : *listOfSpectres){
         spectre->useBreadcrumbing = false;
     }
-    isOnPersuit = false;
     cout << "********************Se ha enviado una senal para dejar de seguir al jugador********************" << endl;
 }
 /**
@@ -229,6 +246,7 @@ void Spectre::checkVisionRange() {
 
         if(!isOnPersuit){
 
+            //sleep(0);
             this_thread::sleep_for(chrono::milliseconds(200));
 
             int posTemp;
@@ -239,7 +257,7 @@ void Spectre::checkVisionRange() {
                 if(getDirection() == "north"){
                     posTemp = getPosition()->getRow();
                     posTemp--;
-                    if(posTemp < 0 || posTemp > 20){
+                    if(posTemp < 0 || posTemp >= 20){
                         break;
                     }
                     //cout << posTemp << endl;
@@ -257,7 +275,7 @@ void Spectre::checkVisionRange() {
                 }else if(getDirection() == "south"){
                     posTemp = getPosition()->getRow();
                     posTemp++;
-                    if(posTemp < 0 || posTemp > 20){
+                    if(posTemp < 0 || posTemp >= 20){
                         break;
                     }
                     if (Board::isBlocked(posTemp,getPosition()->getColumn())){
@@ -275,7 +293,7 @@ void Spectre::checkVisionRange() {
                 }else if(getDirection() == "east"){
                     posTemp = getPosition()->getColumn();
                     posTemp++;
-                    if(posTemp < 0 || posTemp > 20){
+                    if(posTemp < 0 || posTemp >= 20){
                         break;
                     }
                     if (Board::isBlocked(getPosition()->getRow(),posTemp)){
@@ -293,7 +311,7 @@ void Spectre::checkVisionRange() {
                 }else if(getDirection() == "west"){
                     posTemp = getPosition()->getColumn();
                     posTemp--;
-                    if(posTemp < 0 || posTemp > 20){
+                    if(posTemp < 0 || posTemp >= 20){
                         break;
                     }
                     if (Board::isBlocked(getPosition()->getRow(),posTemp)){

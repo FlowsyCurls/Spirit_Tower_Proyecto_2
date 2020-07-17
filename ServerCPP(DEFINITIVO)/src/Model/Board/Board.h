@@ -39,7 +39,7 @@ public:
     //Methods
     static string parseBoardToJSON();
     static void assignMatrizEntity(Position * pPosition, const string &pEntityID);
-    static bool checkPlayerOfSafeZone();
+    static bool checkPlayerOfSafeZone(Entity * player);
     static void updateMatrizStar();
     static bool isBlocked(int row, int col);
 

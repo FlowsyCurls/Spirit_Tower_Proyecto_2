@@ -109,7 +109,6 @@ void GameManager::startGame() {
     lifes = 5;
     initialEntitiesFunctions();
     thread(&GameManager::updateGame, this).detach();
-    //thread(&GameManager::threadVision, this).detach();
 }
 
 /**
@@ -121,19 +120,21 @@ void GameManager::updateGame() {
     while(!pause){
         this_thread::sleep_for(chrono::milliseconds(500));
         generateEntityLastStatusJSON();
-        checkSafeZone();
     }
 
 
 }
 
-void GameManager::checkSafeZone() {
-    if(Board::checkPlayerOfSafeZone()){
+void GameManager::checkSafeZone(Entity * player) {
+    if(Board::checkPlayerOfSafeZone(player)){
         Spectre::sendSignalToStopPersuit();
         for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
             Spectre::listOfSpectres->at(i)->backtracking = true;
         }
-
+    }else{
+        for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+            Spectre::listOfSpectres->at(i)->backtracking = false;
+        }
     }
 }
 
@@ -175,19 +176,6 @@ void GameManager::initialEntitiesFunctions() {
      */
 }
 
-/**
- * Hace un checkeo del rango de vision de los espectros para verificar si el jugador nse encuentra dentro
- */
-void GameManager::checkEntitiesVision() {
-    for(auto & spectre : *Spectre::listOfSpectres){
-        spectre->checkVisionRange();
-    }
-    /*
-    for(auto & eye : *SpectralEye::listOfSpectralEyes){
-        eye->checkVisionRange();
-    }
-    */
-}
 
 /**
  * Hace un checkeo de la situacion en la que se encuentra el jugador con respecto a los espectros, ya sea que determine
@@ -275,6 +263,8 @@ void GameManager::parseJugadorJSON(json pJSON) {
     auto *position = new Position(pJSON["jugador"]["position"][0], pJSON["jugador"]["position"][1]);
     auto *jugador = new Jugador(id, type, position, 1);
     matrizJSON["startPos"] = pJSON["jugador"]["position"];
+
+
 }
 
 
@@ -437,6 +427,10 @@ void GameManager::updatePlayerPosition(const string& pJson) {
                 e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
                 Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
                 Board::playerHasMoved = true;
+
+                checkSafeZone(e);
+
+
                 if(Spectre::isOnPersuit){
                     Board::queueBreadCrumbingPlayer->push(e->getPosition());
                 }

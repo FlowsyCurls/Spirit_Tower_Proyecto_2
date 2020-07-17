@@ -50,11 +50,10 @@ private:
     //General methods
     static void setGraphs();
     static void initialEntitiesFunctions();
-    static void checkEntitiesVision();
     void updateGame();
     static void checkSpectresPlayerInteract();
     void threadVision();
-    void checkSafeZone();
+    void checkSafeZone(Entity * player);
 
 
 public:
