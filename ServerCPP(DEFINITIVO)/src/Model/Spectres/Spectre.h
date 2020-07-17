@@ -68,6 +68,7 @@ public:
     void moveBacktracking();
     void teleportToSpectre();
     void resetPatrolQueue();
+    void cutQueueStar();
 
     void persuitPlayer();
     void sendSignalToPersuit();

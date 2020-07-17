@@ -77,11 +77,8 @@ void Spectre::calculateAStar() {
     Entity *e = Entity::getEntityByID("ju01");
     Pair dest = make_pair(e->getPosition()->getRow(), e->getPosition()->getColumn());
 
-    cout << "1" << endl;
-
     queueAStar =  aStarSearch(Board::matrizStar, src, dest);
 
-    cout << "2" << endl;
 }
 
 void Spectre::moveToPos(Position * pPosition){
@@ -124,7 +121,7 @@ void Spectre::moveBreadcrumbing(){
 }
 
 void Spectre::moveAStar(){
-    if(queueAStar->empty() || queueAStar == nullptr){
+    if(queueAStar == nullptr || queueAStar->empty() ){
         calculateAStar();
     }
     if(queueAStar != nullptr && !queueAStar->empty() ){
