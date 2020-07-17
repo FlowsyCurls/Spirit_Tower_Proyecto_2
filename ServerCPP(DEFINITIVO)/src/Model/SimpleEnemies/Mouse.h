@@ -13,13 +13,14 @@ class Mouse: SimpleEnemy {
 
 private:
     //METHODS
-    void startMovement() override;
+
     void moveRandomly();
+
 
 public:
     //CONSTRUCTOR
     Mouse(const string &pId, const string &pType, Position* pPosition);
-
+    void startMovement() override;
     //ATTRIBUTES
     static vector<Mouse*> *listOfMice;
 };

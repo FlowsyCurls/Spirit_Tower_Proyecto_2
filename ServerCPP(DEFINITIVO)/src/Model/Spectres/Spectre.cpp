@@ -104,7 +104,7 @@ void Spectre::moveNext() {
 
         if(isOnPersuit){
             sleep((int)persuitVelocity);
-            if(useBreadcrumbing){//En caso de ser el espectro que vio al jugador usa breadcrumbing
+            if(!useBreadcrumbing){//En caso de ser el espectro que vio al jugador usa breadcrumbing
                 routeCounter = 0;
                 //Algoritmo que haga que la persuitRoute tenga en el primer indice la posicion que debo moverme
 
@@ -241,14 +241,14 @@ void Spectre::sendSignalToStopPersuit() {
  * diferenciar este espectro como el que debe usar breadcrunbing
  */
 void Spectre::sendSignalToPersuit() {
-//    for(int i = 0; i < listOfSpectres->size();i++){
-//
-//        listOfSpectres->at(i)->isOnPersuit = true;
-//
-//    }
-//    Board::playerOnPersuit = true;
-//    useBreadcrumbing = true;
-//    Board::queueBreadCrumbingPlayer = new queue<Position*>();
+    for(int i = 0; i < listOfSpectres->size();i++){
+
+        listOfSpectres->at(i)->isOnPersuit = true;
+
+    }
+    Board::playerOnPersuit = true;
+    useBreadcrumbing = true;
+    Board::queueBreadCrumbingPlayer = new queue<Position*>();
     cout << "* Signal sent!" << endl;
 }
 /**

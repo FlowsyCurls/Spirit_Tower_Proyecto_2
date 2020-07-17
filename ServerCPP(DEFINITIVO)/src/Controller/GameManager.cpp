@@ -85,7 +85,7 @@ void GameManager::loadGame(int pLevel) {
     Board::printBoardEntity();
     GameManager::setGraphs();
     generateEntityLastStatusJSON();
-    pause = false;
+
 }
 /**
  * Static method for calling the simple enemies graph setter.
@@ -120,7 +120,7 @@ void GameManager::updateGame() {
     while(!pause){
         sleep(updateLapse);
         generateEntityLastStatusJSON();
-        checkSpectresPlayerInteract();
+        //checkSpectresPlayerInteract();
         //board.printBoardEntity();
     }
 
@@ -147,6 +147,9 @@ void GameManager::clearAll() {
 void GameManager::initialEntitiesFunctions() {
     for(auto & spectre : *Spectre::listOfSpectres){
         spectre->startMovement();
+    }
+    for(auto & mouse: *Mouse::listOfMice){
+        mouse->startMovement();
     }
     /*
     for(auto & simple : *SimpleEnemy::listOfSimpleEnemies){

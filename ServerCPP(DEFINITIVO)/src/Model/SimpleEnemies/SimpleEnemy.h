@@ -61,6 +61,7 @@ public:
     //GETTERS & SETTERS
     string getEntityId();
     Position *getEntityPosition();
+    void setEntityPosition(Position * pPosition);
     void setMyPos(graph* pGraph);
 };
 

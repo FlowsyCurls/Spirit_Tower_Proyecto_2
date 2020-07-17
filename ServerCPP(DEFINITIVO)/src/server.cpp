@@ -169,6 +169,7 @@ int main(int argc, char **argv){
                         gameManager->startGame();
 
                         gameIsStarted = true;
+                        gameManager->pause = false;
 
                     }
                 }else{

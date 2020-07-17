@@ -28,11 +28,54 @@ void Mouse::startMovement() {
     thread(&Mouse::moveRandomly, this).detach();
 }
 
+
 /**
  * Get a random place to where to move.
  */
 void Mouse::moveRandomly() {
+
     while(true){
+
+        sleep(1);
+
+        int mov;
+        bool searchAvailable = true;
+        Position * nextPos;
+
+        while(searchAvailable){
+
+            mov = rand()%(4-1+1)+1;
+
+            switch(mov){
+                case 1: //norte
+                    if(Board::matriz[getEntityPosition()->getRow()-1][getEntityPosition()->getColumn()]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()-1][getEntityPosition()->getColumn()]->getEntity().compare("")==0){
+                        searchAvailable = false;
+                        nextPos = new Position(getEntityPosition()->getRow()-1,getEntityPosition()->getColumn());
+                    }
+                    break;
+                case 2: //sur
+                    if(Board::matriz[getEntityPosition()->getRow()+1][getEntityPosition()->getColumn()]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()+1][getEntityPosition()->getColumn()]->getEntity().compare("")==0){
+                        searchAvailable = false;
+                        nextPos = new Position(getEntityPosition()->getRow()+1,getEntityPosition()->getColumn());
+                    }
+                    break;
+                case 3: //este
+                    if(Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()+1]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()+1]->getEntity().compare("")==0){
+                        searchAvailable = false;
+                        nextPos = new Position(getEntityPosition()->getRow(),getEntityPosition()->getColumn()+1);
+                    }
+                    break;
+                case 4: //oeste
+                    if(Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()-1]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()-1]->getEntity().compare("")==0){
+                        searchAvailable = false;
+                        nextPos = new Position(getEntityPosition()->getRow(),getEntityPosition()->getColumn()-1);
+                    }
+                    break;
+            }
+
+        }
+        Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()]->setEntity("");
+        setEntityPosition(nextPos);
 
     }
 }

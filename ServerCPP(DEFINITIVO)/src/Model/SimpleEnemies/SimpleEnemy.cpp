@@ -160,3 +160,7 @@ void SimpleEnemy::clear() {
     listOfSimpleEnemies->clear();
     uniqueGraph = new graph();
 }
+
+void SimpleEnemy::setEntityPosition(Position *pPosition) {
+    setPosition(pPosition);
+}
