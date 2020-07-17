@@ -9,8 +9,8 @@
 vector<Spectre*> *Spectre::listOfSpectres = new vector<Spectre*>();
 bool Spectre::isOnPersuit = false;
 
-Spectre::Spectre(string pId, string pType, vector<Position*>* pPatrolRoute,  double pRouteVelocity,
-                 double pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType) : Entity(pId, pType, pPosition) {
+Spectre::Spectre(string pId, string pType, vector<Position*>* pPatrolRoute,  int pRouteVelocity,
+                 int pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType) : Entity(pId, pType, pPosition) {
 
     patrolRoute = pPatrolRoute;
     queueAStar = new queue<Position*>();
@@ -96,7 +96,7 @@ void Spectre::moveRoutePatrol(){
     if(queuePatrolRoute->empty()){
         resetPatrolQueue();
     }else{
-        this_thread::sleep_for(chrono::milliseconds(500));
+        this_thread::sleep_for(chrono::milliseconds(routeVelocity));
         moveToPos(queuePatrolRoute->front());
         queuePatrolRoute->pop();
     }
@@ -106,7 +106,7 @@ void Spectre::moveRoutePatrol(){
 
 void Spectre::movePersuit(){
 
-    this_thread::sleep_for(chrono::milliseconds(500));
+    this_thread::sleep_for(chrono::milliseconds(persuitVelocity));
     if(useBreadcrumbing){
         moveBreadcrumbing();
     }else{
@@ -117,15 +117,22 @@ void Spectre::movePersuit(){
 
 void Spectre::moveBreadcrumbing(){
 
+    if(Board::queueBreadCrumbingPlayer->front() != nullptr && !Board::queueBreadCrumbingPlayer->empty()){
+        Position * p = Board::queueBreadCrumbingPlayer->front();
+        Board::queueBreadCrumbingPlayer->pop();
+        moveToPos(p);
+        queueBackTracking->push(p);
+    }
 
 }
 
 void Spectre::moveAStar(){
-    if(queueAStar == nullptr || queueAStar->empty() ){
+    if(queueAStar == nullptr || queueAStar->empty()){
         calculateAStar();
     }
-    if(queueAStar != nullptr && !queueAStar->empty() ){
+    if(queueAStar != nullptr && !queueAStar->empty()){
         moveToPos(queueAStar->front());
+        queueBackTracking->push(queueAStar->front());
         queueAStar->pop();
     }
 }
@@ -146,7 +153,6 @@ void Spectre::moveNext() {
             movePersuit();
         }
     }
-
 }
 
 

@@ -32,8 +32,8 @@
             "type": "spectre_blue",
             "position": [2, 15],
             "direction": "west",
-            "routeVelocity": 0,
-            "persuitVelocity": 0,
+            "routeVelocity": 500,
+            "persuitVelocity": 500,
             "visionRange": 0,
             "patrolRoute": [
                 [2, 14],
@@ -74,8 +74,8 @@
             "type": "spectre_blue",
             "position": [8, 4],
             "direction": "east",
-            "routeVelocity": 0,
-            "persuitVelocity": 0,
+            "routeVelocity": 500,
+            "persuitVelocity": 500,
             "visionRange": 0,
             "patrolRoute": [
                 [8, 5],
@@ -112,8 +112,8 @@
             "type": "spectre_blue",
             "position": [19, 12],
             "direction": "north",
-            "routeVelocity": 0,
-            "persuitVelocity": 0,
+            "routeVelocity": 500,
+            "persuitVelocity": 500,
             "visionRange": 0,
             "patrolRoute": [
                 [19, 12],

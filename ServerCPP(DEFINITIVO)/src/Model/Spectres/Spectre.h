@@ -30,18 +30,15 @@ private:
     vector<Position*>* patrolRoute;
     queue<Position*>* queuePatrolRoute;
     queue<Position*>* queueAStar;
-    vector<Position*>* auxVec;
     queue<Position*>* queueBackTracking = new queue<Position*>();
 
     //string direction;
-    double routeVelocity;
-    double persuitVelocity;
+    int routeVelocity;
+    int persuitVelocity;
     int visionRange;
-    int routeCounter = 0;
 
     bool teleport = false;
     bool paralize = false;
-    int indexBacktracking = 0;
 
     SpectreType spectreType;
     bool useBreadcrumbing = false;
@@ -50,8 +47,8 @@ public:
     bool backtracking = false;
     static bool isOnPersuit;
     //Constructor
-    Spectre(string pId, string pType, vector<Position*>* pPatrolRoute, double pRouteVelocity,
-            double pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType);
+    Spectre(string pId, string pType, vector<Position*>* pPatrolRoute, int pRouteVelocity,
+            int pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType);
 
     static vector<Spectre*> *listOfSpectres;
 

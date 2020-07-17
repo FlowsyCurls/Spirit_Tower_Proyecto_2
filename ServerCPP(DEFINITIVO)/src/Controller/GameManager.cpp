@@ -293,8 +293,8 @@ void GameManager::parseSpectresJSON(json pJSON) {
         auto *position = new Position(pJSON["spectres"].at(i)["position"][0],pJSON["spectres"].at(i)["position"][1]);
 
         string direction = pJSON["spectres"].at(i)["direction"];
-        double routeVelocity = pJSON["spectres"].at(i)["routeVelocity"];
-        double persuitVelocity = pJSON["spectres"].at(i)["persuitVelocity"];
+        int routeVelocity = pJSON["spectres"].at(i)["routeVelocity"];
+        int persuitVelocity = pJSON["spectres"].at(i)["persuitVelocity"];
         int visionRange = pJSON["spectres"].at(i)["visionRange"];
         auto* patrolRoute = new vector<Position*>();
         SpectreType spectreType;
