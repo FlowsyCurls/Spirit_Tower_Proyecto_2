@@ -99,97 +99,109 @@ void Spectre::calculateAStar() {
  * Mueve el espectro a su siguiente posicion
  */
 void Spectre::moveNext() {
-
+/*
     while(true){
 
-        if(paralize){
-            sleep(5);
-            paralize = false;
-        }
 
-        if(isOnPersuit){
-            sleep((int)persuitVelocity);
-            if(useBreadcrumbing){//En caso de ser el espectro que vio al jugador usa breadcrumbing
-                //routeCounter = 0;
-                //Algoritmo que haga que la persuitRoute tenga en el primer indice la posicion que debo moverme
+        if(backtracking && !queueBackTracking->empty()){
 
-                if(!Board::queueBreadCrumbingPlayer->empty() && Board::queueBreadCrumbingPlayer->front() != nullptr){
-                    Position * p = Board::queueBreadCrumbingPlayer->front();
-                    Board::queueBreadCrumbingPlayer->pop();
-                    //routeInUse->push_back(p);
-                    updateDirection();
-                    updateMatriz();
-                    setPosition(p->getRow(), p->getColumn());
-                    //routeInUse->clear();
-                }
+            routeInUse->clear();
+            sleep(routeVelocity);
+            routeCounter = 0;
 
+            Position * p = queueBackTracking->front();
+            queueBackTracking->pop();
+            routeInUse->push_back(p);
+            updateDirection();
+            updateMatriz();
+            setPosition(p->getRow(), p->getColumn());
+            if(queueBackTracking->empty()){
+                backtracking = false;
+            }
 
-            }else  {
-                // if it is the spectrum to be teleported.
-                /*
-                if (teleport) {
-                    cout << "=============== TELEPORT ===============" << endl;
-                    this->setPosition(SpectralEye::getWhereToTeleport());
-                    Board::assignMatrizEntity(SpectralEye::getWhereToTeleport(), this->getId());
-                    cout << ">>  TELEPORT ACTIVE << " << SpectralEye::getWhereToTeleport()->getRow() << " "
-                         << SpectralEye::getWhereToTeleport()->getColumn() << endl;
-                }
-                */
+        }else{
 
-                //Se usa A*
-                if(persuitRoute->empty()){
-                    //Calcular A*
-                    calculateAStar();
+            if(paralize){
+                sleep(5);
+                paralize = false;
+            }
 
-                }else{
+            if(isOnPersuit){
+                sleep((int)persuitVelocity);
+                if(useBreadcrumbing){//En caso de ser el espectro que vio al jugador usa breadcrumbing
+                    routeCounter = 0;
+                    //Algoritmo que haga que la persuitRoute tenga en el primer indice la posicion que debo moverme
 
-
-                    if(Board::playerHasMoved){
-                        //Calcular A*
-                        calculateAStar();
-                        //Este condicional permite al espectro moverse incluso cuando el jugador se esta moviendo
-                        if(routeInUse != nullptr && !routeInUse->empty() && getPosition()->compare(routeInUse->at(0))){
-                            routeCounter++;
-                        }
+                    if(!Board::queueBreadCrumbingPlayer->empty() && Board::queueBreadCrumbingPlayer->front() != nullptr){
+                        Position * p = Board::queueBreadCrumbingPlayer->front();
+                        Board::queueBreadCrumbingPlayer->pop();
+                        routeInUse->push_back(p);
+                        updateDirection();
+                        updateMatriz();
+                        setPosition(p->getRow(), p->getColumn());
+                        //queueBackTracking->push(p);
+                        routeInUse->clear();
                     }
 
 
+                }else  {
+                    // if it is the spectrum to be teleported.
+
+                    //if (teleport) {
+                    //    cout << "=============== TELEPORT ===============" << endl;
+                    //    this->setPosition(SpectralEye::getWhereToTeleport());
+                    //    Board::assignMatrizEntity(SpectralEye::getWhereToTeleport(), this->getId());
+                    //    cout << ">>  TELEPORT ACTIVE << " << SpectralEye::getWhereToTeleport()->getRow() << " "
+                    //         << SpectralEye::getWhereToTeleport()->getColumn() << endl;
+                    //}
+
+
+                    //Se usa A*
+                    if(persuitRoute->empty()){
+                        //Calcular A*
+                        calculateAStar();
+
+                    }else{
+
+
+                        if(Board::playerHasMoved){
+                            //Calcular A*
+                            calculateAStar();
+                            //Este condicional permite al espectro moverse incluso cuando el jugador se esta moviendo
+                            if(routeInUse != nullptr && !routeInUse->empty() && getPosition()->compare(routeInUse->at(0))){
+                                routeCounter++;
+                            }
+                        }
+
+
+                    }
                 }
+            }else{
+                sleep((int)routeVelocity);
+                routeInUse = patrolRoute;
             }
-        }else{
-            sleep((int)routeVelocity);
-            routeInUse = patrolRoute;
+            if(routeInUse != nullptr && !routeInUse->empty() && routeCounter < routeInUse->size() && !useBreadcrumbing) {
+
+                updateDirection();
+                updateMatriz();
+                setPosition(routeInUse->at(routeCounter)->getRow(), routeInUse->at(routeCounter)->getColumn());
+                Board::updateMatrizStar();
+
+
+                if(isOnPersuit){
+                    queueBackTracking->push(new Position(routeInUse->at(routeCounter)->getRow(), routeInUse->at(routeCounter)->getColumn()));
+                }
+                routeCounter++;
+
+            }else{
+                routeCounter = 0;
+            }
         }
-        if(routeInUse != nullptr && !routeInUse->empty() && routeCounter <= routeInUse->size() && !useBreadcrumbing) {
 
-            updateDirection();
-            updateMatriz();
-            setPosition(routeInUse->at(routeCounter)->getRow(), routeInUse->at(routeCounter)->getColumn());
-            Board::updateMatrizStar();
-            routeCounter++;
-
-
-        }else{
-            routeCounter = 0;
-        }
 
     }
+    */
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /**

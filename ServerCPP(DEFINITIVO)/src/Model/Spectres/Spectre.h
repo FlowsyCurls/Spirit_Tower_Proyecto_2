@@ -30,7 +30,7 @@ private:
     vector<Position*>* patrolRoute;
     vector<Position*>* routeInUse;
     vector<Position*>* persuitRoute;
-    queue<Position*>* queueBackTracking;
+    queue<Position*>* queueBackTracking = new queue<Position*>();
 
     //string direction;
     double routeVelocity;
@@ -41,12 +41,11 @@ private:
     bool teleport = false;
     bool paralize = false;
 
-
-private:
     SpectreType spectreType;
     bool useBreadcrumbing = false;
 
 public:
+    bool backtracking = false;
 
     //Constructor
     Spectre(string pId, string pType, vector<Position*>* pPatrolRoute, double pRouteVelocity,

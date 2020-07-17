@@ -129,7 +129,9 @@ void GameManager::updateGame() {
 }
 
 void GameManager::threadVision() {
-    while(true){
+    while(!pause){
+
+
         sleep(0.2);
         checkSpectresPlayerInteract();
     }
@@ -193,6 +195,10 @@ void GameManager::checkSpectresPlayerInteract() {
     }else{
         if(Board::checkPlayerOfSafeZone()){
             Spectre::sendSignalToStopPersuit();
+            for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+                Spectre::listOfSpectres->at(i)->backtracking = true;
+            }
+
         }
     }
 }
