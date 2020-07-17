@@ -39,6 +39,7 @@ private:
     int routeCounter = 0;
     bool isOnPersuit = false;
     bool teleport = false;
+    bool paralize = false;
 
 
 private:

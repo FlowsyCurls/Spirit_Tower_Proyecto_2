@@ -102,6 +102,11 @@ void Spectre::moveNext() {
 
     while(true){
 
+        if(paralize){
+            sleep(5);
+            paralize = false;
+        }
+
         if(isOnPersuit){
             sleep((int)persuitVelocity);
             if(!useBreadcrumbing){//En caso de ser el espectro que vio al jugador usa breadcrumbing
@@ -271,7 +276,11 @@ void Spectre::checkVisionRange() {
                     cout << "Spectre: "+ this->getId() + " just saw the player!" << endl;
                     sendSignalToPersuit();
                     break;
+                }else if(posTemp >= 0 && posTemp < 20 && Board::matriz[posTemp][getPosition()->getColumn()]->getEntity().substr(0,2).compare("mo") == 0){
+                    cout << getId() << " paralized because saw the mouse "<< Board::matriz[getPosition()->getRow()][posTemp]->getEntity() << endl;
+                    paralize = true;
                 }
+
 
             }else if(getDirection() == "south"){
                 posTemp = getPosition()->getRow() + i;
@@ -283,6 +292,9 @@ void Spectre::checkVisionRange() {
                     cout << "Spectre: "+ this->getId() + " just saw the player!" << endl;
                     sendSignalToPersuit();
                     break;
+                }else if(posTemp >= 0 && posTemp < 20 && Board::matriz[posTemp][getPosition()->getColumn()]->getEntity().substr(0,2).compare("mo") == 0){
+                    cout << getId() << " paralized because saw the mouse "<< Board::matriz[getPosition()->getRow()][posTemp]->getEntity() << endl;
+                    paralize = true;
                 }
 
             }else if(getDirection() == "east"){
@@ -295,6 +307,9 @@ void Spectre::checkVisionRange() {
                     cout << "Spectre: " + this->getId() + " just saw the player!" << endl;
                     sendSignalToPersuit();
                     break;
+                }else if(posTemp >= 0 && posTemp < 20 && Board::matriz[getPosition()->getRow()][posTemp]->getEntity().substr(0,2).compare("mo") == 0){
+                    cout << getId() << " paralized because saw the mouse "<< Board::matriz[getPosition()->getRow()][posTemp]->getEntity() << endl;
+                    paralize = true;
                 }
 
             }else if(getDirection() == "west"){
@@ -307,6 +322,9 @@ void Spectre::checkVisionRange() {
                     cout << "Spectre: " + this->getId() + " just saw the player!" << endl;
                     sendSignalToPersuit();
                     break;
+                }else if(posTemp >= 0 && posTemp < 20 && Board::matriz[getPosition()->getRow()][posTemp]->getEntity().substr(0,2).compare("mo") == 0){
+                    cout << getId() << " paralized because saw the mouse "<< Board::matriz[getPosition()->getRow()][posTemp]->getEntity() << endl;
+                    paralize = true;
                 }
             }
         }
