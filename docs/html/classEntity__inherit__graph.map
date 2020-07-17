@@ -1,0 +1,11 @@
+<map id="Entity" name="Entity">
+<area shape="rect" id="node2" href="$classJugador.html" title="Jugador" alt="" coords="5,80,73,107"/>
+<area shape="rect" id="node3" href="$classObjeto.html" title="Objeto" alt="" coords="97,80,157,107"/>
+<area shape="rect" id="node6" href="$classSimpleEnemy.html" title="SimpleEnemy" alt="" coords="181,80,284,107"/>
+<area shape="rect" id="node10" href="$classSpectre.html" title="Spectre" alt="" coords="309,80,375,107"/>
+<area shape="rect" id="node4" href="$classJarron.html" title="Jarron" alt="" coords="7,155,66,181"/>
+<area shape="rect" id="node5" href="$classTreasure.html" title="Treasure" alt="" coords="91,155,164,181"/>
+<area shape="rect" id="node7" href="$classChuchu.html" title="Chuchu" alt="" coords="189,155,255,181"/>
+<area shape="rect" id="node8" href="$classMouse.html" title="Mouse" alt="" coords="279,155,341,181"/>
+<area shape="rect" id="node9" href="$classSpectralEye.html" title="SpectralEye" alt="" coords="365,155,458,181"/>
+</map>

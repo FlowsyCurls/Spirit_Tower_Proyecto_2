@@ -1,0 +1,6 @@
+<map id="SimpleEnemy" name="SimpleEnemy">
+<area shape="rect" id="node3" href="$classChuchu.html" title="Chuchu" alt="" coords="5,155,72,181"/>
+<area shape="rect" id="node4" href="$classMouse.html" title="Mouse" alt="" coords="96,155,157,181"/>
+<area shape="rect" id="node5" href="$classSpectralEye.html" title="SpectralEye" alt="" coords="181,155,275,181"/>
+<area shape="rect" id="node2" href="$classEntity.html" title="Entity" alt="" coords="99,5,155,32"/>
+</map>

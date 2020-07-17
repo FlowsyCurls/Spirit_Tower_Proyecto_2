@@ -1,0 +1,5 @@
+<map id="SimpleEnemy" name="SimpleEnemy">
+<area shape="rect" id="node2" href="$classEntity.html" title="Entity" alt="" coords="5,5,61,32"/>
+<area shape="rect" id="node3" href="$structnode.html" title="node" alt="" coords="85,5,136,32"/>
+<area shape="rect" id="node4" href="$structgraph.html" title="graph" alt="" coords="161,5,215,32"/>
+</map>
