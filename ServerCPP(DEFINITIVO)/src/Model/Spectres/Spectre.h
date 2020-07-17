@@ -28,8 +28,9 @@ class Spectre: Entity {
 private:
 
     vector<Position*>* patrolRoute;
-    vector<Position*>* routeInUse;
-    vector<Position*>* persuitRoute;
+    queue<Position*>* queuePatrolRoute;
+    queue<Position*>* queueAStar;
+    vector<Position*>* auxVec;
     queue<Position*>* queueBackTracking = new queue<Position*>();
 
     //string direction;
@@ -37,16 +38,17 @@ private:
     double persuitVelocity;
     int visionRange;
     int routeCounter = 0;
-    bool isOnPersuit = false;
+
     bool teleport = false;
     bool paralize = false;
+    int indexBacktracking = 0;
 
     SpectreType spectreType;
     bool useBreadcrumbing = false;
 
 public:
     bool backtracking = false;
-
+    static bool isOnPersuit;
     //Constructor
     Spectre(string pId, string pType, vector<Position*>* pPatrolRoute, double pRouteVelocity,
             double pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType);
@@ -57,10 +59,15 @@ public:
     void moveNext();
     void startMovement();
     void updateDirection(Position * pPosition);
-    void updateMatriz();
     void checkVisionRange();
     void moveRoutePatrol();
     void moveToPos(Position * pPosition);
+    void movePersuit();
+    void moveBreadcrumbing();
+    void moveAStar();
+    void moveBacktracking();
+    void teleportToSpectre();
+    void resetPatrolQueue();
 
     void persuitPlayer();
     void sendSignalToPersuit();

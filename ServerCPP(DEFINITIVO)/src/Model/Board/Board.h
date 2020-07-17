@@ -30,7 +30,6 @@ public:
     static Cell* matriz[rows][columns];
     static int matrizStar[rows][columns];
     vector<Entity*> * listOfEntitys;
-    static bool playerOnPersuit;
     static bool playerHasMoved;
     static queue<Position*>* queueBreadCrumbingPlayer;
 

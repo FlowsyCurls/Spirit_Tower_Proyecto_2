@@ -70,7 +70,7 @@ double calculateHValue(int row, int col, Pair dest)
 
 // A Utility Function to trace the path from the source
 // to destination
-vector<Position*>* tracePath(cell cellDetails[][COL], Pair dest)
+queue<Position*>* tracePath(cell cellDetails[][COL], Pair dest)
 {
     printf ("\nSe ha calculado una ruta A* nuevamente: ");
     int row = dest.first;
@@ -89,11 +89,11 @@ vector<Position*>* tracePath(cell cellDetails[][COL], Pair dest)
     }
 
     Path.push (make_pair (row, col));
-    vector<Position*> * astarRoute = new vector<Position*>();
+    queue<Position*> * astarRoute = new queue<Position*>();
     while (!Path.empty())
     {
         pair<int,int> p = Path.top();
-        astarRoute->push_back(new Position(p.first,p.second));
+        astarRoute->push(new Position(p.first,p.second));
         Path.pop();
         printf("-> (%d,%d) ",p.first,p.second);
     }
@@ -104,7 +104,7 @@ vector<Position*>* tracePath(cell cellDetails[][COL], Pair dest)
 // A Function to find the shortest path between
 // a given source cell to a destination cell according
 // to A* Search Algorithm
-vector<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
+queue<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
 {
     // If the source is out of range
     if (isValid (src.first, src.second) == false)
@@ -125,7 +125,7 @@ vector<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
         isUnBlocked(grid, dest.first, dest.second) == false)
     {
         printf ("Source or the destination is blocked\n");
-        return new vector<Position*>;
+        return nullptr;
     }
 
     // If the destination cell is the same as source cell
@@ -233,7 +233,7 @@ vector<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i-1][j].parent_i = i;
                 cellDetails[i-1][j].parent_j = j;
                 printf ("The destination cell is found\n");
-                vector<Position*> * route = tracePath (cellDetails, dest);
+                queue<Position*> * route = tracePath (cellDetails, dest);
                 foundDest = true;
                 return route;
             }
@@ -284,7 +284,7 @@ vector<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i+1][j].parent_i = i;
                 cellDetails[i+1][j].parent_j = j;
                 printf("The destination cell is found\n");
-                vector<Position*> *route = tracePath(cellDetails, dest);
+                queue<Position*> *route = tracePath(cellDetails, dest);
                 foundDest = true;
                 return route;
             }
@@ -333,7 +333,7 @@ vector<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i][j+1].parent_i = i;
                 cellDetails[i][j+1].parent_j = j;
                 printf("The destination cell is found\n");
-                vector<Position*> *route = tracePath(cellDetails, dest);
+                queue<Position*> *route = tracePath(cellDetails, dest);
                 foundDest = true;
                 return route;
             }
@@ -385,7 +385,7 @@ vector<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i][j-1].parent_i = i;
                 cellDetails[i][j-1].parent_j = j;
                 printf("The destination cell is found\n");
-                vector<Position*> *route = tracePath(cellDetails, dest);
+                queue<Position*> *route = tracePath(cellDetails, dest);
                 foundDest = true;
                 return route;
             }
@@ -437,7 +437,7 @@ vector<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i-1][j+1].parent_i = i;
                 cellDetails[i-1][j+1].parent_j = j;
                 printf ("The destination cell is found\n");
-                vector<Position*> *route = tracePath (cellDetails, dest);
+                queue<Position*> *route = tracePath (cellDetails, dest);
                 foundDest = true;
                 return route;
             }
@@ -489,7 +489,7 @@ vector<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i-1][j-1].parent_i = i;
                 cellDetails[i-1][j-1].parent_j = j;
                 printf ("The destination cell is found\n");
-                vector<Position*> *route = tracePath (cellDetails, dest);
+                queue<Position*> *route = tracePath (cellDetails, dest);
                 foundDest = true;
                 return route;
             }
@@ -539,7 +539,7 @@ vector<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i+1][j+1].parent_i = i;
                 cellDetails[i+1][j+1].parent_j = j;
                 printf ("The destination cell is found\n");
-                vector<Position*> *route = tracePath (cellDetails, dest);
+                queue<Position*> *route = tracePath (cellDetails, dest);
                 foundDest = true;
                 return route;
             }
@@ -591,7 +591,7 @@ vector<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 cellDetails[i+1][j-1].parent_i = i;
                 cellDetails[i+1][j-1].parent_j = j;
                 printf("The destination cell is found\n");
-                vector<Position*> *route = tracePath(cellDetails, dest);
+                queue<Position*> *route = tracePath(cellDetails, dest);
                 foundDest = true;
                 return route;
             }

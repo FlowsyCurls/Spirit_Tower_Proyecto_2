@@ -121,7 +121,7 @@ void GameManager::updateGame() {
     while(!pause){
         this_thread::sleep_for(chrono::milliseconds(500));
         generateEntityLastStatusJSON();
-        //checkSafeZone();
+        checkSafeZone();
     }
 
 
@@ -219,7 +219,7 @@ void GameManager::loadGameFromJSON(const string& pJSON) {
     cout << "Cargando datos desde el archivo JSON..." << endl;
     json jsonObj;
     stringstream(pJSON) >> jsonObj;
-
+    Spectre::isOnPersuit = false;
     parseMatrizJSON(jsonObj);
     parseJugadorJSON(jsonObj);
     parseSpectresJSON(jsonObj);
@@ -437,7 +437,7 @@ void GameManager::updatePlayerPosition(const string& pJson) {
                 e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
                 Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
                 Board::playerHasMoved = true;
-                if(Board::playerOnPersuit){
+                if(Spectre::isOnPersuit){
                     Board::queueBreadCrumbingPlayer->push(e->getPosition());
                 }
             }
