@@ -3,6 +3,7 @@
 //
 
 #include "Chuchu.h"
+#include "../algorithms/Bresenham.h"
 
 vector<Chuchu*> *Chuchu::listOfChuchus = new vector<Chuchu*>();
 
@@ -27,7 +28,7 @@ void Chuchu::startMovement() {
 void Chuchu::findPlayer() {
 
     while(true){
-
+        sleep(1);
         if(Board::playerHasMoved){
 
 

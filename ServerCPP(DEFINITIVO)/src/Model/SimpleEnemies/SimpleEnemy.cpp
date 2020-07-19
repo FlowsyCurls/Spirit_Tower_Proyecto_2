@@ -164,3 +164,9 @@ void SimpleEnemy::clear() {
 void SimpleEnemy::setEntityPosition(Position *pPosition) {
     setPosition(pPosition);
 }
+
+void SimpleEnemy::setEntityDirection(string pDirection) {
+
+    setDirection(pDirection);
+
+}

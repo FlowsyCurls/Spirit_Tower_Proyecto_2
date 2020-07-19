@@ -128,13 +128,8 @@ void GameManager::updateGame() {
 void GameManager::checkSafeZone(Entity * player) {
     if(Board::checkPlayerOfSafeZone(player)){
         Spectre::sendSignalToStopPersuit();
-        for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-            Spectre::listOfSpectres->at(i)->backtracking = true;
-        }
     }else{
-        for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-            Spectre::listOfSpectres->at(i)->backtracking = false;
-        }
+        Spectre::backtracking = false;
     }
 }
 
@@ -153,9 +148,6 @@ void GameManager::threadVision() {
  */
 void GameManager::clearAll() {
     Entity::listOfEntitys->clear();
-    for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-        //Spectre::listOfSpectres->at(i)->destroy = true;
-    }
     SimpleEnemy::clear();
     Spectre::listOfSpectres->clear();
     SpectralEye::listOfSpectralEyes->clear();
@@ -412,10 +404,10 @@ void GameManager::updatePlayerPosition(const string& pJson) {
     if(e != nullptr){
         json jsonObj;
         stringstream(pJson) >> jsonObj;
-        if(jsonObj["lifes"] == 0){
-            cout << "Mori xdxd" << endl;
-            isDead = true;
-        }else{
+        //if(jsonObj["lifes"] == 0){
+        //    cout << "Mori xdxd" << endl;
+        //    isDead = true;
+        //}else{
             //No se movio
             if(e->getPosition()->getRow() == jsonObj["position"][0] && e->getPosition()->getColumn() == jsonObj["position"][1]){
 
@@ -427,7 +419,7 @@ void GameManager::updatePlayerPosition(const string& pJson) {
                 e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
                 Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
                 Board::playerHasMoved = true;
-
+                e->getPosition()->printPosition();
                 checkSafeZone(e);
 
 
@@ -435,7 +427,7 @@ void GameManager::updatePlayerPosition(const string& pJson) {
                     Board::queueBreadCrumbingPlayer->push(e->getPosition());
                 }
             }
-        }
+        //}
     }
 }
 

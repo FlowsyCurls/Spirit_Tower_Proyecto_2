@@ -8,11 +8,12 @@
 
 #include "SimpleEnemy.h"
 
+
 class Chuchu: SimpleEnemy {
 
 private:
     //ATTRIBUTES
-
+    queue<Position*> * queueBresenham;
 
     //METHODS
     void startMovement() override;

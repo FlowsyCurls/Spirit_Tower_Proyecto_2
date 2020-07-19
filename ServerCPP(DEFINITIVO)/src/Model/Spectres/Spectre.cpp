@@ -8,6 +8,7 @@
 
 vector<Spectre*> *Spectre::listOfSpectres = new vector<Spectre*>();
 bool Spectre::isOnPersuit = false;
+bool Spectre::backtracking = false;
 
 Spectre::Spectre(string pId, string pType, vector<Position*>* pPatrolRoute,  int pRouteVelocity,
                  int pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType) : Entity(pId, pType, pPosition) {
@@ -96,7 +97,6 @@ void Spectre::moveRoutePatrol(){
     if(queuePatrolRoute->empty()){
         resetPatrolQueue();
     }else{
-        //this_thread::sleep_for(chrono::milliseconds(routeVelocity));
         sleep(1);
         moveToPos(queuePatrolRoute->front());
         queuePatrolRoute->pop();
@@ -107,8 +107,6 @@ void Spectre::moveRoutePatrol(){
 
 void Spectre::movePersuit(){
 
-    //this_thread::sleep_for(chrono::milliseconds(persuitVelocity));
-    sleep(1);
     if(useBreadcrumbing){
         moveBreadcrumbing();
     }else{
@@ -140,8 +138,8 @@ void Spectre::moveAStar(){
 }
 
 void Spectre::moveBacktracking(){
-    //this_thread::sleep_for(chrono::milliseconds(persuitVelocity));
-    sleep(1);
+    this_thread::sleep_for(chrono::milliseconds(persuitVelocity));
+    //sleep(1);
     if(queueBackTracking != nullptr && !queueBackTracking->empty()){
         moveToPos(queueBackTracking->front());
         queueBackTracking->pop();
@@ -156,15 +154,18 @@ void Spectre::moveNext() {
 
     while(true){
         if(paralize){
-            sleep(5);
+            sleep(paralizeTime);
             paralize = false;
         }
         if(queueBackTracking != nullptr && backtracking && !queueBackTracking->empty()){
+            this_thread::sleep_for(chrono::milliseconds(routeVelocity));
             moveBacktracking();
         }else{
             if(!isOnPersuit){
+                this_thread::sleep_for(chrono::milliseconds(routeVelocity));
                 moveRoutePatrol();
             }else{
+                this_thread::sleep_for(chrono::milliseconds(persuitVelocity));
                 movePersuit();
             }
         }
@@ -220,6 +221,7 @@ Spectre *Spectre::getSpectreByID(string pId) {
  */
 void Spectre::sendSignalToStopPersuit() {
     isOnPersuit = false;
+    backtracking = true;
     for(auto & spectre : *listOfSpectres){
         spectre->useBreadcrumbing = false;
     }
@@ -257,84 +259,71 @@ void Spectre::checkVisionRange() {
                 if(getDirection() == "north"){
                     posTemp = getPosition()->getRow();
                     posTemp--;
-                    if(posTemp < 0 || posTemp >= 20){
-                        break;
+                    if(posTemp >= 0 && posTemp < 20){
+                        if (!Board::isBlocked(posTemp,getPosition()->getColumn())){
+                            if(Board::matriz[posTemp][getPosition()->getColumn()]->getEntity() == "ju01"){
+                                cout << "Spectre: "+ this->getId() + " just saw the player!" << endl;
+                                sendSignalToPersuit();
+                                break;
+                            }else if(Board::matriz[posTemp][getPosition()->getColumn()]->getEntity().substr(0,2).compare("mo") == 0){
+                                //cout << getId() << " paralized because saw the mouse "<< Board::matriz[getPosition()->getRow()][posTemp]->getEntity() << endl;
+                                paralize = true;
+                            }
+                        }
                     }
-                    //cout << posTemp << endl;
-                    if (Board::isBlocked(posTemp,getPosition()->getColumn())){
-                        break;
-                    }
-                    if(Board::matriz[posTemp][getPosition()->getColumn()]->getEntity() == "ju01"){
-                        cout << "Spectre: "+ this->getId() + " just saw the player!" << endl;
-                        sendSignalToPersuit();
-                        break;
-                    }else if(Board::matriz[posTemp][getPosition()->getColumn()]->getEntity().substr(0,2).compare("mo") == 0){
-                        //cout << getId() << " paralized because saw the mouse "<< Board::matriz[getPosition()->getRow()][posTemp]->getEntity() << endl;
-                        paralize = true;
-                    }
+
                 }else if(getDirection() == "south"){
                     posTemp = getPosition()->getRow();
                     posTemp++;
-                    if(posTemp < 0 || posTemp >= 20){
-                        break;
+                    if(posTemp >= 0 && posTemp < 20){
+                        if (!Board::isBlocked(posTemp,getPosition()->getColumn())){
+                            if(Board::matriz[posTemp][getPosition()->getColumn()]->getEntity() == "ju01"){
+                                cout << "Spectre: "+ this->getId() + " just saw the player!" << endl;
+                                sendSignalToPersuit();
+                                break;
+                            }else if(Board::matriz[posTemp][getPosition()->getColumn()]->getEntity().substr(0,2).compare("mo") == 0){
+                                //cout << getId() << " paralized because saw the mouse "<< Board::matriz[getPosition()->getRow()][posTemp]->getEntity() << endl;
+                                paralize = true;
+                            }
+                        }
                     }
-                    if (Board::isBlocked(posTemp,getPosition()->getColumn())){
-                        break;
-                    }
-                    if(Board::matriz[posTemp][getPosition()->getColumn()]->getEntity() == "ju01"){
-                        cout << "Spectre: "+ this->getId() + " just saw the player!" << endl;
-                        sendSignalToPersuit();
-                        break;
-                    }else if(Board::matriz[posTemp][getPosition()->getColumn()]->getEntity().substr(0,2).compare("mo") == 0){
-                        //cout << getId() << " paralized because saw the mouse "<< Board::matriz[getPosition()->getRow()][posTemp]->getEntity() << endl;
-                        paralize = true;
-                    }
+
 
                 }else if(getDirection() == "east"){
                     posTemp = getPosition()->getColumn();
                     posTemp++;
-                    if(posTemp < 0 || posTemp >= 20){
-                        break;
-                    }
-                    if (Board::isBlocked(getPosition()->getRow(),posTemp)){
-                        break;
-                    }
-                    if(Board::matriz[getPosition()->getRow()][posTemp]->getEntity() == "ju01") {
-                        cout << "Spectre: " + this->getId() + " just saw the player!" << endl;
-                        sendSignalToPersuit();
-                        break;
-                    }else if(Board::matriz[getPosition()->getRow()][posTemp]->getEntity().substr(0,2).compare("mo") == 0){
-                        //cout << getId() << " paralized because saw the mouse "<< Board::matriz[getPosition()->getRow()][posTemp]->getEntity() << endl;
-                        paralize = true;
+                    if(posTemp >= 0 && posTemp < 20){
+                        if (!Board::isBlocked(getPosition()->getRow(),posTemp)){
+                            if(Board::matriz[getPosition()->getRow()][posTemp]->getEntity() == "ju01") {
+                                cout << "Spectre: " + this->getId() + " just saw the player!" << endl;
+                                sendSignalToPersuit();
+                                break;
+                            }else if(Board::matriz[getPosition()->getRow()][posTemp]->getEntity().substr(0,2).compare("mo") == 0){
+                                //cout << getId() << " paralized because saw the mouse "<< Board::matriz[getPosition()->getRow()][posTemp]->getEntity() << endl;
+                                paralize = true;
+                            }
+                        }
                     }
 
                 }else if(getDirection() == "west"){
                     posTemp = getPosition()->getColumn();
                     posTemp--;
-                    if(posTemp < 0 || posTemp >= 20){
-                        break;
-                    }
-                    if (Board::isBlocked(getPosition()->getRow(),posTemp)){
-                        break;
-                    }
-                    else if(Board::matriz[getPosition()->getRow()][posTemp]->getEntity() == "ju01") {
-                        cout << "Spectre: " + this->getId() + " just saw the player!" << endl;
-                        sendSignalToPersuit();
-                        break;
-                    }else if(Board::matriz[getPosition()->getRow()][posTemp]->getEntity().substr(0,2).compare("mo") == 0){
-                        //cout << getId() << " paralized because saw the mouse "<< Board::matriz[getPosition()->getRow()][posTemp]->getEntity() << endl;
-                        paralize = true;
+                    if(posTemp >= 0 && posTemp < 20){
+                        if (!Board::isBlocked(getPosition()->getRow(),posTemp)){
+                            if(Board::matriz[getPosition()->getRow()][posTemp]->getEntity() == "ju01") {
+                                cout << "Spectre: " + this->getId() + " just saw the player!" << endl;
+                                sendSignalToPersuit();
+                                break;
+                            }else if(Board::matriz[getPosition()->getRow()][posTemp]->getEntity().substr(0,2).compare("mo") == 0){
+                                //cout << getId() << " paralized because saw the mouse "<< Board::matriz[getPosition()->getRow()][posTemp]->getEntity() << endl;
+                                paralize = true;
+                            }
+                        }
                     }
                 }
             }
-
-
         }
-
     }
-
-
-
 }
 
 

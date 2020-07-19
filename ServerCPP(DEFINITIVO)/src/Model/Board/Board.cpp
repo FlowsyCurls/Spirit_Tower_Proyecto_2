@@ -105,7 +105,6 @@ void Board::printMatrizStar() {
  */
 bool Board::checkPlayerOfSafeZone(Entity * player) {
 
-
     if(player != nullptr){
         if(matriz[player->getPosition()->getRow()][player->getPosition()->getColumn()]->getCellType() == SAFEZONE){
             cout << "********************El jugador entro a safezone********************"<< endl;
@@ -134,9 +133,9 @@ Board::Board() {
 
 bool Board::isBlocked(int row, int col) {
 
-    if(row <20 && col <20){
-        return matriz[row][col]->getCellType() != NORMAL;
-    }
+
+    return matriz[row][col]->getCellType() != NORMAL;
+
 
 
 }

@@ -38,6 +38,8 @@ private:
     int persuitVelocity;
     int visionRange;
 
+    int paralizeTime = 5;
+
     bool teleport = false;
     bool paralize = false;
 
@@ -46,7 +48,7 @@ private:
 
 public:
 
-    bool backtracking = false;
+    static bool backtracking;
     static bool isOnPersuit;
     //Constructor
     Spectre(string pId, string pType, vector<Position*>* pPatrolRoute, int pRouteVelocity,

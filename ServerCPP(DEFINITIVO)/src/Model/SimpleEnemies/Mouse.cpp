@@ -51,24 +51,29 @@ void Mouse::moveRandomly() {
                     if(Board::matriz[getEntityPosition()->getRow()-1][getEntityPosition()->getColumn()]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()-1][getEntityPosition()->getColumn()]->getEntity().compare("")==0){
                         searchAvailable = false;
                         nextPos = new Position(getEntityPosition()->getRow()-1,getEntityPosition()->getColumn());
+                        setEntityDirection("north");
+
                     }
                     break;
                 case 2: //sur
                     if(Board::matriz[getEntityPosition()->getRow()+1][getEntityPosition()->getColumn()]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()+1][getEntityPosition()->getColumn()]->getEntity().compare("")==0){
                         searchAvailable = false;
                         nextPos = new Position(getEntityPosition()->getRow()+1,getEntityPosition()->getColumn());
+                        setEntityDirection("south");
                     }
                     break;
                 case 3: //este
                     if(Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()+1]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()+1]->getEntity().compare("")==0){
                         searchAvailable = false;
                         nextPos = new Position(getEntityPosition()->getRow(),getEntityPosition()->getColumn()+1);
+                        setEntityDirection("east");
                     }
                     break;
                 case 4: //oeste
                     if(Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()-1]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()-1]->getEntity().compare("")==0){
                         searchAvailable = false;
                         nextPos = new Position(getEntityPosition()->getRow(),getEntityPosition()->getColumn()-1);
+                        setEntityDirection("west");
                     }
                     break;
             }
@@ -80,5 +85,4 @@ void Mouse::moveRandomly() {
 
     }
 }
-
 

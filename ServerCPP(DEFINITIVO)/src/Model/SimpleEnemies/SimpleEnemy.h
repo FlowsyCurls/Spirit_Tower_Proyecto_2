@@ -63,6 +63,7 @@ public:
     Position *getEntityPosition();
     void setEntityPosition(Position * pPosition);
     void setMyPos(graph* pGraph);
+    void setEntityDirection(string pDirection);
 };
 
 #endif //SERVER_SIMPLEENEMY_H
