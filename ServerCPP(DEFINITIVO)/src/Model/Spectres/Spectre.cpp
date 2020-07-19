@@ -138,8 +138,7 @@ void Spectre::moveAStar(){
 }
 
 void Spectre::moveBacktracking(){
-    this_thread::sleep_for(chrono::milliseconds(persuitVelocity));
-    //sleep(1);
+
     if(queueBackTracking != nullptr && !queueBackTracking->empty()){
         moveToPos(queueBackTracking->front());
         queueBackTracking->pop();
