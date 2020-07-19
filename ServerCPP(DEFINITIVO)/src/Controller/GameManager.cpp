@@ -127,9 +127,19 @@ void GameManager::updateGame() {
 
 void GameManager::checkSafeZone(Entity * player) {
     if(Board::checkPlayerOfSafeZone(player)){
+        Spectre::stopVision = true;
+        Board::queueBreadCrumbingPlayer = nullptr;
         Spectre::sendSignalToStopPersuit();
     }else{
-        Spectre::backtracking = false;
+        //Spectre::backtracking = false;
+        Spectre::stopVision = false;
+        if(Board::queueBreadCrumbingPlayer == nullptr){
+            Board::queueBreadCrumbingPlayer = new queue<Position*>();
+        }
+        if(Spectre::isOnPersuit){
+            Board::queueBreadCrumbingPlayer->push(player->getPosition());
+        }
+
     }
 }
 
@@ -421,11 +431,6 @@ void GameManager::updatePlayerPosition(const string& pJson) {
                 Board::playerHasMoved = true;
                 e->getPosition()->printPosition();
                 checkSafeZone(e);
-
-
-                if(Spectre::isOnPersuit){
-                    Board::queueBreadCrumbingPlayer->push(e->getPosition());
-                }
             }
         //}
     }

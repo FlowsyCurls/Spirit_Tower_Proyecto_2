@@ -72,7 +72,7 @@ double calculateHValue(int row, int col, Pair dest)
 // to destination
 queue<Position*>* tracePath(cell cellDetails[][COL], Pair dest)
 {
-    printf ("\nSe ha calculado una ruta A* nuevamente: ");
+    //printf ("\nSe ha calculado una ruta A* nuevamente: ");
     int row = dest.first;
     int col = dest.second;
     int count = 0;
@@ -90,13 +90,12 @@ queue<Position*>* tracePath(cell cellDetails[][COL], Pair dest)
 
     Path.push (make_pair (row, col));
     queue<Position*> * astarRoute = new queue<Position*>();
-    while (!Path.empty() && count <3)
+    while (!Path.empty())
     {
         pair<int,int> p = Path.top();
         astarRoute->push(new Position(p.first,p.second));
         Path.pop();
-        printf("-> (%d,%d) ",p.first,p.second);
-        count++;
+        //printf("-> (%d,%d) ",p.first,p.second);
     }
     cout << endl;
     return astarRoute;

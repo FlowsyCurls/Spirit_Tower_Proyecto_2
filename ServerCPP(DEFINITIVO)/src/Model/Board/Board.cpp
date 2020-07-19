@@ -7,7 +7,7 @@
 Cell *Board::matriz[20][20] = {};
 int Board::matrizStar[20][20] = {};
 bool Board::playerHasMoved = false;
-queue<Position*>* Board::queueBreadCrumbingPlayer = new queue<Position*>();
+queue<Position*>* Board::queueBreadCrumbingPlayer = nullptr;
 
 /**
  * Actualiza la matriz que se utiliza en el algoritmo a star
@@ -16,7 +16,7 @@ void Board::updateMatrizStar() {
 
     for(int i = 0; i < 20; i++){
         for(int e = 0; e < 20; e++){
-            if(matriz[i][e] != nullptr && matriz[i][e]->getCellType() == NORMAL ){
+            if(matriz[i][e] != nullptr && matriz[i][e]->getCellType() == NORMAL){
 
                 if(!matriz[i][e]->getEntity().empty()){
                     //cout << board.matriz[i][e]->getEntity().substr(0,2) << endl;
@@ -129,6 +129,7 @@ void Board::setMatrizJson(const string &pMatrizJson) {
 
 Board::Board() {
     listOfEntitys = Entity::listOfEntitys;
+    queueBreadCrumbingPlayer = new queue<Position*>();
 }
 
 bool Board::isBlocked(int row, int col) {
