@@ -1,34 +1,44 @@
+//
+// Created by Jeykime on 7/20/2020.
+//
+
 #ifndef SERVER_SPECTRUM_H
 #define SERVER_SPECTRUM_H
 
+#include <iostream>
+#include <iomanip>
+#include <vector>
 
-#include "Unit.h"
+using namespace std;
 
-class Spectrum : public Unit {
-
-protected:
-    double routeSpeed;
-    double chaseSpeed;
+class Spectrum {
+private:
+    string id;
+    int routeSpeed;
+    int chaseSpeed;
     int sightRange;
-    vector<Spectrum *> *siblingsList= new vector<Spectrum *> ; // List for siblings
 
 
 public:
-    explicit Spectrum(string pId1, double pRouteSpeed=0, double pChaseSpeed=0, int pSightRange=0);
+    explicit Spectrum(const string& pId, int pRouteSpeed=0, int pChaseSpeed=0, int pSightRange=0);
 
-    double getChaseSpeed() const;
-    double getRouteSpeed() const;
+    int sum() const;
+    void toString();
+
+    const string &getId() const;
+    void setId(const string &id);
+
+    int getRouteSpeed() const;
+    void setRouteSpeed(int pRouteSpeed);
+
+    int getChaseSpeed() const;
+    void setChaseSpeed(int pChaseSpeed);
+
     int getSightRange() const;
-    vector<Spectrum *> *getBrotherhoodList() const;
-
-    void setChaseSpeed(double pChaseSpeed);
-    void setRouteSpeed(double pRouteSpeed);
     void setSightRange(int pSightRange);
-    void setBrotherhoodList(vector<Spectrum *> *pBrotherhoodList);
-    double sum() const;
 
-    void toString() override;
 
+    bool compareStats(Spectrum *&pSpectrum);
 };
 
 

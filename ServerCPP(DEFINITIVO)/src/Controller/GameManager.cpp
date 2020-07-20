@@ -83,6 +83,7 @@ void GameManager::loadGame(int pLevel) {
     loadGameFromJSON(JSON);
     Board::printBoardCellType();
     Board::printBoardEntity();
+    geneticManager->setlistOfPopulation();
     GameManager::setGraphs();
     generateEntityLastStatusJSON();
 

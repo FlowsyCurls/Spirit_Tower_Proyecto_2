@@ -1,13 +1,49 @@
-#include <iomanip>
-#include "Spectrum.h"
-#include "GeneticManager.h"
+//
+// Created by Jeykime on 7/20/2020.
+//
 
-Spectrum::Spectrum(string pId, double pRouteSpeed, double pChaseSpeed, int pSightRange) : Unit(pId) {
+
+#include "Spectrum.h"
+
+Spectrum::Spectrum(const string& pId, int pRouteSpeed, int pChaseSpeed, int pSightRange) {
     id = pId;
     routeSpeed = pRouteSpeed;
     chaseSpeed = pChaseSpeed;
     sightRange = pSightRange;
-    GeneticManager::increaseTotalSpectrums();
+}
+
+
+const string &Spectrum::getId() const {
+    return id;
+}
+
+void Spectrum::setId(const string &id) {
+    Spectrum::id = id;
+}
+
+
+int Spectrum::getRouteSpeed() const {
+    return routeSpeed;
+}
+
+void Spectrum::setRouteSpeed(int pRouteSpeed) {
+    Spectrum::routeSpeed = pRouteSpeed;
+}
+
+int Spectrum::getChaseSpeed() const {
+    return chaseSpeed;
+}
+
+void Spectrum::setChaseSpeed(int pChaseSpeed) {
+    Spectrum::chaseSpeed = pChaseSpeed;
+}
+
+int Spectrum::getSightRange() const {
+    return sightRange;
+}
+
+void Spectrum::setSightRange(int pSightRange) {
+    Spectrum::sightRange = pSightRange;
 }
 
 void Spectrum::toString() {
@@ -20,43 +56,19 @@ void Spectrum::toString() {
          sightRange << endl;
 }
 
-double Spectrum::getChaseSpeed() const {
-    return chaseSpeed;
-}
-
-void Spectrum::setChaseSpeed(double pChaseSpeed) {
-    Spectrum::chaseSpeed = pChaseSpeed;
-}
-
-double Spectrum::getRouteSpeed() const {
-    return routeSpeed;
-}
-
-vector<Spectrum *> *Spectrum::getBrotherhoodList() const {
-    return siblingsList;
-}
-
-void Spectrum::setRouteSpeed(double pRouteSpeed) {
-    Spectrum::routeSpeed = pRouteSpeed;
-}
-
-int Spectrum::getSightRange() const {
-    return sightRange;
-}
-
-void Spectrum::setSightRange(int pSightRange) {
-    Spectrum::sightRange = pSightRange;
-}
-
-void Spectrum::setBrotherhoodList(vector<Spectrum *> *pBrotherhoodList) {
-    Spectrum::siblingsList = pBrotherhoodList;
-
-}
-
-double Spectrum::sum() const {
-    double sum;
-    sum = routeSpeed + chaseSpeed;
+int Spectrum::sum() const {
+    int sum;
+    sum = routeSpeed + chaseSpeed + sightRange;
     return sum;
+}
+
+bool Spectrum::compareStats(Spectrum *&pSpectrum) {
+    if (this->sum() < pSpectrum->sum()){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 

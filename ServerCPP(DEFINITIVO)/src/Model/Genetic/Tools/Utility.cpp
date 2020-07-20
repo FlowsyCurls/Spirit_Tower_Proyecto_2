@@ -12,7 +12,7 @@ int Utility::Random(int pMin, int pMax) {
 //    const int random_num = (int) dist(rng);
 //    return random_num;
     double randNum = rand() % (pMax - pMin + 1) + pMin;
-    return randNum;
+    return (int) randNum;
 }
 
 string Utility::decToBinary(int pDecimal)
@@ -49,7 +49,7 @@ int Utility::binToDec(int pBinary)
     return (int)decimal;
 }
 
-vector<string> Utility::split(string pString, string delimiter) {
+vector<string> Utility::split(string pString, const string& delimiter) {
     size_t pos = 0;
     string token;
     vector<string> split;

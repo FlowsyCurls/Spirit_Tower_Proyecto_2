@@ -1,59 +1,69 @@
+//
+// Created by Jeykime on 7/20/2020.
+//
+
 #ifndef SERVER_GENETICMANAGER_H
 #define SERVER_GENETICMANAGER_H
 
-
+#include <iostream>
 #include <vector>
 #include <map>
 #include "Spectrum.h"
-#include "Crossbreed.h"
+#include "Population.h"
+#include "../Spectres/Spectre.h"
+
+
+using namespace std;
 
 class GeneticManager {
 
 private:
-    static int totalSpectres;
-    bool isPrimary = true;
-    vector<Spectrum *>* listOfSpectrums = new vector<Spectrum*>; /* List for population */
-    Crossbreed *crossbreed = new Crossbreed(); // Class in charge of reproducing the spectre.
-    map<double, double> speedsDictionary = {
-            { 1, 0.5 },
-            { 2, 1.0 },
-            { 3, 1.5 },
-            { 4, 2.0 },
-            { 5, 2.5 },
-            { 6, 3.0 },
-            { 7, 3.5 },
-            { 8, 4.0 },
-            { 9, 4.5 }
-    };
+    static GeneticManager* instance;
+    static GeneticManager* geneticManager;
 
-    // Methods.
-    static int getRandom() ;
-    void assignToSpectre(vector<Spectrum *> *pList);
-    static void printListOfSpectres();
-    void setGroup(); // After First Generation.
-    void setPrimaryGroup(); //First Generation with random attributes.
+    //CONSTRUCTOR
+    GeneticManager();
+
+    //ATTRIBUTES
+    int genMarker = 0;
+    bool isFirst = true;
+    vector<Population *> *listOfPopulation = new vector<Population *>;
+    vector<Spectrum *> *testList = new vector<Spectrum *>;
+    map<int, float> speedsDictionary = {
+            {0, 4.0},
+            {1, 3.5},
+            {2, 3.0},
+            {3, 2.5},
+            {4, 2.0},
+            {5, 1.5},
+            {6, 1.0},
+            {7, 0.5}};
+    map<int, int> visionDictionary = {
+            {0, 1},
+            {1, 2},
+            {2, 2},
+            {3, 3},
+            {4, 3},
+            {5, 4},
+            {6, 4},
+            {7, 5}};
+
+    //METHODS
+    void assignToSpectre();
+    void printListOfSpectres();
+
 
 public:
-    static int maxRandom;
-    static int minRandom;
-    static int totalSample;
-
-
-    //Constructor
-    GeneticManager()= default;;
-
-    //Server Function
-    void loadGenetic();
-
-    //Getters and setters
-    static Spectrum* chooseBestSpectrum(vector<Spectrum *> *pList); // Select best of a given list.
-    static void increaseTotalSpectrums();
-    static string generateId();
-    void setListOfSpectrum(vector<Spectrum *> *listOfSpectrum);
-
+    //METHODS
+    static GeneticManager *getInstance();
+    void setlistOfPopulation(); // Generation.
+    void setTestList(vector<Spectrum *> *pTestList);
 
 
 };
+
+
+
 
 
 #endif //SERVER_GENETICMANAGER_H

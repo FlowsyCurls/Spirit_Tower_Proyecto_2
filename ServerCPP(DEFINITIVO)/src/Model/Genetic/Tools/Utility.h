@@ -45,7 +45,7 @@ public:
      * @param pString
      * @return
      */
-    static vector<string> split(string pString, string delimiter);
+    static vector<string> split(string pString, const string& delimiter);
 };
 
 
