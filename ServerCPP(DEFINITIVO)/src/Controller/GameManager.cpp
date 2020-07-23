@@ -158,11 +158,17 @@ void GameManager::threadVision() {
  * Da comienzo al movimiento de los espectros (threads)
  */
 void GameManager::clearAll() {
-    Entity::listOfEntitys->clear();
+    //Entity::listOfEntitys->clear();
     SimpleEnemy::clear();
-    Spectre::listOfSpectres->clear();
-    SpectralEye::listOfSpectralEyes->clear();
-    Mouse::listOfMice->clear();
+    //Spectre::listOfSpectres->clear();
+    Spectre::clear();
+    //SpectralEye::listOfSpectralEyes->clear();
+    SpectralEye::clear();
+    //Mouse::listOfMice->clear();
+    Mouse::clear();
+    Entity::clearAll();
+    //free(board);
+    //board = new Board();
 }
 
 void GameManager::initialEntitiesFunctions() {

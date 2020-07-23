@@ -30,6 +30,7 @@ public:
     //METHODS
     void setEyeGraph();
     void checkVisionRange();
+    static void clear();
 
     //SETTER & GETTERS
     static Position * getWhereToTeleport();

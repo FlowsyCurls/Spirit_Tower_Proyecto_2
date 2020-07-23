@@ -64,6 +64,8 @@ public:
     void setEntityPosition(Position * pPosition);
     void setMyPos(graph* pGraph);
     void setEntityDirection(string pDirection);
+    void setEntityPause(bool pPause);
+    bool getEntityPause();
 };
 
 #endif //SERVER_SIMPLEENEMY_H

@@ -194,6 +194,14 @@ void SpectralEye::callSpectres() {
 //    cout << "* Signal sent!" << endl;
 }
 
+void SpectralEye::clear() {
+
+    for(int i = 0; i < listOfSpectralEyes->size(); i++){
+        listOfSpectralEyes->at(i)->setEntityPause(true);
+    }
+    listOfSpectralEyes->clear();
+    //listOfSpectralEyes = new vector<SpectralEye*>();
+}
 
 
 

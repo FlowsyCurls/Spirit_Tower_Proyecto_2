@@ -17,6 +17,7 @@ private:
      string type;
      Position *position;
      string direction;
+     bool pause = false;
 
 public:
     //Atributos
@@ -37,7 +38,9 @@ public:
     static Entity* getEntityByID(string id);
     void setDirection(string pDirection);
     string getDirection();
-
+    static void clearAll();
+    bool getPause();
+    void setPause(bool pPause);
 };
 
 

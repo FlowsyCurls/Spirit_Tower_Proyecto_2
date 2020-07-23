@@ -23,6 +23,7 @@ public:
     void startMovement() override;
     //ATTRIBUTES
     static vector<Mouse*> *listOfMice;
+    static void clear();
 };
 
 

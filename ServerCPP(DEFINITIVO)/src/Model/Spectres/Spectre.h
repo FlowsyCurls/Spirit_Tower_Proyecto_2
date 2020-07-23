@@ -104,6 +104,7 @@ public:
     void printSpectre();
     string getSpectreId();
     string getSpectreType();
+    static void clear();
 
 };
 

@@ -152,7 +152,7 @@ void Spectre::moveBacktracking(){
  */
 void Spectre::moveNext() {
 
-    while(true){
+    while(!getPause()){
         if(paralize){
             sleep(paralizeTime);
             paralize = false;
@@ -247,7 +247,7 @@ void Spectre::sendSignalToPersuit() {
  */
 void Spectre::checkVisionRange() {
 
-    while(true){
+    while(!getPause()){
 
         if(!isOnPersuit){
 
@@ -401,4 +401,12 @@ void Spectre::resetPatrolQueue() {
         queuePatrolRoute->push(patrolRoute->at(i));
     }
 
+}
+
+void Spectre::clear() {
+    for(int i = 0; i < listOfSpectres->size(); i++){
+        listOfSpectres->at(i)->setPause(true);
+    }
+    listOfSpectres->clear();
+    //listOfSpectres = new vector<Spectre*>();
 }

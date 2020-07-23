@@ -74,3 +74,19 @@ void Entity::setDirection(string pDirection) {
 string Entity::getDirection() {
     return direction;
 }
+
+void Entity::clearAll() {
+    for(int i = 0; i < listOfEntitys->size(); i++){
+        listOfEntitys->at(i)->setPause(true);
+    }
+    listOfEntitys->clear();
+    //listOfEntitys = new vector<Entity*>();
+}
+
+bool Entity::getPause() {
+    return pause;
+}
+
+void Entity::setPause(bool pPause) {
+    pause = pPause;
+}

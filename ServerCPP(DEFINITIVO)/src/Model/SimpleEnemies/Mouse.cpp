@@ -34,7 +34,7 @@ void Mouse::startMovement() {
  */
 void Mouse::moveRandomly() {
 
-    while(true){
+    while(!getEntityPause()){
 
         sleep(1);
 
@@ -84,5 +84,14 @@ void Mouse::moveRandomly() {
         Board::matriz[nextPos->getRow()][nextPos->getColumn()]->setEntity(getEntityId());
 
     }
+}
+
+void Mouse::clear() {
+
+    for(int i = 0; i < listOfMice->size();i++){
+        listOfMice->at(i)->setEntityPause(true);
+    }
+    listOfMice->clear();
+    //listOfMice = new vector<Mouse*>();
 }
 
