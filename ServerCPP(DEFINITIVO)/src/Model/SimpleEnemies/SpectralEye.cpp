@@ -6,6 +6,7 @@
 
 vector<SpectralEye*> *SpectralEye::listOfSpectralEyes = new vector<SpectralEye*>();
 Position* SpectralEye::tpSpot = new Position();
+string SpectralEye::lastSeen = "";
 
 SpectralEye::SpectralEye(const string &pId, const string &pType, int pVisionRange, Position* pPosition)
 : SimpleEnemy(pId, pType, pPosition)
@@ -144,10 +145,8 @@ void SpectralEye::checkVisionRange()
             // signal
             if (Board::matriz[neighbour->row][neighbour->col]->getEntity() == "ju01") {
 //                cout << "Eye: " + getEntityId() + " just saw the player!" << endl;
-
-                cout  << "EYE : " << getEntityId() << " | "; getEntityPosition()->printPosition();
-                cout  << "\nSAW IN : " << neighbour->row << ", " << neighbour->col << endl;
-
+//                cout  << "EYE : " << getEntityId() << " | "; getEntityPosition()->printPosition();
+//                cout  << "\nSAW IN : " << neighbour->row << ", " << neighbour->col << endl;
                 callSpectres();
                 frontier.empty();
                 break;
@@ -164,6 +163,27 @@ void SpectralEye::checkVisionRange()
 }
 
 /**
+ * Send signal to the spectres.
+ */
+void SpectralEye::callSpectres() {
+//set previews.
+    if (Spectre::isOnPersuit  &&  (lastSeen == this->getEntityId())){
+        return;
+    }
+    lastSeen = this->getEntityId();
+    setWhereToTeleport();
+    for (auto &spectre : *Spectre::listOfSpectres) {
+        // search for the blue spectre welcome to teleport.
+        if (spectre->getSpectreType() == "spectre_blue") {
+            spectre->setTeleport(true);
+            break;
+        }
+    }
+
+}
+
+
+/**
  * Search for a free node to teleport the spectrum and set it to the reserved variable.
  */
 void SpectralEye::setWhereToTeleport() {
@@ -173,29 +193,8 @@ void SpectralEye::setWhereToTeleport() {
     tpSpot->setColumn(myPos->neighbours->front()->col);
 }
 
-/**
- * Send signal to the spectres.
- */
-void SpectralEye::callSpectres() {
-//set previews.
-    setWhereToTeleport();
-
-//    bool availableToTeleport = true;
-//    for (auto &spectre : *Spectre::listOfSpectres) {
-//        // search for the blue spectre welcome to teleport.
-//        if (availableToTeleport && spectre->getSpectreType()=="spectre_blue") {
-//            spectre->setTeleport(true);
-//            availableToTeleport = false;
-//        }
-//        spectre->setIsOnPersuit(true);
-//    }
-//    Board::playerOnPersuit = true;
-//    Board::queueBreadCrumbingPlayer = new queue<Position*>();
-//    cout << "* Signal sent!" << endl;
-}
 
 void SpectralEye::clear() {
-
     for(int i = 0; i < listOfSpectralEyes->size(); i++){
         listOfSpectralEyes->at(i)->setEntityPause(true);
     }

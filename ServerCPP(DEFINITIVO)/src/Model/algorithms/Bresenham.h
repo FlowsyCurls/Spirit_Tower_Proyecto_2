@@ -115,23 +115,23 @@ vector<int> fixList(vector <int> const &vec){
  * @param vec Lista a visualizar
  */
 void print(vector <int> const &vec) {
-    cout << "The path in the oder x,y is : ";
+    //cout << "The path in the oder x,y is : ";
     for(int i=0; i < vec.size(); i++){
-        cout << vec.at(i) << ' ';
+        //cout << vec.at(i) << ' ';
     }
-    cout << endl;
+   //cout << endl;
 }
 
 void printVector(vector<Position*>* toPrint){
     if (toPrint->empty()){
-        cout << "[empty]" << endl;
+        //cout << "[empty]" << endl;
     } else{
-        cout << "[";
+        //cout << "[";
         for (auto & i : *toPrint){
-            i->printPosition();
-            cout << ", ";
+            //i->printPosition();
+            //cout << ", ";
         }
-        cout << "]" << endl;
+        //cout << "]" << endl;
     }
 }
 /**
@@ -178,7 +178,7 @@ queue<Position*>* bresenham(Pair src, Pair dest){
         }
     }
     finalRoute = parsePath(resultPath);
-    cout << "Algoritmo de Bresenham calculado: ";
+    //cout << "Algoritmo de Bresenham calculado: ";
     //printVector(finalRoute);
     return finalRoute;
 }

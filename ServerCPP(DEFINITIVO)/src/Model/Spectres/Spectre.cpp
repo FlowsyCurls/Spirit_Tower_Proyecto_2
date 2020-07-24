@@ -123,11 +123,14 @@ void Spectre::moveBreadcrumbing(){
     if(!Board::queueBreadCrumbingPlayer->empty()){
         Position * p = new Position(Board::queueBreadCrumbingPlayer->front()->getRow(), Board::queueBreadCrumbingPlayer->front()->getColumn());
         moveToPos(p);
-        Board::queueBreadCrumbingPlayer->front()->printPosition();
         queueBackTracking->push_back(new Position(p->getRow(), p->getColumn()));
         Board::queueBreadCrumbingPlayer->pop_front();
     }
 
+}
+
+void Spectre::teleportToSpectre() {
+    moveToPos(SpectralEye::getWhereToTeleport());
 }
 
 void Spectre::moveAStar(){
@@ -145,9 +148,6 @@ void Spectre::moveBacktracking(){
 
     if(queueBackTracking != nullptr && !queueBackTracking->empty()){
         moveToPos(queueBackTracking->back());
-        if(getId() == "sp03"){
-            //queueBackTracking->back()->printPosition();
-        }
         queueBackTracking->pop_back();
     }else{
         backtracking = false;

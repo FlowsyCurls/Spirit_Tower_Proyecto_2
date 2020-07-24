@@ -5,7 +5,7 @@
 #include "SimpleEnemy.h"
 
 vector<SimpleEnemy*> *SimpleEnemy::listOfSimpleEnemies = new vector<SimpleEnemy*>();
-graph* SimpleEnemy::uniqueGraph = new graph();
+//graph* SimpleEnemy::uniqueGraph = new graph();
 
 
 SimpleEnemy::SimpleEnemy(const string& pId, const string& pType, Position *pPosition)
@@ -162,7 +162,7 @@ void SimpleEnemy::clear() {
     }
     listOfSimpleEnemies->clear();
     //listOfSimpleEnemies = new vector<SimpleEnemy*>();
-    uniqueGraph = new graph();
+    //uniqueGraph = new graph();
 }
 
 void SimpleEnemy::setEntityPosition(Position *pPosition) {

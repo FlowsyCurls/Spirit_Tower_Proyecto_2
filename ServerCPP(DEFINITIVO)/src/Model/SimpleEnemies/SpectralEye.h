@@ -14,6 +14,7 @@ private:
     //ATTRIBUTES
     int visionRange = 0;
     static Position *tpSpot;
+    static string lastSeen;
 
     //METHODS
     vector<int> *getStartPos();
