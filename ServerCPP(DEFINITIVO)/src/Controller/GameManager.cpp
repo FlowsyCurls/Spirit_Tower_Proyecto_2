@@ -373,14 +373,14 @@ void GameManager::generateEntityLastStatusJSON() {
                 auto *blue = (Spectre*) (Entity::listOfEntitys->at(i));
                 if(blue->getTeleportTo()){
                     j2["teleport"] = blue->getTeleportTo();
-                    j2["position"][0] = blue->getTeleportPos()->getRow();
-                    j2["position"][1] = blue->getTeleportPos()->getColumn();
+                    j2["position"][0] = blue->getTeleportToPos()->getRow();
+                    j2["position"][1] = blue->getTeleportToPos()->getColumn();
                     blue->setTeleportTo(false);
                 }
                 else if(blue->getTeleportFrom()){
                     j2["teleport"] = blue->getTeleportFrom();
-                    j2["position"][0] = blue->getTeleportPos()->getRow();
-                    j2["position"][1] = blue->getTeleportPos()->getColumn();
+                    j2["position"][0] = blue->getTeleportFromPos()->getRow();
+                    j2["position"][1] = blue->getTeleportFromPos()->getColumn();
                     blue->setTeleportFrom(false);
                 }
             }

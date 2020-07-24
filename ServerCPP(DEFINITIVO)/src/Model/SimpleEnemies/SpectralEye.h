@@ -23,6 +23,7 @@ private:
     void callSpectres();
 
 public:
+
     SpectralEye(const string &pId, const string &pType, int pVisionRange, Position *pPosition);
 
     //ATTRIBUTES

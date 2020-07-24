@@ -147,13 +147,15 @@ void Spectre::moveAStar(){
 
 void Spectre::moveBacktracking(){
     if(queueBackTracking != nullptr && !queueBackTracking->empty()){
-        if (queueBackTracking->size() == 1){
-            if (queueBackTracking->back() == teleportToPos){
-                teleportFrom = true;
-            }
+        if (queueBackTracking->size() == 1 && queueBackTracking->back()->compare(teleportToPos)) {
+            moveToPos(teleportFromPos);
+            queueBackTracking->pop_back();
+            teleportFrom = true;
         }
-        moveToPos(queueBackTracking->back());
-        queueBackTracking->pop_back();
+        else {
+            moveToPos(queueBackTracking->back());
+            queueBackTracking->pop_back();
+        }
     }else{
         backtracking = false;
     }
@@ -435,11 +437,19 @@ deque<Position *> * Spectre::getDequeBackTracking() {
     return queueBackTracking;
 }
 
-Position *Spectre::getTeleportPos() const {
+Position *Spectre::getTeleportToPos() const {
     return teleportToPos;
 }
 
-void Spectre::setTeleportPos(Position *pTeleportPos) {
+Position *Spectre::getTeleportFromPos() const {
+    return teleportFromPos;
+}
+
+void Spectre::setTeleportFromPos(Position *pTeleportPos) {
+    Spectre::teleportFromPos = pTeleportPos;
+}
+
+void Spectre::setTeleportToPos(Position *pTeleportPos) {
     Spectre::teleportFromPos = getPosition();
     Spectre::teleportToPos = pTeleportPos;
     moveToPos(teleportToPos);
