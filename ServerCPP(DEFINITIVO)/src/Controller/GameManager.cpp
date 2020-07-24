@@ -128,7 +128,6 @@ void GameManager::updateGame() {
 
 void GameManager::checkSafeZone(Entity * player) {
     if(Board::checkPlayerOfSafeZone(player)){
-        //Spectre::stopVision = true;
         Board::queueBreadCrumbingPlayer = nullptr;
         Spectre::sendSignalToStopPersuit();
         if(Spectre::listOfSpectres != nullptr){
@@ -244,14 +243,11 @@ void GameManager::parseMatrizJSON(json pJSON) {
 void GameManager::parseJugadorJSON(json pJSON) {
 
     cout << "Cargando los datos del jugador desde el archivo JSON..." << endl;
-
     string id = pJSON["jugador"]["id"];
     string type = pJSON["jugador"]["type"];
     auto *position = new Position(pJSON["jugador"]["position"][0], pJSON["jugador"]["position"][1]);
     auto *jugador = new Jugador(id, type, position, 1);
     matrizJSON["startPos"] = pJSON["jugador"]["position"];
-
-
 }
 
 
@@ -268,7 +264,6 @@ void GameManager::parseSpectresJSON(json pJSON) {
         string id = pJSON["spectres"].at(i)["id"];
         string type = pJSON["spectres"].at(i)["type"];
         auto *position = new Position(pJSON["spectres"].at(i)["position"][0],pJSON["spectres"].at(i)["position"][1]);
-
         string direction = pJSON["spectres"].at(i)["direction"];
         int routeVelocity = pJSON["spectres"].at(i)["routeVelocity"];
         int persuitVelocity = pJSON["spectres"].at(i)["persuitVelocity"];
@@ -310,7 +305,6 @@ void GameManager::parseObjectsJSON(json pJSON) {
         auto *position = new Position(pJSON["objects"].at(i)["position"][0], pJSON["objects"].at(i)["position"][1]);
         if(type == "treasure"){
             auto *treasure = new Treasure(id, type, scorePoints, position);
-            //board.getListOfObjects()->push_back(treasure);
         }else{
             if(type == "jarron"){
                 int heartQuantity = pJSON["objects"].at(i)["heartQuantity"];
@@ -331,8 +325,7 @@ void GameManager::parseSimpleEnemiesJSON(json pJSON) {
         auto *position = new Position(pJSON["simpleEnemies"].at(i)["position"][0], pJSON["simpleEnemies"].at(i)["position"][1]);
 
         // EYE
-        if(type == "spectralEye")
-        {
+        if(type == "spectralEye"){
             int visionRange = pJSON["simpleEnemies"].at(i)["visionRange"];
             auto* eye = new SpectralEye(id, type, visionRange, position);
         }
@@ -387,8 +380,6 @@ void GameManager::generateEntityLastStatusJSON() {
             j["listOfEntitys"][i-1] = j2;
         }
     }
-
-
     entitysJSONString = j.dump();
     isDead = false;
 }

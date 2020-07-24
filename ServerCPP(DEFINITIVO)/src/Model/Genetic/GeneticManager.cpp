@@ -20,8 +20,9 @@ GeneticManager::GeneticManager() = default;
 void GeneticManager::printListOfSpectres() {
     cout << "------------> Spectres Static List <------------" << endl;
 //    for(auto & spectre : *Spectre::listOfSpectres)
-    for(auto & population : *listOfPopulation)
-    {
+    if(listOfPopulation != nullptr){
+        for(auto & population : *listOfPopulation)
+        {
 //        cout << std::setprecision(1) << std::fixed <<
 //             spectre->getId() << " |\t" <<
 //             spectre->getRouteVelocity() << "   " <<
@@ -32,9 +33,11 @@ void GeneticManager::printListOfSpectres() {
 //        (double)  spectre->getFinest()->getRouteSpeed()/1000 << "   " <<
 //        (double)  spectre->getFinest()->getChaseSpeed()/1000 << "   " <<
 //        spectre->getFinest()->getSightRange() << endl;
-        population->getFinest()->toString();
+            population->getFinest()->toString();
+        }
+        cout <<endl;
     }
-    cout <<endl;
+
 }
 
 
@@ -51,17 +54,21 @@ void GeneticManager::setlistOfPopulation() {
 
         //pruebas con spectrum.
         for (int i=0; i < 3; i++) {
-            auto* population =  new Population();
-            population->generatePopulation();
-            listOfPopulation->push_back(population);
+            if(listOfPopulation != nullptr){
+                auto* population =  new Population();
+                population->generatePopulation();
+                listOfPopulation->push_back(population);
+            }
         }
         isFirst = false;
     }
     else {
         // Por cada Spectre (interfaz), genero una poblacion.
-        for (int i=0; i < listOfPopulation->size(); i++) {
+        if(listOfPopulation != nullptr){
+            for (int i=0; i < listOfPopulation->size(); i++) {
 //            cout << "\n> Population : "<< i+1 << endl;
-            listOfPopulation->at(i)->getBreed();
+                listOfPopulation->at(i)->getBreed();
+            }
         }
     }
     assignToSpectre();
@@ -70,13 +77,15 @@ void GeneticManager::setlistOfPopulation() {
 
 
 void GeneticManager::assignToSpectre() {
-    for (int j = 0; j < Spectre::listOfSpectres->size(); j++)
-    {
-        auto* spectrum = listOfPopulation->at(j)->getFinest();
-        auto* spectre =Spectre::listOfSpectres->at(j);
-        spectre -> setRouteVelocity( (int) (speedsDictionary[spectrum->getRouteSpeed()] * 1000));
-        spectre->setPersuitVelocity( (int) (speedsDictionary[spectrum->getChaseSpeed()] * 1000));
-        spectre->setVisionRange((visionDictionary[spectrum->getSightRange()]));
+    if(Spectre::listOfSpectres != nullptr){
+        for (int j = 0; j < Spectre::listOfSpectres->size(); j++)
+        {
+            auto* spectrum = listOfPopulation->at(j)->getFinest();
+            auto* spectre =Spectre::listOfSpectres->at(j);
+            spectre -> setRouteVelocity( (int) (speedsDictionary[spectrum->getRouteSpeed()] * 1000));
+            spectre->setPersuitVelocity( (int) (speedsDictionary[spectrum->getChaseSpeed()] * 1000));
+            spectre->setVisionRange((visionDictionary[spectrum->getSightRange()]));
+        }
     }
 }
 

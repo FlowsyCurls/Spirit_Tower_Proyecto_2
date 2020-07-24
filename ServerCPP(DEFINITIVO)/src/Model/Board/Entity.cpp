@@ -56,12 +56,13 @@ void Entity::setPosition(int row, int column) {
 
 Entity * Entity::getEntityByID(string id) {
 
-    for(int i = 0; i <listOfEntitys->size(); i++){
-        if(listOfEntitys->at(i)->getId().compare(id)==0){
-            return listOfEntitys->at(i);
+    if(listOfEntitys != nullptr){
+        for(int i = 0; i <listOfEntitys->size(); i++){
+            if(listOfEntitys->at(i)->getId().compare(id)==0){
+                return listOfEntitys->at(i);
+            }
         }
     }
-
     return nullptr;
 }
 
@@ -82,8 +83,6 @@ void Entity::clearAll() {
         }
         listOfEntitys->clear();
     }
-
-    //listOfEntitys = new vector<Entity*>();
 }
 
 bool Entity::getPause() {

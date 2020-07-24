@@ -18,7 +18,9 @@ Spectre::Spectre(string pId, string pType, vector<Position*>* pPatrolRoute,  int
     routeVelocity = pRouteVelocity;
     persuitVelocity = pPersuitVelocity;
     visionRange = pVisionRange;
-    listOfSpectres->push_back(this);
+    if(listOfSpectres != nullptr){
+        listOfSpectres->push_back(this);
+    }
     spectreType = pSpectreType;
 
 }
@@ -83,7 +85,7 @@ void Spectre::calculateAStar() {
 
 void Spectre::moveToPos(Position * pPosition){
 
-    if(Board::matriz[pPosition->getRow()][pPosition->getColumn()]->getCellType() == NORMAL){
+    if(Board::matriz[pPosition->getRow()][pPosition->getColumn()] != nullptr && Board::matriz[pPosition->getRow()][pPosition->getColumn()]->getCellType() == NORMAL){
         Board::matriz[getPosition()->getRow()][getPosition()->getColumn()]->setEntity("");
         updateDirection(pPosition);
         Board::matriz[pPosition->getRow()][pPosition->getColumn()]->setEntity(getId());
@@ -120,10 +122,12 @@ void Spectre::movePersuit(){
 
 void Spectre::moveBreadcrumbing(){
 
-    if(!Board::queueBreadCrumbingPlayer->empty()){
+    if(Board::queueBreadCrumbingPlayer != nullptr && !Board::queueBreadCrumbingPlayer->empty()){
         Position * p = new Position(Board::queueBreadCrumbingPlayer->front()->getRow(), Board::queueBreadCrumbingPlayer->front()->getColumn());
         moveToPos(p);
-        queueBackTracking->push_back(new Position(p->getRow(), p->getColumn()));
+        if(queueBackTracking != nullptr){
+            queueBackTracking->push_back(new Position(p->getRow(), p->getColumn()));
+        }
         Board::queueBreadCrumbingPlayer->pop_front();
     }
 
@@ -139,7 +143,9 @@ void Spectre::moveAStar(){
         }
         if(queueAStar != nullptr && !queueAStar->empty()){
             moveToPos(queueAStar->front());
-            queueBackTracking->push_back(new Position(queueAStar->front()->getRow(), queueAStar->front()->getColumn()));
+            if(queueBackTracking != nullptr){
+                queueBackTracking->push_back(new Position(queueAStar->front()->getRow(), queueAStar->front()->getColumn()));
+            }
             queueAStar->pop();
         }
     }
@@ -235,11 +241,13 @@ Spectre *Spectre::getSpectreByID(string pId) {
 void Spectre::sendSignalToStopPersuit() {
 
     isOnPersuit = false;
-    for(auto & spectre : *listOfSpectres){
-        spectre->useBreadcrumbing = false;
-        spectre->teleportTo = false;
+    if(listOfSpectres != nullptr){
+        for(auto & spectre : *listOfSpectres){
+            spectre->useBreadcrumbing = false;
+            spectre->teleportTo = false;
+        }
+        cout << "********************Se ha enviado una senal para dejar de seguir al jugador********************" << endl;
     }
-    cout << "********************Se ha enviado una senal para dejar de seguir al jugador********************" << endl;
 }
 /**
  * Envia una senal a todos los espectros para que empiecen la persecucion y ademas activa la flag useBreadcrumbing para
@@ -247,14 +255,17 @@ void Spectre::sendSignalToStopPersuit() {
  */
 void Spectre::sendSignalToPersuit() {
 
-    if(queueBackTracking->empty()){
-        backtracking = false;
-        isOnPersuit = true;
-        useBreadcrumbing = true;
-        Board::queueBreadCrumbingPlayer = new deque<Position*>();
-        queueBackTracking = new deque<Position*>();
-        cout << "* Signal sent!" << endl;
+    if(queueBackTracking != nullptr){
+        if(queueBackTracking->empty()){
+            backtracking = false;
+            isOnPersuit = true;
+            useBreadcrumbing = true;
+            Board::queueBreadCrumbingPlayer = new deque<Position*>();
+            queueBackTracking = new deque<Position*>();
+            cout << "* Signal sent!" << endl;
+        }
     }
+
 }
 /**
  * Checkea el rango de vision del espectro para buscar si el jugador se encuentra dentro del rango
@@ -279,7 +290,7 @@ void Spectre::checkVisionRange() {
                         if(posTemp >= 0 && posTemp < 20){
 
                             if (!Board::isBlocked(posTemp,getPosition()->getColumn())){
-                                if(Board::matriz[posTemp][getPosition()->getColumn()]->getEntity() == "ju01"){
+                                if(Board::matriz[posTemp][getPosition()->getColumn()] != nullptr && Board::matriz[posTemp][getPosition()->getColumn()]->getEntity() == "ju01"){
                                     cout << "Spectre: "+ this->getId() + " just saw the player!" << endl;
                                     sendSignalToPersuit();
                                     break;
@@ -295,7 +306,7 @@ void Spectre::checkVisionRange() {
                         posTemp = posTemp + i;
                         if(posTemp >= 0 && posTemp < 20){
                             if (!Board::isBlocked(posTemp,getPosition()->getColumn())){
-                                if(Board::matriz[posTemp][getPosition()->getColumn()]->getEntity() == "ju01"){
+                                if(Board::matriz[posTemp][getPosition()->getColumn()] != nullptr && Board::matriz[posTemp][getPosition()->getColumn()]->getEntity() == "ju01"){
                                     cout << "Spectre: "+ this->getId() + " just saw the player!" << endl;
                                     sendSignalToPersuit();
                                     break;
@@ -311,7 +322,7 @@ void Spectre::checkVisionRange() {
                         posTemp = posTemp + i;
                         if(posTemp >= 0 && posTemp < 20){
                             if (!Board::isBlocked(getPosition()->getRow(),posTemp)){
-                                if(Board::matriz[getPosition()->getRow()][posTemp]->getEntity() == "ju01") {
+                                if(Board::matriz[getPosition()->getRow()][posTemp] != nullptr && Board::matriz[getPosition()->getRow()][posTemp]->getEntity() == "ju01") {
                                     cout << "Spectre: " + this->getId() + " just saw the player!" << endl;
                                     sendSignalToPersuit();
                                     break;
@@ -327,7 +338,7 @@ void Spectre::checkVisionRange() {
                         posTemp = posTemp - i;
                         if(posTemp >= 0 && posTemp < 20){
                             if (!Board::isBlocked(getPosition()->getRow(),posTemp)){
-                                if(Board::matriz[getPosition()->getRow()][posTemp]->getEntity() == "ju01") {
+                                if(Board::matriz[getPosition()->getRow()][posTemp] != nullptr && Board::matriz[getPosition()->getRow()][posTemp]->getEntity() == "ju01") {
                                     cout << "Spectre: " + this->getId() + " just saw the player!" << endl;
                                     sendSignalToPersuit();
                                     break;

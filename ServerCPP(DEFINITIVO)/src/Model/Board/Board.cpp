@@ -40,9 +40,9 @@ void Board::updateMatrizStar() {
  * @param pEntityID
  */
 void Board::assignMatrizEntity(Position *pPosition, const string &pEntityID) {
-
-    matriz[pPosition->getRow()][pPosition->getColumn()]->setEntity(pEntityID);
-
+    if(matriz[pPosition->getRow()][pPosition->getColumn()] != nullptr){
+        matriz[pPosition->getRow()][pPosition->getColumn()]->setEntity(pEntityID);
+    }
 }
 /**
  * Imprime la matriz mostrando el tipo de cada casilla
@@ -134,11 +134,10 @@ Board::Board() {
 
 bool Board::isBlocked(int row, int col) {
 
-
-    return matriz[row][col]->getCellType() != NORMAL;
-
-
-
+    if(matriz[row][col] != nullptr){
+        return matriz[row][col]->getCellType() != NORMAL;
+    }
+    return false;
 }
 
 int Board::getRows() {
