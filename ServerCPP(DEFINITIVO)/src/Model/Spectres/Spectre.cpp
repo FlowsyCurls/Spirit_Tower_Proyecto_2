@@ -148,10 +148,14 @@ void Spectre::moveAStar(){
 void Spectre::moveBacktracking(){
     if(queueBackTracking != nullptr && !queueBackTracking->empty()){
         if (queueBackTracking->size() == 1 && queueBackTracking->back()->compare(teleportToPos)) {
+            moveToPos(teleportFromPos);
+            queueBackTracking->pop_back();
             teleportFrom = true;
         }
-        moveToPos(queueBackTracking->back());
-        queueBackTracking->pop_back();
+        else {
+            moveToPos(queueBackTracking->back());
+            queueBackTracking->pop_back();
+        }
     }else{
         backtracking = false;
     }
