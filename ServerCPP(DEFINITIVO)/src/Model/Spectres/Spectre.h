@@ -102,8 +102,10 @@ public:
     bool getTeleportTo() const;
     void setTeleportFrom(bool pTeleport);
     bool getTeleportFrom() const;
-    Position *getTeleportPos() const;
-    void setTeleportPos(Position *pTeleportPos);
+    Position *getTeleportToPos() const;
+    void setTeleportToPos(Position *pTeleportPos);
+    Position *getTeleportFromPos() const;
+    void setTeleportFromPos(Position *pTeleportPos);
 
     deque<Position*> * getDequeBackTracking();
 

@@ -167,7 +167,7 @@ void SpectralEye::checkVisionRange()
  */
 void SpectralEye::callSpectres() {
 //set previews.
-    if (Spectre::isOnPersuit  &&  (lastSeen == this->getEntityId())){
+    if ((Spectre::isOnPersuit  &&  (lastSeen == this->getEntityId()))){
         return;
     }
     lastSeen = this->getEntityId();
@@ -176,7 +176,7 @@ void SpectralEye::callSpectres() {
         // search for the blue spectre welcome to teleportTo.
         if (spectre->getSpectreType() == "spectre_blue") {
             spectre->setTeleportTo(true);
-            spectre->setTeleportPos(tpSpot);
+            spectre->setTeleportToPos(tpSpot);
             sendSignalToPersuit(spectre);
             break;
         }
