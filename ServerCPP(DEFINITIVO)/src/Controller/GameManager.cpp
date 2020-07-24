@@ -89,16 +89,13 @@ void GameManager::loadGame(int pLevel) {
 
 }
 /**
- * Static method for calling the simple enemies graph setter.
+ * Static method for calling the spectral eyes graph setter.
  */
 void GameManager::setGraphs()
 {
-//    SimpleEnemy::setGlobalGraph();
-/*
     for(auto & eye : *SpectralEye::listOfSpectralEyes){
         eye->setEyeGraph();
     }
-    */
 }
 
 /**
@@ -401,14 +398,18 @@ void GameManager::updatePlayerPosition(const string& pJson) {
             Board::playerHasMoved = true;
             //e->getPosition()->printPosition();
             checkSafeZone(e);
+
+            // Spectre Eyes CheckVision.
             if(!Spectre::isOnPersuit){
                 for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-
                     Spectre::listOfSpectres->at(i)->checkVisionRange();
-
                 }
             }
 
+            // Spectral Eyes CheckVision.
+            for(auto & spectralEye : *SpectralEye::listOfSpectralEyes){
+                spectralEye->checkVisionRange();
+            }
         }
     }
 }
