@@ -121,14 +121,13 @@ void Spectre::movePersuit(){
 void Spectre::moveBreadcrumbing(){
 
     if(!Board::queueBreadCrumbingPlayer->empty()){
-        Position * p = Board::queueBreadCrumbingPlayer->front();
+        Position * p = new Position(Board::queueBreadCrumbingPlayer->front()->getRow(), Board::queueBreadCrumbingPlayer->front()->getColumn());
         p->printPosition();
         moveToPos(p);
 
         Board::queueBreadCrumbingPlayer->front()->printPosition();
-        Board::queueBreadCrumbingPlayer->pop_front();
 
-        queueBackTracking->push_back(p);
+        queueBackTracking->push_back(new Position(p->getRow(), p->getColumn()));
 
         Board::queueBreadCrumbingPlayer->pop_front();
     }
@@ -141,7 +140,7 @@ void Spectre::moveAStar(){
     }
     if(queueAStar != nullptr && !queueAStar->empty()){
         moveToPos(queueAStar->front());
-        queueBackTracking->push_back(queueAStar->front());
+        queueBackTracking->push_back(new Position(queueAStar->front()->getRow(), queueAStar->front()->getColumn()));
         queueAStar->pop();
     }
 }
