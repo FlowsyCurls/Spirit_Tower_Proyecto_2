@@ -128,7 +128,7 @@ void Spectre::moveBreadcrumbing(){
         Board::queueBreadCrumbingPlayer->front()->printPosition();
 
         queueBackTracking->push_back(new Position(p->getRow(), p->getColumn()));
-
+//
         Board::queueBreadCrumbingPlayer->pop_front();
     }
 
