@@ -355,18 +355,23 @@ void GameManager::generateEntityLastStatusJSON() {
             j2["position"] = {};
             j2["position"][0] = position->getRow();
             j2["position"][1] = position->getColumn();
-            j2["teleport"] = false;
+            j2["teleportTo"] = false;
 
             // analizar si es espectro azul.
             if (Entity::listOfEntitys->at(i)->getType() == "spectre_blue") {
                 auto *blue = (Spectre*) (Entity::listOfEntitys->at(i));
-                if(blue->getTeleport()){
-                    j2["teleport"] = blue->getTeleport();
+                if(blue->getTeleportTo()){
+                    j2["teleport"] = blue->getTeleportTo();
                     j2["position"][0] = blue->getTeleportPos()->getRow();
                     j2["position"][1] = blue->getTeleportPos()->getColumn();
-                    blue->setTeleport(false);
+                    blue->setTeleportTo(false);
                 }
-
+                else if(blue->getTeleportFrom()){
+                    j2["teleport"] = blue->getTeleportFrom();
+                    j2["position"][0] = blue->getTeleportPos()->getRow();
+                    j2["position"][1] = blue->getTeleportPos()->getColumn();
+                    blue->setTeleportFrom(false);
+                }
             }
             j["listOfEntitys"][i-1] = j2;
         }
