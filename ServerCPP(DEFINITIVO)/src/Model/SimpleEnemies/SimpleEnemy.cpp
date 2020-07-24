@@ -182,3 +182,14 @@ void SimpleEnemy::setEntityPause(bool pPause) {
 bool SimpleEnemy::getEntityPause() {
     return getPause();
 }
+
+Position *SimpleEnemy::getPlayerPosition() {
+
+    Entity * player = Entity::getEntityByID("ju01");
+
+    if(player != nullptr){
+        return  new Position(player->getPosition()->getRow(), player->getPosition()->getColumn());
+    }
+
+    return nullptr;
+}

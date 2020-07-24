@@ -140,11 +140,11 @@ void printVector(vector<Position*>* toPrint){
  * @return
  */
 
-vector<Position*>* parsePath(vector<int> pPath){
-    vector<Position*>* finalRoute = new vector<Position*>;
+queue<Position*>* parsePath(vector<int> pPath){
+    queue<Position*>* finalRoute = new queue<Position*>;
     for (int i = 0; i < pPath.size() ; i+=2) {
         Position* newPosition = new Position(pPath.at(i), pPath.at(i+1));
-        finalRoute->push_back(newPosition);
+        finalRoute->push(newPosition);
     }
     return finalRoute;
 }
@@ -158,8 +158,8 @@ vector<Position*>* parsePath(vector<int> pPath){
  * @param y1 Coordenada en el eje y del punto de llegada
  * @return coordenas x y del recorrido según el algoritmo de Bresenham
  */
-vector<Position*>* bresenham(Pair src, Pair dest){
-    vector<Position*>* finalRoute;
+queue<Position*>* bresenham(Pair src, Pair dest){
+    queue<Position*>* finalRoute;
     vector<int> resultPath;
     int x0 = src.first; int y0 = src.second;
     int x1 = dest.first; int y1 = dest.second;
@@ -179,7 +179,7 @@ vector<Position*>* bresenham(Pair src, Pair dest){
     }
     finalRoute = parsePath(resultPath);
     cout << "Algoritmo de Bresenham calculado: ";
-    printVector(finalRoute);
+    //printVector(finalRoute);
     return finalRoute;
 }
 

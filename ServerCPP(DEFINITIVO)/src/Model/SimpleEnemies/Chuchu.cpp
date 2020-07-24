@@ -31,8 +31,11 @@ void Chuchu::findPlayer() {
         sleep(1);
         if(Board::playerHasMoved){
 
+            Pair src = make_pair(getEntityPosition()->getRow(), getEntityPosition()->getColumn());
+            Position * playerPos = getPlayerPosition();
+            Pair dest = make_pair(playerPos->getRow(), playerPos->getColumn());
 
-
+            queueBresenham = bresenham(src, dest);
         }
 
     }

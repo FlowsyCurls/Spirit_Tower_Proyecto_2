@@ -66,6 +66,7 @@ public:
     void setEntityDirection(string pDirection);
     void setEntityPause(bool pPause);
     bool getEntityPause();
+    Position * getPlayerPosition();
 };
 
 #endif //SERVER_SIMPLEENEMY_H
