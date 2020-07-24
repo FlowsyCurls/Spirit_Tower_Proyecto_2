@@ -355,6 +355,12 @@ void GameManager::generateEntityLastStatusJSON() {
             j2["position"] = {};
             j2["position"][0] = position->getRow();
             j2["position"][1] = position->getColumn();
+
+            // analizar si es espectro azul.
+            if (Entity::listOfEntitys->at(i)->getType() == "spectre_blue") {
+                auto *blue = (Spectre*) (Entity::listOfEntitys->at(i));
+                j2["teleport"] = blue->getTeleport();
+            }
             j["listOfEntitys"][i-1] = j2;
         }
     }

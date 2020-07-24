@@ -30,7 +30,6 @@ private:
     vector<Position*>* patrolRoute;
     queue<Position*>* queuePatrolRoute;
     queue<Position*>* queueAStar;
-    deque<Position*>* queueBackTracking = new deque<Position*>();
     vector<Position*>* auxVec = new vector<Position*>();
 
     //string direction;
@@ -41,6 +40,8 @@ private:
     int paralizeTime = 5;
 
     bool teleport = false;
+    Position* teleportPos = new Position();
+
     bool paralize = false;
 
     SpectreType spectreType;
@@ -96,6 +97,9 @@ public:
     Spectre* getSpectreByID(string pId);
     void setIsOnPersuit(bool pIsOnPersuit);
     void setTeleport(bool pTeleport);
+    bool getTeleport() const;
+    Position *getTeleportPos() const;
+    void setTeleportPos(Position *pTeleportPos);
 
     deque<Position*> * getDequeBackTracking();
 
@@ -106,6 +110,7 @@ public:
     string getSpectreType();
     static void clear();
 
+    deque<Position*>* queueBackTracking = new deque<Position*>();
 };
 
 

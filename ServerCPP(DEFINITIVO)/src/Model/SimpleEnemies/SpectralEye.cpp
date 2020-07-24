@@ -176,12 +176,21 @@ void SpectralEye::callSpectres() {
         // search for the blue spectre welcome to teleport.
         if (spectre->getSpectreType() == "spectre_blue") {
             spectre->setTeleport(true);
+            spectre->setTeleportPos(tpSpot);
+            sendSignalToPersuit(spectre);
             break;
         }
     }
-
 }
 
+void SpectralEye::sendSignalToPersuit(Spectre* spectre){
+    if(spectre->queueBackTracking->empty()){
+        spectre->backtracking = false;
+        Spectre::isOnPersuit = true;
+        spectre->queueBackTracking = new deque<Position*>();
+        cout << "* Signal sent!" << endl;
+    }
+}
 
 /**
  * Search for a free node to teleport the spectrum and set it to the reserved variable.
@@ -195,7 +204,7 @@ void SpectralEye::setWhereToTeleport() {
 
 
 void SpectralEye::clear() {
-    for(int i = 0; i < listOfSpectralEyes->size(); i++){
+    for(int i = 0; i < listOfSpectralEyes->size();i++){
         listOfSpectralEyes->at(i)->setEntityPause(true);
     }
     listOfSpectralEyes->clear();

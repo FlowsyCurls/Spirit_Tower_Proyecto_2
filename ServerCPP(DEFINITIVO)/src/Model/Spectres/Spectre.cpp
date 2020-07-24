@@ -129,10 +129,6 @@ void Spectre::moveBreadcrumbing(){
 
 }
 
-void Spectre::teleportToSpectre() {
-    moveToPos(SpectralEye::getWhereToTeleport());
-}
-
 void Spectre::moveAStar(){
     if(queueAStar == nullptr || queueAStar->empty()){
         calculateAStar();
@@ -145,7 +141,6 @@ void Spectre::moveAStar(){
 }
 
 void Spectre::moveBacktracking(){
-
     if(queueBackTracking != nullptr && !queueBackTracking->empty()){
         moveToPos(queueBackTracking->back());
         queueBackTracking->pop_back();
@@ -232,6 +227,7 @@ void Spectre::sendSignalToStopPersuit() {
     isOnPersuit = false;
     for(auto & spectre : *listOfSpectres){
         spectre->useBreadcrumbing = false;
+        spectre->teleport = false;
     }
     cout << "********************Se ha enviado una senal para dejar de seguir al jugador********************" << endl;
 }
@@ -373,7 +369,6 @@ int Spectre::getVisionRange() {
 }
 
 string Spectre::toString() {
-
     return "";
 }
 
@@ -385,9 +380,12 @@ void Spectre::setIsOnPersuit(bool pIsOnPersuit) {
     Spectre::isOnPersuit = pIsOnPersuit;
 }
 
-
 void Spectre::setTeleport(bool pTeleport) {
     Spectre::teleport = pTeleport;
+}
+
+bool Spectre::getTeleport() const {
+    return teleport;
 }
 
 string Spectre::getSpectreId() {
@@ -417,3 +415,13 @@ void Spectre::clear() {
 deque<Position *> * Spectre::getDequeBackTracking() {
     return queueBackTracking;
 }
+
+Position *Spectre::getTeleportPos() const {
+    return teleportPos;
+}
+
+void Spectre::setTeleportPos(Position *pTeleportPos) {
+    Spectre::teleportPos = pTeleportPos;
+    moveToPos(teleportPos);
+}
+
