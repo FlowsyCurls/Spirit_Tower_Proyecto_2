@@ -110,6 +110,8 @@ public:
     string getSpectreType();
     static void clear();
 
+    void setPauseEntity(bool pPause);
+
     deque<Position*>* queueBackTracking = new deque<Position*>();
 };
 

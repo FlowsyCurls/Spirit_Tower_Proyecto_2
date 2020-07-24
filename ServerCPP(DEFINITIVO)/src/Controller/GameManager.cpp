@@ -355,11 +355,18 @@ void GameManager::generateEntityLastStatusJSON() {
             j2["position"] = {};
             j2["position"][0] = position->getRow();
             j2["position"][1] = position->getColumn();
+            j2["teleport"] = false;
 
             // analizar si es espectro azul.
             if (Entity::listOfEntitys->at(i)->getType() == "spectre_blue") {
                 auto *blue = (Spectre*) (Entity::listOfEntitys->at(i));
-                j2["teleport"] = blue->getTeleport();
+                if(blue->getTeleport()){
+                    j2["teleport"] = blue->getTeleport();
+                    j2["position"][0] = blue->getTeleportPos()->getRow();
+                    j2["position"][1] = blue->getTeleportPos()->getColumn();
+                    blue->setTeleport(false);
+                }
+
             }
             j["listOfEntitys"][i-1] = j2;
         }
@@ -394,6 +401,26 @@ void GameManager::updatePlayerPosition(const string& pJson) {
     if(e != nullptr){
         json jsonObj;
         stringstream(pJson) >> jsonObj;
+
+        for(int i = 0; i < jsonObj["spectresDied"].size();i++){
+
+            for(int e = 0; e < Spectre::listOfSpectres->size(); e++){
+
+                if(Spectre::listOfSpectres->at(e)->getSpectreId() == jsonObj["spectresDied"].at(i)){
+                    Spectre::listOfSpectres->at(e)->setPauseEntity(true);
+                    Spectre::listOfSpectres->erase(Spectre::listOfSpectres->begin() + e);
+                }
+            }
+
+            for(int e = 0; e < Entity::listOfEntitys->size(); e++){
+
+                if(Entity::listOfEntitys->at(e)->getId() == jsonObj["spectresDied"].at(i)){
+                    Entity::listOfEntitys->erase(Entity::listOfEntitys->begin() + e);
+                }
+
+            }
+        }
+
         //No se movio
         if(e->getPosition()->getRow() == jsonObj["position"][0] && e->getPosition()->getColumn() == jsonObj["position"][1]){
 

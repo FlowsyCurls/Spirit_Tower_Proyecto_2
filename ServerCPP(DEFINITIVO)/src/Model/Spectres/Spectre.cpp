@@ -130,13 +130,18 @@ void Spectre::moveBreadcrumbing(){
 }
 
 void Spectre::moveAStar(){
-    if(queueAStar == nullptr || queueAStar->empty()){
+    if(queueAStar == nullptr || queueAStar->empty() || Board::playerHasMoved){
         calculateAStar();
     }
     if(queueAStar != nullptr && !queueAStar->empty()){
-        moveToPos(queueAStar->front());
-        queueBackTracking->push_back(new Position(queueAStar->front()->getRow(), queueAStar->front()->getColumn()));
-        queueAStar->pop();
+        if(getPosition()->compare(queueAStar->front())){
+            queueAStar->pop();
+        }
+        if(!queueAStar->empty()){
+            moveToPos(queueAStar->front());
+            queueBackTracking->push_back(new Position(queueAStar->front()->getRow(), queueAStar->front()->getColumn()));
+            queueAStar->pop();
+        }
     }
 }
 
@@ -423,5 +428,11 @@ Position *Spectre::getTeleportPos() const {
 void Spectre::setTeleportPos(Position *pTeleportPos) {
     Spectre::teleportPos = pTeleportPos;
     moveToPos(teleportPos);
+    calculateAStar();
+
+}
+
+void Spectre::setPauseEntity(bool pPause) {
+    setPause(pPause);
 }
 
