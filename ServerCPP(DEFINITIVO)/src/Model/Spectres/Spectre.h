@@ -30,7 +30,7 @@ private:
     vector<Position*>* patrolRoute;
     queue<Position*>* queuePatrolRoute;
     queue<Position*>* queueAStar;
-    queue<Position*>* queueBackTracking = new queue<Position*>();
+    deque<Position*>* queueBackTracking = new deque<Position*>();
     vector<Position*>* auxVec = new vector<Position*>();
 
     //string direction;
@@ -48,7 +48,7 @@ private:
 
 public:
 
-    static bool backtracking;
+    bool backtracking;
     static bool isOnPersuit;
     //Constructor
     Spectre(string pId, string pType, vector<Position*>* pPatrolRoute, int pRouteVelocity,
@@ -97,6 +97,7 @@ public:
     void setIsOnPersuit(bool pIsOnPersuit);
     void setTeleport(bool pTeleport);
 
+    deque<Position*> * getDequeBackTracking();
 
     //toString, prints, logs
     string toString();

@@ -8,7 +8,6 @@
 
 vector<Spectre*> *Spectre::listOfSpectres = new vector<Spectre*>();
 bool Spectre::isOnPersuit = false;
-bool Spectre::backtracking = false;
 
 Spectre::Spectre(string pId, string pType, vector<Position*>* pPatrolRoute,  int pRouteVelocity,
                  int pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType) : Entity(pId, pType, pPosition) {
@@ -90,7 +89,7 @@ void Spectre::moveToPos(Position * pPosition){
         Board::matriz[pPosition->getRow()][pPosition->getColumn()]->setEntity(getId());
         setPosition(pPosition);
         Board::updateMatrizStar();
-        if(!backtracking){
+        if(!backtracking && !isOnPersuit){
             checkVisionRange();
         }
 
@@ -121,11 +120,17 @@ void Spectre::movePersuit(){
 
 void Spectre::moveBreadcrumbing(){
 
-    if(Board::queueBreadCrumbingPlayer->front() != nullptr && !Board::queueBreadCrumbingPlayer->empty()){
+    if(!Board::queueBreadCrumbingPlayer->empty()){
         Position * p = Board::queueBreadCrumbingPlayer->front();
-        Board::queueBreadCrumbingPlayer->pop();
+        p->printPosition();
         moveToPos(p);
-        queueBackTracking->push(p);
+
+        Board::queueBreadCrumbingPlayer->front()->printPosition();
+        Board::queueBreadCrumbingPlayer->pop_front();
+
+        queueBackTracking->push_back(p);
+
+        Board::queueBreadCrumbingPlayer->pop_front();
     }
 
 }
@@ -136,7 +141,7 @@ void Spectre::moveAStar(){
     }
     if(queueAStar != nullptr && !queueAStar->empty()){
         moveToPos(queueAStar->front());
-        queueBackTracking->push(queueAStar->front());
+        queueBackTracking->push_back(queueAStar->front());
         queueAStar->pop();
     }
 }
@@ -144,11 +149,11 @@ void Spectre::moveAStar(){
 void Spectre::moveBacktracking(){
 
     if(queueBackTracking != nullptr && !queueBackTracking->empty()){
-        moveToPos(queueBackTracking->front());
+        moveToPos(queueBackTracking->back());
         if(getId() == "sp03"){
-            queueBackTracking->front()->printPosition();
+            //queueBackTracking->back()->printPosition();
         }
-        queueBackTracking->pop();
+        queueBackTracking->pop_back();
     }else{
         backtracking = false;
     }
@@ -173,7 +178,7 @@ void Spectre::moveNext() {
                 this_thread::sleep_for(chrono::milliseconds(routeVelocity));
                 moveRoutePatrol();
             }else{
-                this_thread::sleep_for(chrono::milliseconds(persuitVelocity));
+                this_thread::sleep_for(chrono::milliseconds(1000));
                 movePersuit();
             }
         }
@@ -228,8 +233,8 @@ Spectre *Spectre::getSpectreByID(string pId) {
  * Envia una senal a todos los espectros para que dejen la persecucion
  */
 void Spectre::sendSignalToStopPersuit() {
+
     isOnPersuit = false;
-    backtracking = true;
     for(auto & spectre : *listOfSpectres){
         spectre->useBreadcrumbing = false;
     }
@@ -245,8 +250,8 @@ void Spectre::sendSignalToPersuit() {
         backtracking = false;
         isOnPersuit = true;
         useBreadcrumbing = true;
-        Board::queueBreadCrumbingPlayer = new queue<Position*>();
-        queueBackTracking = new queue<Position*>();
+        Board::queueBreadCrumbingPlayer = new deque<Position*>();
+        queueBackTracking = new deque<Position*>();
         cout << "* Signal sent!" << endl;
     }
 }
@@ -412,4 +417,8 @@ void Spectre::clear() {
     }
     listOfSpectres->clear();
     //listOfSpectres = new vector<Spectre*>();
+}
+
+deque<Position *> * Spectre::getDequeBackTracking() {
+    return queueBackTracking;
 }

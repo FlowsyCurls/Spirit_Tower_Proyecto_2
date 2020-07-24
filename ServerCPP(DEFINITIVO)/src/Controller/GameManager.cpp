@@ -131,14 +131,28 @@ void GameManager::checkSafeZone(Entity * player) {
         //Spectre::stopVision = true;
         Board::queueBreadCrumbingPlayer = nullptr;
         Spectre::sendSignalToStopPersuit();
+        for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+            if(Spectre::listOfSpectres->at(i)->getDequeBackTracking()->empty()){
+                Spectre::listOfSpectres->at(i)->backtracking = false;
+            }else{
+                Spectre::listOfSpectres->at(i)->backtracking = true;
+            }
+        }
     }else{
         //Spectre::backtracking = false;
         //Spectre::stopVision = false;
-        if(Board::queueBreadCrumbingPlayer == nullptr){
-            Board::queueBreadCrumbingPlayer = new queue<Position*>();
+        if(Board::queueBreadCrumbingPlayer == nullptr || Board::vectorPrueba == nullptr){
+            Board::queueBreadCrumbingPlayer = new deque<Position*>();
+            Board::vectorPrueba = new vector<Position*>();
         }
-        if(Spectre::isOnPersuit){
-            Board::queueBreadCrumbingPlayer->push(player->getPosition());
+        if(Spectre::isOnPersuit && Board::playerHasMoved){
+            Board::queueBreadCrumbingPlayer->push_back(new Position(player->getPosition()->getRow(), player->getPosition()->getColumn()));
+
+            //cout << "pusheo ";
+            //player->getPosition()->printPosition();
+            //cout <<  endl;
+            //Board::vectorPrueba->push_back(new Position(player->getPosition()->getRow(), player->getPosition()->getColumn()));
+            //Board::queueBreadCrumbingPlayer->back()->printPosition();
         }
 
     }
@@ -426,15 +440,18 @@ void GameManager::updatePlayerPosition(const string& pJson) {
                 //cout << "El jugador no se movio" << endl;
             }else{
                 //cout << "***El jugador se movio" << endl;
+                //cout << "La posicion de jugador es " << e.
                 Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity("");
-                //e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
+                e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
                 Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
                 Board::playerHasMoved = true;
-                e->getPosition()->printPosition();
+                //e->getPosition()->printPosition();
                 checkSafeZone(e);
-                if(!Spectre::backtracking){
+                if(!Spectre::isOnPersuit){
                     for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+
                         Spectre::listOfSpectres->at(i)->checkVisionRange();
+
                     }
                 }
 

@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <deque>
 
 using namespace std;
 
@@ -31,7 +32,8 @@ public:
     static int matrizStar[rows][columns];
     vector<Entity*> * listOfEntitys;
     static bool playerHasMoved;
-    static queue<Position*>* queueBreadCrumbingPlayer;
+    static deque<Position*>* queueBreadCrumbingPlayer;
+    static vector<Position*> * vectorPrueba;
 
     //Constructor
     Board();

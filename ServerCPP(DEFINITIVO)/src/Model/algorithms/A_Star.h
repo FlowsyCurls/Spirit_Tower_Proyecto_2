@@ -109,14 +109,14 @@ queue<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
     // If the source is out of range
     if (isValid (src.first, src.second) == false)
     {
-        printf ("Source is invalid\n");
+        //printf ("Source is invalid\n");
         return nullptr;
     }
 
     // If the destination is out of range
     if (isValid (dest.first, dest.second) == false)
     {
-        printf ("Destination is invalid\n");
+        //printf ("Destination is invalid\n");
         return nullptr;
     }
 
@@ -124,14 +124,14 @@ queue<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
     if (isUnBlocked(grid, src.first, src.second) == false ||
         isUnBlocked(grid, dest.first, dest.second) == false)
     {
-        printf ("Source or the destination is blocked\n");
+        //printf ("Source or the destination is blocked\n");
         return nullptr;
     }
 
     // If the destination cell is the same as source cell
     if (isDestination(src.first, src.second, dest) == true)
     {
-        printf ("We are already at the destination\n");
+        //printf ("We are already at the destination\n");
         return nullptr;
     }
 
@@ -232,7 +232,7 @@ queue<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 // Set the Parent of the destination cell
                 cellDetails[i-1][j].parent_i = i;
                 cellDetails[i-1][j].parent_j = j;
-                printf ("The destination cell is found\n");
+                //printf ("The destination cell is found\n");
                 queue<Position*> * route = tracePath (cellDetails, dest);
                 foundDest = true;
                 return route;
@@ -283,7 +283,7 @@ queue<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 // Set the Parent of the destination cell
                 cellDetails[i+1][j].parent_i = i;
                 cellDetails[i+1][j].parent_j = j;
-                printf("The destination cell is found\n");
+                //printf("The destination cell is found\n");
                 queue<Position*> *route = tracePath(cellDetails, dest);
                 foundDest = true;
                 return route;
@@ -332,7 +332,7 @@ queue<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 // Set the Parent of the destination cell
                 cellDetails[i][j+1].parent_i = i;
                 cellDetails[i][j+1].parent_j = j;
-                printf("The destination cell is found\n");
+                //printf("The destination cell is found\n");
                 queue<Position*> *route = tracePath(cellDetails, dest);
                 foundDest = true;
                 return route;
@@ -384,7 +384,7 @@ queue<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 // Set the Parent of the destination cell
                 cellDetails[i][j-1].parent_i = i;
                 cellDetails[i][j-1].parent_j = j;
-                printf("The destination cell is found\n");
+                //printf("The destination cell is found\n");
                 queue<Position*> *route = tracePath(cellDetails, dest);
                 foundDest = true;
                 return route;
@@ -436,7 +436,7 @@ queue<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 // Set the Parent of the destination cell
                 cellDetails[i-1][j+1].parent_i = i;
                 cellDetails[i-1][j+1].parent_j = j;
-                printf ("The destination cell is found\n");
+                //printf ("The destination cell is found\n");
                 queue<Position*> *route = tracePath (cellDetails, dest);
                 foundDest = true;
                 return route;
@@ -488,7 +488,7 @@ queue<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 // Set the Parent of the destination cell
                 cellDetails[i-1][j-1].parent_i = i;
                 cellDetails[i-1][j-1].parent_j = j;
-                printf ("The destination cell is found\n");
+                //printf ("The destination cell is found\n");
                 queue<Position*> *route = tracePath (cellDetails, dest);
                 foundDest = true;
                 return route;
@@ -538,7 +538,7 @@ queue<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 // Set the Parent of the destination cell
                 cellDetails[i+1][j+1].parent_i = i;
                 cellDetails[i+1][j+1].parent_j = j;
-                printf ("The destination cell is found\n");
+                //printf ("The destination cell is found\n");
                 queue<Position*> *route = tracePath (cellDetails, dest);
                 foundDest = true;
                 return route;
@@ -590,7 +590,7 @@ queue<Position*> * aStarSearch(int grid[][COL], Pair src, Pair dest)
                 // Set the Parent of the destination cell
                 cellDetails[i+1][j-1].parent_i = i;
                 cellDetails[i+1][j-1].parent_j = j;
-                printf("The destination cell is found\n");
+                //printf("The destination cell is found\n");
                 queue<Position*> *route = tracePath(cellDetails, dest);
                 foundDest = true;
                 return route;
