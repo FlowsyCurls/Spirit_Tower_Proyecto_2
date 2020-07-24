@@ -35,12 +35,13 @@ class SimpleEnemy: Entity {
 
 protected:
     //ATTRIBUTES
-    static graph *uniqueGraph;
+//    static graph *uniqueGraph;
     graph *eyeGraph = new graph;
     node* myPos;
 
     //METHODS
-    static void setGlobalEdge();
+//    static void setGlobalEdge();
+//    static void setGlobalGraph();
     static void addEdge(node *u, node *v);
     static void printGraph(graph* pGraph);
     static void showQueue(queue<node *> q);
@@ -54,7 +55,6 @@ public:
     static vector<SimpleEnemy *> *listOfSimpleEnemies;
 
     //METHODS
-    static void setGlobalGraph();
     virtual void startMovement();
     static void clear();
 

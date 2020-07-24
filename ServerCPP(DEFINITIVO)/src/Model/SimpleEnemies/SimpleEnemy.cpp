@@ -42,59 +42,59 @@ void SimpleEnemy::setMyPos(graph* pGraph){
 //    cout << "setMyPos() "; myPos->print(); cout << " |.. for " << getEntityId() << endl;
 }
 
-/**
- * Create unlinked graph nodes
- */
-void SimpleEnemy::setGlobalGraph() {
-    cout << ">> Global Graph <<";
-    for (int r = 0; r < Board::getRows(); r++) {
-        for (int c = 0; c < Board::getColumns(); c++) {
-            node *n = new node(r, c);
-            uniqueGraph->nodes->push_back(n);
-//            cout << " r : "<< r << ",  c : " << c << endl;
-        }
-    }
-    cout << " size : " << uniqueGraph->nodes->size() << endl;
-    setGlobalEdge();
-//    printGraph(uniqueGraph);
-}
+///**
+// * Create unlinked graph nodes
+// */
+//void SimpleEnemy::setGlobalGraph() {
+//    cout << ">> Global Graph <<";
+//    for (int r = 0; r < Board::getRows(); r++) {
+//        for (int c = 0; c < Board::getColumns(); c++) {
+//            node *n = new node(r, c);
+//            uniqueGraph->nodes->push_back(n);
+////            cout << " r : "<< r << ",  c : " << c << endl;
+//        }
+//    }
+//    cout << " size : " << uniqueGraph->nodes->size() << endl;
+//    setGlobalEdge();
+////    printGraph(uniqueGraph);
+//}
 
-/**
- * Create edge between nodes that are traversable through the map.
- */
-void SimpleEnemy::setGlobalEdge() {
-    for (int r = 0; r < Board::getRows(); r++) {
-        for (int c = 0; c < Board::getColumns(); c++) {
-
-            // if blocked, just skip it.
-            if (Board::isBlocked(r, c)) continue;
-
-            // if there are no more cells on my right.
-            if (c!=Board::getColumns()-1)
-            {
-                // If the cell on the right is free.
-                if (!Board::isBlocked(r, c + 1)) {
-                    auto *node = uniqueGraph->getNodeByPos(r, c);
-                    if (!exist(r, c + 1, node->neighbours)) {
-                        addEdge(node, uniqueGraph->getNodeByPos(r, c + 1));
-                    }
-                }
-            }
-
-            // if there are no more cells below me.
-            if (r!=Board::getRows()-1)
-            {
-                // If the cell up is free.
-                if (!Board::isBlocked(r + 1, c)) {
-                    auto *node = uniqueGraph->getNodeByPos(r, c);
-                    if (!exist(r + 1, c, node->neighbours)) {
-                        addEdge(node, uniqueGraph->getNodeByPos(r + 1, c));
-                    }
-                }
-            }
-        }
-    }
-}
+///**
+// * Create edge between nodes that are traversable through the map.
+// */
+//void SimpleEnemy::setGlobalEdge() {
+//    for (int r = 0; r < Board::getRows(); r++) {
+//        for (int c = 0; c < Board::getColumns(); c++) {
+//
+//            // if blocked, just skip it.
+//            if (Board::isBlocked(r, c)) continue;
+//
+//            // if there are no more cells on my right.
+//            if (c!=Board::getColumns()-1)
+//            {
+//                // If the cell on the right is free.
+//                if (!Board::isBlocked(r, c + 1)) {
+//                    auto *node = uniqueGraph->getNodeByPos(r, c);
+//                    if (!exist(r, c + 1, node->neighbours)) {
+//                        addEdge(node, uniqueGraph->getNodeByPos(r, c + 1));
+//                    }
+//                }
+//            }
+//
+//            // if there are no more cells below me.
+//            if (r!=Board::getRows()-1)
+//            {
+//                // If the cell up is free.
+//                if (!Board::isBlocked(r + 1, c)) {
+//                    auto *node = uniqueGraph->getNodeByPos(r, c);
+//                    if (!exist(r + 1, c, node->neighbours)) {
+//                        addEdge(node, uniqueGraph->getNodeByPos(r + 1, c));
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
 /**
  * Add neighbour to nodes.
