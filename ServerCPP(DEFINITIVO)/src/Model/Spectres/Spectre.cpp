@@ -137,7 +137,7 @@ void Spectre::moveAStar(){
         if(getPosition()->compare(queueAStar->front())){
             queueAStar->pop();
         }
-        if(!queueAStar->empty()){
+        if(queueAStar != nullptr && !queueAStar->empty()){
             moveToPos(queueAStar->front());
             queueBackTracking->push_back(new Position(queueAStar->front()->getRow(), queueAStar->front()->getColumn()));
             queueAStar->pop();
@@ -173,7 +173,7 @@ void Spectre::moveNext() {
                 this_thread::sleep_for(chrono::milliseconds(routeVelocity));
                 moveRoutePatrol();
             }else{
-                this_thread::sleep_for(chrono::milliseconds(1000));
+                this_thread::sleep_for(chrono::milliseconds(routeVelocity));
                 movePersuit();
             }
         }
@@ -186,8 +186,6 @@ void Spectre::moveNext() {
  */
 void Spectre::startMovement() {
     thread(&Spectre::moveNext, this).detach();
-    //thread(&Spectre::checkVisionRange, this).detach();
-    //thread t1(Spectre::sendSignalToStopPersuit);
 }
 
 /**
