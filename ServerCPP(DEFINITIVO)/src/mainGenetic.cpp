@@ -10,10 +10,11 @@ int main() {
     pList->push_back(new Spectrum("sp_1"));
 //    pList->push_back(new Spectrum("sp_2"));
 
-    GeneticManager* c = GeneticManager::getInstance();
+    auto *c = new GeneticManager();
     c->setTestList(pList);
     c->setlistOfPopulation();
     c->setlistOfPopulation();
     c->setlistOfPopulation();
     c->setlistOfPopulation();
+
 }

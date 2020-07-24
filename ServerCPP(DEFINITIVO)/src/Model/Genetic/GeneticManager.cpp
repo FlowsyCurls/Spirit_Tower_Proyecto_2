@@ -42,15 +42,8 @@ void GeneticManager::setlistOfPopulation() {
     cout << "\n\n~~~~~~~~~~~~~~> \' GEN " << ++genMarker << " \'<~~~~~~~~~~~~~~"<< endl;
 
     if (isFirst){
-//        // Por cada Spectre (interfaz), genero una poblacion.
-//        for (auto* spectre : *Spectre::listOfSpectres){
-//            auto* population =  new Population();
-//            population->generatePopulation();
-//            listOfPopulation->push_back(population);
-//        }
-
-        //pruebas con spectrum.
-        for (int i=0; i < 3; i++) {
+        // Por cada Spectre (interfaz), genero una poblacion.
+        for (auto* spectre : *Spectre::listOfSpectres){
             auto* population =  new Population();
             population->generatePopulation();
             listOfPopulation->push_back(population);
@@ -83,6 +76,5 @@ void GeneticManager::assignToSpectre() {
 void GeneticManager::setTestList(vector<Spectrum *> *pTestList) {
     GeneticManager::testList = pTestList;
 }
-
 
 

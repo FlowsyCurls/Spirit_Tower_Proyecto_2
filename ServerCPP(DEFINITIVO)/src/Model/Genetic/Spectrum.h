@@ -38,9 +38,7 @@ public:
     void setSightRange(int pSightRange);
 
 
-    bool compareStats(Spectrum *&pSpectrum) const;
-
-    bool compareVision(Spectrum *&pSpectrum) const;
+    bool compareStats(Spectrum *&pSpectrum);
 };
 
 

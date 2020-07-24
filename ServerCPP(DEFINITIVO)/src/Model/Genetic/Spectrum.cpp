@@ -62,14 +62,13 @@ int Spectrum::sum() const {
     return sum;
 }
 
-bool Spectrum::compareStats(Spectrum *&pSpectrum) const {
-    return (this->sum() < pSpectrum->sum());
-    return (pSpectrum->getChaseSpeed() > this->chaseSpeed) && (pSpectrum->getRouteSpeed() > this->routeSpeed ) ;
+bool Spectrum::compareStats(Spectrum *&pSpectrum) {
+    if (this->sum() < pSpectrum->sum()){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
-
-bool Spectrum::compareVision(Spectrum *&pSpectrum) const {
-    return pSpectrum->getSightRange() >= this->sightRange;
-}
-
 
 

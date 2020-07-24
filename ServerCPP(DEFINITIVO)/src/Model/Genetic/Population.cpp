@@ -16,15 +16,15 @@ int Population::getRandom() {
 
 
 void Population::generatePopulation() {
-//    cout << "> Population : "<< populationCounter++ << endl;
+    cout << "> Population : "<< populationCounter++ << endl;
     for (int k = 0; k < capacity; k++)
     {
         // Push Spectrum with random attributes.
          auto *spectrum = new Spectrum(generateId(), getRandom(), getRandom(), getRandom());
          listOfSpectres->push_back(spectrum);
-//         spectrum->toString();
+         spectrum->toString();
     }
-//    cout << endl;
+    cout << endl;
 }
 
 
@@ -76,26 +76,18 @@ Spectrum * Population::getFinest()
 }
 
 
-Spectrum * Population::getFinest(vector<Spectrum*> *pList) {
+Spectrum * Population::getFinest(vector<Spectrum*> *pList)
+{
     Spectrum *goat = pList->at(0); // El mejor empieza siendo el primero.
 //    goat->toString();
     for (int h = 1; h < pList->size(); h++) {
 //        pList->at(h)->toString();
-        if (goat->compareStats(pList->at(h))) { // Compare each stats.
+        if (goat->compareStats(pList->at(h))) { // Compare each attribute.
             goat = pList->at(h);
-//            for (auto &g : *pList){
-//                if (goat->compareVision(g)) { // Compare sight Range.
-//                    goat = g;
-//                }
-//            }
         }
     }
     return goat;
 }
-
-
-
-
 
 
 string Population::generateId() {

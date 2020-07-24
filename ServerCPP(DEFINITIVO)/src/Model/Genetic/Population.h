@@ -12,7 +12,7 @@
 class Population {
 private:
     //ATTRIBUTES
-    const static int capacity = 20;
+    const static int capacity = 10;
     const static int maxRandom = 2;
     const static int minRandom = 0;
     const static int mutationProbability = 5;
