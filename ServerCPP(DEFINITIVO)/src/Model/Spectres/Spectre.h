@@ -50,7 +50,6 @@ public:
 
     static bool backtracking;
     static bool isOnPersuit;
-    static bool stopVision;
     //Constructor
     Spectre(string pId, string pType, vector<Position*>* pPatrolRoute, int pRouteVelocity,
             int pPersuitVelocity, int pVisionRange, Position *pPosition, SpectreType pSpectreType);

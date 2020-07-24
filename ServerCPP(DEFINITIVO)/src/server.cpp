@@ -178,8 +178,9 @@ int main(int argc, char **argv){
                             gameIsStarted = false;
                             gameManager->pause = true;
                             lvl++;
-                            if(lvl==6){
+                            if(lvl==5){
                                 sendMessage("win");
+                                return 0;
                             }else{
                                 sendMessage("readyToPlay");
                             }

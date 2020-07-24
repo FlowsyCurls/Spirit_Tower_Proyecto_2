@@ -128,12 +128,12 @@ void GameManager::updateGame() {
 
 void GameManager::checkSafeZone(Entity * player) {
     if(Board::checkPlayerOfSafeZone(player)){
-        Spectre::stopVision = true;
+        //Spectre::stopVision = true;
         Board::queueBreadCrumbingPlayer = nullptr;
         Spectre::sendSignalToStopPersuit();
     }else{
         //Spectre::backtracking = false;
-        Spectre::stopVision = false;
+        //Spectre::stopVision = false;
         if(Board::queueBreadCrumbingPlayer == nullptr){
             Board::queueBreadCrumbingPlayer = new queue<Position*>();
         }
@@ -158,17 +158,11 @@ void GameManager::threadVision() {
  * Da comienzo al movimiento de los espectros (threads)
  */
 void GameManager::clearAll() {
-    //Entity::listOfEntitys->clear();
     SimpleEnemy::clear();
-    //Spectre::listOfSpectres->clear();
     Spectre::clear();
-    //SpectralEye::listOfSpectralEyes->clear();
     SpectralEye::clear();
-    //Mouse::listOfMice->clear();
     Mouse::clear();
     Entity::clearAll();
-    //free(board);
-    //board = new Board();
 }
 
 void GameManager::initialEntitiesFunctions() {
@@ -433,11 +427,17 @@ void GameManager::updatePlayerPosition(const string& pJson) {
             }else{
                 //cout << "***El jugador se movio" << endl;
                 Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity("");
-                e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
+                //e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
                 Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
                 Board::playerHasMoved = true;
                 e->getPosition()->printPosition();
                 checkSafeZone(e);
+                if(!Spectre::backtracking){
+                    for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+                        Spectre::listOfSpectres->at(i)->checkVisionRange();
+                    }
+                }
+
             }
         //}
     }
