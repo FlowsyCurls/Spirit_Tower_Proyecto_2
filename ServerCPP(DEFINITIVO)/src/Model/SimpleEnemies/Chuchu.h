@@ -16,8 +16,10 @@ private:
     queue<Position*> * queueBresenham;
 
     //METHODS
-    void startMovement() override;
+
     void findPlayer();
+    void calculateBresenham();
+    void moveTo(Position * pPosition);
 
 public:
     //CONSTRUCTOR
@@ -25,8 +27,10 @@ public:
 
     //ATTRIBUTES
     static vector<Chuchu*> *listOfChuchus;
+    bool pause = false;
+    static void clear();
 
-
+    void startMovement() override;
 
 };
 

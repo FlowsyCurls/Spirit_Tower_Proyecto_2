@@ -155,6 +155,7 @@ void GameManager::clearAll() {
     Spectre::clear();
     SpectralEye::clear();
     Mouse::clear();
+    Chuchu::clear();
     Entity::clearAll();
 }
 
@@ -164,6 +165,9 @@ void GameManager::initialEntitiesFunctions() {
     }
     for(auto & mouse: *Mouse::listOfMice){
         mouse->startMovement();
+    }
+    for(auto & chuchu : *Chuchu::listOfChuchus){
+        chuchu->startMovement();
     }
 }
 
