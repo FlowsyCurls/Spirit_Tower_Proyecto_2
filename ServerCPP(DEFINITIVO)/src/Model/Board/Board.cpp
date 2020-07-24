@@ -8,7 +8,6 @@ Cell *Board::matriz[20][20] = {};
 int Board::matrizStar[20][20] = {};
 bool Board::playerHasMoved = false;
 deque<Position*>* Board::queueBreadCrumbingPlayer = nullptr;
-vector<Position*> * Board::vectorPrueba = nullptr;
 
 /**
  * Actualiza la matriz que se utiliza en el algoritmo a star

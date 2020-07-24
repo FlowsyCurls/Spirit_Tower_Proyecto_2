@@ -139,32 +139,14 @@ void GameManager::checkSafeZone(Entity * player) {
             }
         }
     }else{
-        //Spectre::backtracking = false;
-        //Spectre::stopVision = false;
-        if(Board::queueBreadCrumbingPlayer == nullptr || Board::vectorPrueba == nullptr){
+        if(Board::queueBreadCrumbingPlayer == nullptr){
             Board::queueBreadCrumbingPlayer = new deque<Position*>();
-            Board::vectorPrueba = new vector<Position*>();
         }
         if(Spectre::isOnPersuit && Board::playerHasMoved){
             Board::queueBreadCrumbingPlayer->push_back(new Position(player->getPosition()->getRow(), player->getPosition()->getColumn()));
-
-            //cout << "pusheo ";
-            //player->getPosition()->printPosition();
-            //cout <<  endl;
-            //Board::vectorPrueba->push_back(new Position(player->getPosition()->getRow(), player->getPosition()->getColumn()));
-            //Board::queueBreadCrumbingPlayer->back()->printPosition();
         }
 
     }
-}
-
-void GameManager::threadVision() {
-    //while(!pause){
-
-
-    //    sleep(0.2);
-    //    checkSpectresPlayerInteract();
-    //}
 }
 
 
@@ -186,30 +168,6 @@ void GameManager::initialEntitiesFunctions() {
     for(auto & mouse: *Mouse::listOfMice){
         mouse->startMovement();
     }
-    /*
-    for(auto & simple : *SimpleEnemy::listOfSimpleEnemies){
-        simple->startMovement();
-    }
-     */
-}
-
-
-/**
- * Hace un checkeo de la situacion en la que se encuentra el jugador con respecto a los espectros, ya sea que determine
- * si lo vieron o si entro en zona segura y lo deben dejar de seguir
- */
-void GameManager::checkSpectresPlayerInteract() {
-    //if(!Board::playerOnPersuit){
-        //checkEntitiesVision();
-    //}else{
-    //    if(Board::checkPlayerOfSafeZone()){
-    //        Spectre::sendSignalToStopPersuit();
-    //        for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-    //            Spectre::listOfSpectres->at(i)->backtracking = true;
-    //        }
-
-    //    }
-    //}
 }
 
 /* ===============================  PARSING  =======================================
@@ -429,34 +387,29 @@ void GameManager::updatePlayerPosition(const string& pJson) {
     if(e != nullptr){
         json jsonObj;
         stringstream(pJson) >> jsonObj;
-        //if(jsonObj["lifes"] == 0){
-        //    cout << "Mori xdxd" << endl;
-        //    isDead = true;
-        //}else{
-            //No se movio
-            if(e->getPosition()->getRow() == jsonObj["position"][0] && e->getPosition()->getColumn() == jsonObj["position"][1]){
+        //No se movio
+        if(e->getPosition()->getRow() == jsonObj["position"][0] && e->getPosition()->getColumn() == jsonObj["position"][1]){
 
-                Board::playerHasMoved = false;
-                //cout << "El jugador no se movio" << endl;
-            }else{
-                //cout << "***El jugador se movio" << endl;
-                //cout << "La posicion de jugador es " << e.
-                Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity("");
-                e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
-                Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
-                Board::playerHasMoved = true;
-                //e->getPosition()->printPosition();
-                checkSafeZone(e);
-                if(!Spectre::isOnPersuit){
-                    for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+            Board::playerHasMoved = false;
+            //cout << "El jugador no se movio" << endl;
+        }else{
+            //cout << "***El jugador se movio" << endl;
+            //cout << "La posicion de jugador es " << e.
+            Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity("");
+            e->setPosition(jsonObj["position"][0], jsonObj["position"][1]);
+            Board::matriz[e->getPosition()->getRow()][e->getPosition()->getColumn()]->setEntity(e->getId());
+            Board::playerHasMoved = true;
+            //e->getPosition()->printPosition();
+            checkSafeZone(e);
+            if(!Spectre::isOnPersuit){
+                for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
 
-                        Spectre::listOfSpectres->at(i)->checkVisionRange();
+                    Spectre::listOfSpectres->at(i)->checkVisionRange();
 
-                    }
                 }
-
             }
-        //}
+
+        }
     }
 }
 

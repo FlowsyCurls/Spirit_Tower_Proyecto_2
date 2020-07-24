@@ -33,7 +33,6 @@ public:
     vector<Entity*> * listOfEntitys;
     static bool playerHasMoved;
     static deque<Position*>* queueBreadCrumbingPlayer;
-    static vector<Position*> * vectorPrueba;
 
     //Constructor
     Board();

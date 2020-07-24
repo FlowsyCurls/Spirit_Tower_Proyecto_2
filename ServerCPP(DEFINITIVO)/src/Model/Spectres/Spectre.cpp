@@ -122,13 +122,9 @@ void Spectre::moveBreadcrumbing(){
 
     if(!Board::queueBreadCrumbingPlayer->empty()){
         Position * p = new Position(Board::queueBreadCrumbingPlayer->front()->getRow(), Board::queueBreadCrumbingPlayer->front()->getColumn());
-        p->printPosition();
         moveToPos(p);
-
         Board::queueBreadCrumbingPlayer->front()->printPosition();
-
         queueBackTracking->push_back(new Position(p->getRow(), p->getColumn()));
-//
         Board::queueBreadCrumbingPlayer->pop_front();
     }
 
