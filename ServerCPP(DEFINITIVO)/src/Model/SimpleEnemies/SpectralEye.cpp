@@ -204,10 +204,13 @@ void SpectralEye::setWhereToTeleport() {
 
 
 void SpectralEye::clear() {
-    for(int i = 0; i < listOfSpectralEyes->size();i++){
-        listOfSpectralEyes->at(i)->setEntityPause(true);
+    if(listOfSpectralEyes != nullptr){
+        for(int i = 0; i < listOfSpectralEyes->size();i++){
+            listOfSpectralEyes->at(i)->setEntityPause(true);
+        }
+        listOfSpectralEyes->clear();
     }
-    listOfSpectralEyes->clear();
+
     //listOfSpectralEyes = new vector<SpectralEye*>();
 }
 

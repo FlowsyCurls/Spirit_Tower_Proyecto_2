@@ -60,10 +60,10 @@ void Chuchu::moveTo(Position * pPosition) {
 }
 
 void Chuchu::clear() {
-
-    for(int i = 0; i < listOfChuchus->size(); i++){
-        listOfChuchus->at(i)->pause = true;
+    if(listOfChuchus != nullptr){
+        for(int i = 0; i < listOfChuchus->size(); i++){
+            listOfChuchus->at(i)->pause = true;
+        }
+        listOfChuchus->clear();
     }
-    listOfChuchus->clear();
-
 }

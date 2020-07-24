@@ -93,9 +93,12 @@ void GameManager::loadGame(int pLevel) {
  */
 void GameManager::setGraphs()
 {
-    for(auto & eye : *SpectralEye::listOfSpectralEyes){
-        eye->setEyeGraph();
+    if(SpectralEye::listOfSpectralEyes != nullptr){
+        for(auto & eye : *SpectralEye::listOfSpectralEyes){
+            eye->setEyeGraph();
+        }
     }
+
 }
 
 /**
@@ -128,18 +131,20 @@ void GameManager::checkSafeZone(Entity * player) {
         //Spectre::stopVision = true;
         Board::queueBreadCrumbingPlayer = nullptr;
         Spectre::sendSignalToStopPersuit();
-        for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-            if(Spectre::listOfSpectres->at(i)->getDequeBackTracking()->empty()){
-                Spectre::listOfSpectres->at(i)->backtracking = false;
-            }else{
-                Spectre::listOfSpectres->at(i)->backtracking = true;
+        if(Spectre::listOfSpectres != nullptr){
+            for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+                if(Spectre::listOfSpectres->at(i)->getDequeBackTracking()->empty()){
+                    Spectre::listOfSpectres->at(i)->backtracking = false;
+                }else{
+                    Spectre::listOfSpectres->at(i)->backtracking = true;
+                }
             }
         }
     }else{
         if(Board::queueBreadCrumbingPlayer == nullptr){
             Board::queueBreadCrumbingPlayer = new deque<Position*>();
         }
-        if(Spectre::isOnPersuit && Board::playerHasMoved){
+        if(Board::queueBreadCrumbingPlayer != nullptr && Spectre::isOnPersuit && Board::playerHasMoved){
             Board::queueBreadCrumbingPlayer->push_back(new Position(player->getPosition()->getRow(), player->getPosition()->getColumn()));
         }
 
@@ -160,14 +165,20 @@ void GameManager::clearAll() {
 }
 
 void GameManager::initialEntitiesFunctions() {
-    for(auto & spectre : *Spectre::listOfSpectres){
-        spectre->startMovement();
+    if(Spectre::listOfSpectres != nullptr){
+        for(auto & spectre : *Spectre::listOfSpectres){
+            spectre->startMovement();
+        }
     }
-    for(auto & mouse: *Mouse::listOfMice){
-        mouse->startMovement();
+    if(Mouse::listOfMice != nullptr){
+        for(auto & mouse: *Mouse::listOfMice){
+            mouse->startMovement();
+        }
     }
-    for(auto & chuchu : *Chuchu::listOfChuchus){
-        chuchu->startMovement();
+    if(Chuchu::listOfChuchus != nullptr){
+        for(auto & chuchu : *Chuchu::listOfChuchus){
+            chuchu->startMovement();
+        }
     }
 }
 
@@ -345,7 +356,7 @@ void GameManager::generateEntityLastStatusJSON() {
     j["isDead"] = isDead;
     //cout << "SEPARATOR" << endl << endl;
 
-    if(!Entity::listOfEntitys->empty()){
+    if(Entity::listOfEntitys != nullptr && !Entity::listOfEntitys->empty()){
         for(int i = 1; i < Entity::listOfEntitys->size(); i++){
             json j2;
             auto * position = new Position(Entity::listOfEntitys->at(i)->getPosition()->getRow(), Entity::listOfEntitys->at(i)->getPosition()->getColumn());
@@ -355,7 +366,7 @@ void GameManager::generateEntityLastStatusJSON() {
             j2["position"] = {};
             j2["position"][0] = position->getRow();
             j2["position"][1] = position->getColumn();
-            j2["teleportTo"] = false;
+            j2["teleport"] = false;
 
             // analizar si es espectro azul.
             if (Entity::listOfEntitys->at(i)->getType() == "spectre_blue") {
@@ -409,21 +420,26 @@ void GameManager::updatePlayerPosition(const string& pJson) {
 
         for(int i = 0; i < jsonObj["spectresDied"].size();i++){
 
-            for(int e = 0; e < Spectre::listOfSpectres->size(); e++){
+            if(Spectre::listOfSpectres != nullptr){
+                for(int e = 0; e < Spectre::listOfSpectres->size(); e++){
 
-                if(Spectre::listOfSpectres->at(e)->getSpectreId() == jsonObj["spectresDied"].at(i)){
-                    Spectre::listOfSpectres->at(e)->setPauseEntity(true);
-                    Spectre::listOfSpectres->erase(Spectre::listOfSpectres->begin() + e);
+                    if(Spectre::listOfSpectres->at(e)->getSpectreId() == jsonObj["spectresDied"].at(i)){
+                        Spectre::listOfSpectres->at(e)->setPauseEntity(true);
+                        Spectre::listOfSpectres->erase(Spectre::listOfSpectres->begin() + e);
+                    }
                 }
             }
 
-            for(int e = 0; e < Entity::listOfEntitys->size(); e++){
+            if(Entity::listOfEntitys != nullptr){
+                for(int e = 0; e < Entity::listOfEntitys->size(); e++){
 
-                if(Entity::listOfEntitys->at(e)->getId() == jsonObj["spectresDied"].at(i)){
-                    Entity::listOfEntitys->erase(Entity::listOfEntitys->begin() + e);
+                    if(Entity::listOfEntitys->at(e)->getId() == jsonObj["spectresDied"].at(i)){
+                        Entity::listOfEntitys->erase(Entity::listOfEntitys->begin() + e);
+                    }
+
                 }
-
             }
+
         }
 
         //No se movio
@@ -443,15 +459,21 @@ void GameManager::updatePlayerPosition(const string& pJson) {
 
             // Spectre Eyes CheckVision.
             if(!Spectre::isOnPersuit){
-                for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-                    Spectre::listOfSpectres->at(i)->checkVisionRange();
+                if(Spectre::listOfSpectres != nullptr){
+                    for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+                        Spectre::listOfSpectres->at(i)->checkVisionRange();
+                    }
                 }
+
             }
 
             // Spectral Eyes CheckVision.
-            for(auto & spectralEye : *SpectralEye::listOfSpectralEyes){
-                spectralEye->checkVisionRange();
+            if(SpectralEye::listOfSpectralEyes != nullptr){
+                for(auto & spectralEye : *SpectralEye::listOfSpectralEyes){
+                    spectralEye->checkVisionRange();
+                }
             }
+
         }
     }
 }

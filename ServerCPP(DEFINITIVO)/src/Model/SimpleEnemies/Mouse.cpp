@@ -87,11 +87,13 @@ void Mouse::moveRandomly() {
 }
 
 void Mouse::clear() {
-
-    for(int i = 0; i < listOfMice->size();i++){
-        listOfMice->at(i)->setEntityPause(true);
+    if(listOfMice != nullptr){
+        for(int i = 0; i < listOfMice->size();i++){
+            listOfMice->at(i)->setEntityPause(true);
+        }
+        listOfMice->clear();
     }
-    listOfMice->clear();
+
     //listOfMice = new vector<Mouse*>();
 }
 

@@ -76,10 +76,13 @@ string Entity::getDirection() {
 }
 
 void Entity::clearAll() {
-    for(int i = 0; i < listOfEntitys->size(); i++){
-        listOfEntitys->at(i)->setPause(true);
+    if(listOfEntitys != nullptr){
+        for(int i = 0; i < listOfEntitys->size(); i++){
+            listOfEntitys->at(i)->setPause(true);
+        }
+        listOfEntitys->clear();
     }
-    listOfEntitys->clear();
+
     //listOfEntitys = new vector<Entity*>();
 }
 

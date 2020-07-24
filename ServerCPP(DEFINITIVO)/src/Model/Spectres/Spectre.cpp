@@ -421,10 +421,13 @@ void Spectre::resetPatrolQueue() {
 }
 
 void Spectre::clear() {
-    for(int i = 0; i < listOfSpectres->size(); i++){
-        listOfSpectres->at(i)->setPause(true);
+    if(listOfSpectres != nullptr){
+        for(int i = 0; i < listOfSpectres->size(); i++){
+            listOfSpectres->at(i)->setPause(true);
+        }
+        listOfSpectres->clear();
     }
-    listOfSpectres->clear();
+
     //listOfSpectres = new vector<Spectre*>();
 }
 

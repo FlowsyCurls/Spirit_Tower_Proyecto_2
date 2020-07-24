@@ -157,10 +157,12 @@ void SimpleEnemy::showQueue(queue <node*> q)
 void SimpleEnemy::startMovement() {}
 
 void SimpleEnemy::clear() {
-    for(int i = 0; i < listOfSimpleEnemies->size();i++){
-        listOfSimpleEnemies->at(i)->setPause(true);
+    if(listOfSimpleEnemies != nullptr){
+        for(int i = 0; i < listOfSimpleEnemies->size();i++){
+            listOfSimpleEnemies->at(i)->setPause(true);
+        }
+        listOfSimpleEnemies->clear();
     }
-    listOfSimpleEnemies->clear();
     //listOfSimpleEnemies = new vector<SimpleEnemy*>();
     //uniqueGraph = new graph();
 }
