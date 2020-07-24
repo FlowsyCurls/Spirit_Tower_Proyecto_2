@@ -39,8 +39,10 @@ private:
 
     int paralizeTime = 5;
 
-    bool teleport = false;
-    Position* teleportPos = new Position();
+    bool teleportTo = false;
+    bool teleportFrom = false;
+    Position* teleportToPos = new Position();
+    Position* teleportFromPos = new Position();
 
     bool paralize = false;
 
@@ -96,8 +98,10 @@ public:
     int getVisionRange();
     Spectre* getSpectreByID(string pId);
     void setIsOnPersuit(bool pIsOnPersuit);
-    void setTeleport(bool pTeleport);
-    bool getTeleport() const;
+    void setTeleportTo(bool pTeleport);
+    bool getTeleportTo() const;
+    void setTeleportFrom(bool pTeleport);
+    bool getTeleportFrom() const;
     Position *getTeleportPos() const;
     void setTeleportPos(Position *pTeleportPos);
 
