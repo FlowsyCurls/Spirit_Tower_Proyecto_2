@@ -138,14 +138,16 @@ void Spectre::moveAStar(){
         calculateAStar();
     }
     if(queueAStar != nullptr && !queueAStar->empty()){
-        if(getPosition()->compare(queueAStar->front())){
+        while(getPosition()->compare(queueAStar->front())){
             queueAStar->pop();
         }
         if(queueAStar != nullptr && !queueAStar->empty()){
             moveToPos(queueAStar->front());
-            if(queueBackTracking != nullptr){
-                queueBackTracking->push_back(new Position(queueAStar->front()->getRow(), queueAStar->front()->getColumn()));
+            if(queueBackTracking == nullptr || queueBackTracking->empty()){
+                queueBackTracking = new deque<Position*>();
             }
+            queueBackTracking->push_back(new Position(queueAStar->front()->getRow(), queueAStar->front()->getColumn()));
+
             queueAStar->pop();
         }
     }
@@ -162,6 +164,10 @@ void Spectre::moveBacktracking(){
         }
         else {
 
+            if(getId() == "sp01"){
+                queueBackTracking->back()->printPosition();
+                //cout << "tamaño backtracking " << queueBackTracking->size() << endl;
+            }
 
             moveToPos(queueBackTracking->back());
             queueBackTracking->pop_back();
@@ -185,9 +191,14 @@ void Spectre::moveNext() {
             sleep(paralizeTime);
             paralize = false;
         }
-        if(queueBackTracking != nullptr && backtracking && !queueBackTracking->empty()){
+        if(backtracking){
             this_thread::sleep_for(chrono::milliseconds(routeVelocity));
             moveBacktracking();
+            //cout << getId() << " entro en backtracking" << endl;
+//        }
+//        else if(teleportFrom){
+//            sleep(1);
+//            moveToPos(teleportFromPos);
         }else{
             if(!isOnPersuit){
                 this_thread::sleep_for(chrono::milliseconds(routeVelocity));
@@ -252,6 +263,7 @@ void Spectre::sendSignalToStopPersuit() {
         for(auto & spectre : *listOfSpectres){
             spectre->useBreadcrumbing = false;
             spectre->teleportTo = false;
+            spectre->backtracking = true;
         }
         cout << "********************Se ha enviado una senal para dejar de seguir al jugador********************" << endl;
     }
@@ -262,7 +274,7 @@ void Spectre::sendSignalToStopPersuit() {
  */
 void Spectre::sendSignalToPersuit() {
 
-    if(!isOnPersuit){
+    if(!isOnPersuit && !backtracking){
         backtracking = false;
         isOnPersuit = true;
         useBreadcrumbing = true;

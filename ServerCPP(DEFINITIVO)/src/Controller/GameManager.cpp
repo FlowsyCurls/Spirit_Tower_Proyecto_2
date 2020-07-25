@@ -127,28 +127,27 @@ void GameManager::updateGame() {
 }
 
 void GameManager::checkSafeZone(Entity * player) {
-    if(Board::checkPlayerOfSafeZone(player)){
-        Board::queueBreadCrumbingPlayer = nullptr;
 
-        if(Spectre::listOfSpectres != nullptr){
-            for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-                if(Spectre::listOfSpectres->at(i)->getDequeBackTracking()->empty()){
-                    Spectre::listOfSpectres->at(i)->backtracking = false;
-                }else{
-                    Spectre::listOfSpectres->at(i)->backtracking = true;
-                }
+        if(Board::checkPlayerOfSafeZone(player)){
+
+            if(Spectre::isOnPersuit) {
+
+                Board::queueBreadCrumbingPlayer = nullptr;
+                Spectre::sendSignalToStopPersuit();
             }
-        }
-        Spectre::sendSignalToStopPersuit();
-    }else{
-        if(Board::queueBreadCrumbingPlayer == nullptr){
-            Board::queueBreadCrumbingPlayer = new deque<Position*>();
-        }
-        if(Board::queueBreadCrumbingPlayer != nullptr && Spectre::isOnPersuit && Board::playerHasMoved){
-            Board::queueBreadCrumbingPlayer->push_back(new Position(player->getPosition()->getRow(), player->getPosition()->getColumn()));
+
+        }else{
+            if(Board::queueBreadCrumbingPlayer == nullptr){
+                Board::queueBreadCrumbingPlayer = new deque<Position*>();
+            }
+            if(Board::queueBreadCrumbingPlayer != nullptr && Spectre::isOnPersuit && Board::playerHasMoved){
+                Board::queueBreadCrumbingPlayer->push_back(new Position(player->getPosition()->getRow(), player->getPosition()->getColumn()));
+            }
+
         }
 
-    }
+
+
 }
 
 
@@ -156,6 +155,17 @@ void GameManager::checkSafeZone(Entity * player) {
  * Da comienzo al movimiento de los espectros (threads)
  */
 void GameManager::clearAll() {
+    Spectre::isOnPersuit = false;
+    Board::playerHasMoved = false;
+    if(Board::queueBreadCrumbingPlayer != nullptr){
+        Board::queueBreadCrumbingPlayer->clear();
+    }
+    if(board->listOfEntitys != nullptr){
+        board->listOfEntitys->clear();
+    }
+    SpectralEye::lastSeen = "";
+    SpectralEye::tpSpot = new Position();
+
     SimpleEnemy::clear();
     Spectre::clear();
     SpectralEye::clear();
