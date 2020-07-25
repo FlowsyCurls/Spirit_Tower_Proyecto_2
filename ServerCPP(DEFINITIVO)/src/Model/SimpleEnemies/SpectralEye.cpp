@@ -215,6 +215,7 @@ void SpectralEye::clear() {
     if(listOfSpectralEyes != nullptr){
         for(int i = 0; i < listOfSpectralEyes->size();i++){
             listOfSpectralEyes->at(i)->setEntityPause(true);
+//            listOfSpectralEyes->at(i)->eyeGraph = new graph();
         }
         listOfSpectralEyes->clear();
     }

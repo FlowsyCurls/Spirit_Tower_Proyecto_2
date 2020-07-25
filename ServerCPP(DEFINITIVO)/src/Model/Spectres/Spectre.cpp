@@ -188,9 +188,10 @@ void Spectre::moveNext() {
         if(queueBackTracking != nullptr && backtracking && !queueBackTracking->empty()){
             this_thread::sleep_for(chrono::milliseconds(routeVelocity));
             moveBacktracking();
-        }else if(teleportFrom){
-            sleep(1);
-            moveToPos(teleportFromPos);
+//        }
+//        else if(teleportFrom){
+//            sleep(1);
+//            moveToPos(teleportFromPos);
         }else{
             if(!isOnPersuit){
                 this_thread::sleep_for(chrono::milliseconds(routeVelocity));
