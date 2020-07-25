@@ -114,6 +114,7 @@ public:
     string getSpectreId();
     string getSpectreType();
     static void clear();
+    static void printAllSpectres();
 
     void setPauseEntity(bool pPause);
 

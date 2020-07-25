@@ -92,3 +92,15 @@ bool Entity::getPause() {
 void Entity::setPause(bool pPause) {
     pause = pPause;
 }
+
+void Entity::printEntitys() {
+    for(int i = 0; i < listOfEntitys->size(); i++){
+        listOfEntitys->at(i)->print();
+    }
+}
+
+void Entity::print() {
+
+    cout << "id: " << getId() << " type: " << getType() << endl;
+
+}

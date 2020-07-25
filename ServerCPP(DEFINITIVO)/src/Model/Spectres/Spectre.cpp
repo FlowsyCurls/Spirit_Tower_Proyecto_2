@@ -494,3 +494,9 @@ void Spectre::setPauseEntity(bool pPause) {
     setPause(pPause);
 }
 
+void Spectre::printAllSpectres() {
+    for(int i = 0; i < listOfSpectres->size(); i++){
+        listOfSpectres->at(i)->printSpectre();
+    }
+}
+
