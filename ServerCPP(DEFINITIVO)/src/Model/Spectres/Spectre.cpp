@@ -135,10 +135,7 @@ void Spectre::moveBreadcrumbing(){
 
 void Spectre::moveAStar(){
     if(queueAStar == nullptr || queueAStar->empty() || Board::playerHasMoved){
-        if(!getPause()){
-            calculateAStar();
-        }
-
+        calculateAStar();
     }
     if(queueAStar != nullptr && !queueAStar->empty()){
         while(getPosition()->compare(queueAStar->front())){
@@ -167,7 +164,24 @@ void Spectre::moveBacktracking(){
 
 //        cout << "OCURRE : " << (queueBackTracking->size() == 1 && queueBackTracking->back()->compare(teleportToPos)) << endl;
         if (!Spectre::isOnPersuit && queueBackTracking->size() == 1 && queueBackTracking->back()->compare(teleportToPos)) {
+            cout << "En backtracking  Posicion ultima de la cola es : ";
+            queueBackTracking->back()->printPosition();
+            cout << endl;
+
+            cout << "En backtracking  Posicion actual es : ";
+            getPosition()->printPosition();
+            cout << endl;
+
+            cout << "En backtracking  Posicion donde me debo tp es : ";
+            teleportFromPos->printPosition();
+            cout << endl;
+
             moveToPos(teleportFromPos);
+
+            cout << "En backtracking  Posicion actual es : ";
+            getPosition()->printPosition();
+            cout << endl;
+
             queueBackTracking->pop_back();
             teleportFrom = true;
         }

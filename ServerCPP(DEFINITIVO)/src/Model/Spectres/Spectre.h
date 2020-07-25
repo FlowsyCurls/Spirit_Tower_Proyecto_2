@@ -46,10 +46,10 @@ private:
     bool paralize = false;
 
     SpectreType spectreType;
-
+    bool useBreadcrumbing = false;
 
 public:
-    bool useBreadcrumbing = false;
+
     bool backtracking;
     static bool isOnPersuit;
     //Constructor

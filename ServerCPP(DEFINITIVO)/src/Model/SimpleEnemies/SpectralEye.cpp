@@ -174,20 +174,13 @@ void SpectralEye::callSpectres() {
     }
     lastSeen = this->getEntityId();
     setWhereToTeleport();
-    sendSignalToPersuit(nullptr);
     if(Spectre::listOfSpectres != nullptr){
         for (auto &spectre : *Spectre::listOfSpectres) {
             // search for the blue spectre welcome to teleportTo.
             if (spectre->getSpectreType() == "spectre_blue") {
-                //spectre->setPauseEntity(true);
-                spectre->queueAStar = nullptr;
                 spectre->setTeleportTo(true);
                 spectre->setTeleportToPos(tpSpot);
-                spectre->queueBackTracking->clear();
-                spectre->queueBackTracking->push_back(tpSpot);
-                spectre->useBreadcrumbing = true;
-                //spectre->moveAStar();
-                spectre->setPauseEntity(false);
+                sendSignalToPersuit(spectre);
                 break;
             }
         }
@@ -195,25 +188,16 @@ void SpectralEye::callSpectres() {
 }
 
 void SpectralEye::sendSignalToPersuit(Spectre* pSpectre){
-
-    bool findBlue = false;
-
     if(!Spectre::isOnPersuit){
-        //pSpectre->backtracking = false;
+        pSpectre->backtracking = false;
         Spectre::isOnPersuit = true;
-        //pSpectre->queueBackTracking = new deque<Position*>();
+        pSpectre->queueBackTracking = new deque<Position*>();
         for(auto & spectre : *Spectre::listOfSpectres){
-            if(spectre->getSpectreType() == "spectre_blue" && !findBlue){
-                spectre->setPauseEntity(true);
-                findBlue = true;
-            }
             spectre->queueAStar = nullptr;
             spectre->queueBackTracking = new deque<Position*>();
-            spectre->backtracking = false;
-
         }
-        //pSpectre->queueBackTracking->push_back(tpSpot);
-        //pSpectre->moveAStar();
+        pSpectre->queueBackTracking->push_back(tpSpot);
+        pSpectre->moveAStar();
 
         cout << "* Signal sent!" << endl;
     }
