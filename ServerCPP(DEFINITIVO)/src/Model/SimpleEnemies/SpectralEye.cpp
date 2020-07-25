@@ -185,7 +185,6 @@ void SpectralEye::callSpectres() {
                 spectre->setTeleportToPos(tpSpot);
                 spectre->queueBackTracking->clear();
                 spectre->queueBackTracking->push_back(tpSpot);
-                Board::queueBreadCrumbingPlayer->clear();
                 spectre->useBreadcrumbing = true;
                 //spectre->moveAStar();
                 spectre->setPauseEntity(false);
