@@ -34,7 +34,7 @@
             "direction": "west",
             "routeVelocity": 500,
             "persuitVelocity": 500,
-            "visionRange": 0,
+            "visionRange": 3,
             "patrolRoute": [
                 [2, 14],
                 [2, 13],
@@ -76,7 +76,7 @@
             "direction": "east",
             "routeVelocity": 500,
             "persuitVelocity": 500,
-            "visionRange": 0,
+            "visionRange": 3,
             "patrolRoute": [
                 [8, 5],
                 [8, 6],
@@ -114,7 +114,7 @@
             "direction": "north",
             "routeVelocity": 500,
             "persuitVelocity": 500,
-            "visionRange": 0,
+            "visionRange": 3,
             "patrolRoute": [
                 [19, 12],
                 [18, 12],
