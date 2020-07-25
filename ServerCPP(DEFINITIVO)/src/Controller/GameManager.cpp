@@ -133,18 +133,6 @@ void GameManager::checkSafeZone(Entity * player) {
             if(Spectre::isOnPersuit) {
 
                 Board::queueBreadCrumbingPlayer = nullptr;
-
-                /*
-                if (Spectre::listOfSpectres != nullptr) {
-                    for (int i = 0; i < Spectre::listOfSpectres->size(); i++) {
-                        if (Spectre::listOfSpectres->at(i)->queueBackTracking != nullptr && Spectre::listOfSpectres->at(i)->queueBackTracking->empty()) {
-                            Spectre::listOfSpectres->at(i)->backtracking = false;
-                        } else {
-                            Spectre::listOfSpectres->at(i)->backtracking = true;
-                        }
-                    }
-                }
-                 */
                 Spectre::sendSignalToStopPersuit();
             }
 
