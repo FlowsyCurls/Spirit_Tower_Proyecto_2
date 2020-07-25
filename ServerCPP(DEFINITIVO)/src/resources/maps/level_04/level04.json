@@ -131,8 +131,8 @@
     {
       "id": "se03",
       "type": "spectralEye",
-      "visionRange": 3,
-      "position": [0,5]
+      "visionRange": 2,
+      "position": [4,0]
     },
     {
       "id": "se04",
