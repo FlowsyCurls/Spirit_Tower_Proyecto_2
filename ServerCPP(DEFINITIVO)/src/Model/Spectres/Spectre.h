@@ -29,7 +29,6 @@ private:
 
     vector<Position*>* patrolRoute;
     queue<Position*>* queuePatrolRoute;
-    queue<Position*>* queueAStar;
     vector<Position*>* auxVec = new vector<Position*>();
 
     //string direction;
@@ -119,6 +118,7 @@ public:
     void setPauseEntity(bool pPause);
 
     deque<Position*>* queueBackTracking = new deque<Position*>();
+    queue<Position*>* queueAStar;
 };
 
 

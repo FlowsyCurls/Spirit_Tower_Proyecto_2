@@ -9,7 +9,9 @@ vector<Mouse*> *Mouse::listOfMice = new vector<Mouse*>();
 Mouse::Mouse(const string &pId, const string &pType, Position* pPosition)
 : SimpleEnemy(pId, pType, pPosition)
 {
-    listOfMice->push_back(this);
+    if(listOfMice != nullptr){
+        listOfMice->push_back(this);
+    }
 }
 
 /* ===============================  GETTERS  ========================================
@@ -48,7 +50,7 @@ void Mouse::moveRandomly() {
 
             switch(mov){
                 case 1: //norte
-                    if(Board::matriz[getEntityPosition()->getRow()-1][getEntityPosition()->getColumn()]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()-1][getEntityPosition()->getColumn()]->getEntity().compare("")==0){
+                    if(Board::matriz[getEntityPosition()->getRow()-1][getEntityPosition()->getColumn()] != nullptr && Board::matriz[getEntityPosition()->getRow()-1][getEntityPosition()->getColumn()]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()-1][getEntityPosition()->getColumn()]->getEntity()==""){
                         searchAvailable = false;
                         nextPos = new Position(getEntityPosition()->getRow()-1,getEntityPosition()->getColumn());
                         setEntityDirection("north");
@@ -56,21 +58,21 @@ void Mouse::moveRandomly() {
                     }
                     break;
                 case 2: //sur
-                    if(Board::matriz[getEntityPosition()->getRow()+1][getEntityPosition()->getColumn()]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()+1][getEntityPosition()->getColumn()]->getEntity().compare("")==0){
+                    if(Board::matriz[getEntityPosition()->getRow()-1][getEntityPosition()->getColumn()] != nullptr && Board::matriz[getEntityPosition()->getRow()+1][getEntityPosition()->getColumn()]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()+1][getEntityPosition()->getColumn()]->getEntity()==""){
                         searchAvailable = false;
                         nextPos = new Position(getEntityPosition()->getRow()+1,getEntityPosition()->getColumn());
                         setEntityDirection("south");
                     }
                     break;
                 case 3: //este
-                    if(Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()+1]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()+1]->getEntity().compare("")==0){
+                    if(Board::matriz[getEntityPosition()->getRow()-1][getEntityPosition()->getColumn()] != nullptr && Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()+1]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()+1]->getEntity()==""){
                         searchAvailable = false;
                         nextPos = new Position(getEntityPosition()->getRow(),getEntityPosition()->getColumn()+1);
                         setEntityDirection("east");
                     }
                     break;
                 case 4: //oeste
-                    if(Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()-1]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()-1]->getEntity().compare("")==0){
+                    if(Board::matriz[getEntityPosition()->getRow()-1][getEntityPosition()->getColumn()] != nullptr && Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()-1]->getCellType() == NORMAL && Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()-1]->getEntity()==""){
                         searchAvailable = false;
                         nextPos = new Position(getEntityPosition()->getRow(),getEntityPosition()->getColumn()-1);
                         setEntityDirection("west");
@@ -79,10 +81,11 @@ void Mouse::moveRandomly() {
             }
 
         }
-        Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()]->setEntity("");
-        setEntityPosition(nextPos);
-        Board::matriz[nextPos->getRow()][nextPos->getColumn()]->setEntity(getEntityId());
-
+        if(Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()] != nullptr){
+            Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()]->setEntity("");
+            setEntityPosition(nextPos);
+            Board::matriz[nextPos->getRow()][nextPos->getColumn()]->setEntity(getEntityId());
+        }
     }
 }
 

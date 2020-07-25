@@ -11,7 +11,9 @@ vector<Chuchu*> *Chuchu::listOfChuchus = new vector<Chuchu*>();
 Chuchu::Chuchu(const string& pId, const string& pType, Position *pPosition)
 : SimpleEnemy(pId, pType, pPosition)
 {
-    listOfChuchus->push_back(this);
+    if(listOfChuchus != nullptr){
+        listOfChuchus->push_back(this);
+    }
 }
 
 
@@ -33,8 +35,13 @@ void Chuchu::findPlayer() {
             calculateBresenham();
         }
         if(queueBresenham != nullptr && !queueBresenham->empty()){
-            moveTo(queueBresenham->front());
-            queueBresenham->pop();
+            if(queueBresenham->front()->compare(getEntityPosition())){
+                queueBresenham->pop();
+            }
+            if(queueBresenham != nullptr && !queueBresenham->empty()){
+                moveTo(queueBresenham->front());
+                queueBresenham->pop();
+            }
         }
 
     }
@@ -50,12 +57,14 @@ void Chuchu::calculateBresenham() {
 }
 
 void Chuchu::moveTo(Position * pPosition) {
-    if(Board::matriz[pPosition->getRow()][pPosition->getColumn()]->getCellType() == NORMAL){
-        Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()]->setEntity("");
-        //updateDirection(pPosition);
-        Board::matriz[pPosition->getRow()][pPosition->getColumn()]->setEntity(getEntityId());
-        setEntityPosition(pPosition);
-        Board::updateMatrizStar();
+    if(Board::matriz[pPosition->getRow()][pPosition->getColumn()] != nullptr){
+        if(Board::matriz[pPosition->getRow()][pPosition->getColumn()]->getCellType() == NORMAL){
+            Board::matriz[getEntityPosition()->getRow()][getEntityPosition()->getColumn()]->setEntity("");
+            //updateDirection(pPosition);
+            Board::matriz[pPosition->getRow()][pPosition->getColumn()]->setEntity(getEntityId());
+            setEntityPosition(pPosition);
+            Board::updateMatrizStar();
+        }
     }
 }
 

@@ -12,7 +12,9 @@ SpectralEye::SpectralEye(const string &pId, const string &pType, int pVisionRang
 : SimpleEnemy(pId, pType, pPosition)
 {
     visionRange = pVisionRange;
-    listOfSpectralEyes->push_back(this);
+    if(listOfSpectralEyes != nullptr){
+        listOfSpectralEyes->push_back(this);
+    }
 }
 
 /* ===============================  GETTERS  ========================================
@@ -143,7 +145,7 @@ void SpectralEye::checkVisionRange()
 
         for (auto &neighbour : *current->neighbours) {
             // signal
-            if (Board::matriz[neighbour->row][neighbour->col]->getEntity() == "ju01") {
+            if (Board::matriz[neighbour->row][neighbour->col] != nullptr && Board::matriz[neighbour->row][neighbour->col]->getEntity() == "ju01") {
 //                cout << "Eye: " + getEntityId() + " just saw the player!" << endl;
 //                cout  << "EYE : " << getEntityId() << " | "; getEntityPosition()->printPosition();
 //                cout  << "\nSAW IN : " << neighbour->row << ", " << neighbour->col << endl;
@@ -172,22 +174,28 @@ void SpectralEye::callSpectres() {
     }
     lastSeen = this->getEntityId();
     setWhereToTeleport();
-    for (auto &spectre : *Spectre::listOfSpectres) {
-        // search for the blue spectre welcome to teleportTo.
-        if (spectre->getSpectreType() == "spectre_blue") {
-            spectre->setTeleportTo(true);
-            spectre->setTeleportToPos(tpSpot);
-            sendSignalToPersuit(spectre);
-            break;
+    if(Spectre::listOfSpectres != nullptr){
+        for (auto &spectre : *Spectre::listOfSpectres) {
+            // search for the blue spectre welcome to teleportTo.
+            if (spectre->getSpectreType() == "spectre_blue") {
+                spectre->setTeleportTo(true);
+                spectre->setTeleportToPos(tpSpot);
+                sendSignalToPersuit(spectre);
+                break;
+            }
         }
     }
 }
 
 void SpectralEye::sendSignalToPersuit(Spectre* spectre){
-    if(spectre->queueBackTracking->empty()){
+    if(!Spectre::isOnPersuit){
         spectre->backtracking = false;
         Spectre::isOnPersuit = true;
         spectre->queueBackTracking = new deque<Position*>();
+        for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+            Spectre::listOfSpectres->at(i)->queueAStar = nullptr;
+            Spectre::listOfSpectres->at(i)->queueBackTracking = new deque<Position*>();
+        }
         cout << "* Signal sent!" << endl;
     }
 }

@@ -19,10 +19,13 @@ void Population::generatePopulation() {
 //    cout << "> Population : "<< populationCounter++ << endl;
     for (int k = 0; k < capacity; k++)
     {
-        // Push Spectrum with random attributes.
-         auto *spectrum = new Spectrum(generateId(), getRandom(), getRandom(), getRandom());
-         listOfSpectres->push_back(spectrum);
+        if(listOfSpectres != nullptr){
+            // Push Spectrum with random attributes.
+            auto *spectrum = new Spectrum(generateId(), getRandom(), getRandom(), getRandom());
+            listOfSpectres->push_back(spectrum);
 //         spectrum->toString();
+        }
+
     }
 //    cout << endl;
 }
@@ -31,22 +34,25 @@ void Population::generatePopulation() {
 Spectrum *Population::getBreed() {
     breedList = new vector<Spectrum*>;
     // Cross between each spectrum.
-    for (int i = 0; i < listOfSpectres->size(); i++){
-        Spectrum *first, *second;
-        if (i == listOfSpectres->size() - 1)
-        {
-            first = listOfSpectres->at(i);
-            second = listOfSpectres->at(0);
+    if(listOfSpectres != nullptr){
+        for (int i = 0; i < listOfSpectres->size(); i++){
+            Spectrum *first, *second;
+            if (i == listOfSpectres->size() - 1)
+            {
+                first = listOfSpectres->at(i);
+                second = listOfSpectres->at(0);
+            }
+            else
+            {
+                first = listOfSpectres->at(i);
+                second = listOfSpectres->at(i + 1);
+            }
+            getBreed_Cross(first, second);
         }
-        else
-        {
-            first = listOfSpectres->at(i);
-            second = listOfSpectres->at(i + 1);
-        }
-        getBreed_Cross(first, second);
+        listOfSpectres = breedList;
+        return finest;
     }
-    listOfSpectres = breedList;
-    return finest;
+    return nullptr;
 }
 
 
@@ -57,10 +63,13 @@ void Population::getBreed_Cross(Spectrum *pSp1, Spectrum *pSp2)
     string firstTwin = Cross(decToBinSpectrum(pSp1), decToBinSpectrum(pSp2));  // Creation 1 Process
     string secondTwin = Cross(decToBinSpectrum(pSp2), decToBinSpectrum(pSp1));  // Creation 2 Process
 
-    twinsList->push_back(binToDecString(firstTwin));
-    twinsList->push_back(binToDecString(secondTwin));
-
-    breedList->push_back(getFinest(twinsList));
+    if(twinsList != nullptr){
+        twinsList->push_back(binToDecString(firstTwin));
+        twinsList->push_back(binToDecString(secondTwin));
+    }
+    if(breedList != nullptr){
+        breedList->push_back(getFinest(twinsList));
+    }
 //    breedList->back()->toString();
 }
 
@@ -77,20 +86,25 @@ Spectrum * Population::getFinest()
 
 
 Spectrum * Population::getFinest(vector<Spectrum*> *pList) {
-    Spectrum *goat = pList->at(0); // El mejor empieza siendo el primero.
+
 //    goat->toString();
-    for (int h = 1; h < pList->size(); h++) {
+    if(pList != nullptr){
+        Spectrum *goat = pList->at(0); // El mejor empieza siendo el primero.
+
+        for (int h = 1; h < pList->size(); h++) {
 //        pList->at(h)->toString();
-        if (goat->compareStats(pList->at(h))) { // Compare each stats.
-            goat = pList->at(h);
+            if (goat->compareStats(pList->at(h))) { // Compare each stats.
+                goat = pList->at(h);
 //            for (auto &g : *pList){
 //                if (goat->compareVision(g)) { // Compare sight Range.
 //                    goat = g;
 //                }
 //            }
+            }
         }
+        return goat;
     }
-    return goat;
+    return nullptr;
 }
 
 

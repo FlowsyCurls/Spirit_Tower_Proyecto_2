@@ -131,11 +131,14 @@ void SimpleEnemy::printGraph(graph *pGraph) {
  * @return
  */
 bool SimpleEnemy::exist(int pRow, int pCol, vector<struct node *> *pVector) {
-    for (auto &node : *pVector) {
-        if (node->row == pRow && node->col == pCol) {
-            return true;
+    if(pVector != nullptr){
+        for (auto &node : *pVector) {
+            if (node->row == pRow && node->col == pCol) {
+                return true;
+            }
         }
-    }return false;
+    }
+    return false;
 }
 
 /**
