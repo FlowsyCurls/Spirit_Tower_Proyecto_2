@@ -201,7 +201,7 @@ void GameManager::initialEntitiesFunctions() {
     }
     if(Chuchu::listOfChuchus != nullptr){
         for(auto & chuchu : *Chuchu::listOfChuchus){
-//            chuchu->startMovement();
+            chuchu->startMovement();
         }
     }
 }
