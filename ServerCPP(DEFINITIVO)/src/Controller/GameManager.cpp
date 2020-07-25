@@ -84,7 +84,7 @@ void GameManager::loadGame(int pLevel) {
     Board::printBoardCellType();
     Board::printBoardEntity();
     //geneticManager->setlistOfPopulation();
-    //GameManager::setGraphs();
+    GameManager::setGraphs();
     generateEntityLastStatusJSON();
 
 }
@@ -187,7 +187,7 @@ void GameManager::initialEntitiesFunctions() {
     }
     if(Chuchu::listOfChuchus != nullptr){
         for(auto & chuchu : *Chuchu::listOfChuchus){
-            chuchu->startMovement();
+//            chuchu->startMovement();
         }
     }
 }
@@ -472,7 +472,7 @@ void GameManager::updatePlayerPosition(const string& pJson) {
             // Spectral Eyes CheckVision.
             if(SpectralEye::listOfSpectralEyes != nullptr){
                 for(auto & spectralEye : *SpectralEye::listOfSpectralEyes){
-                    //spectralEye->checkVisionRange();
+                    spectralEye->checkVisionRange();
                 }
             }
 

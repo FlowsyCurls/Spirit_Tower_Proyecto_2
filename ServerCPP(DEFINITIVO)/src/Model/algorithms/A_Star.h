@@ -97,7 +97,7 @@ queue<Position*>* tracePath(cell cellDetails[][COL], Pair dest)
         Path.pop();
         //printf("-> (%d,%d) ",p.first,p.second);
     }
-    cout << endl;
+//    cout << endl;
     return astarRoute;
 }
 

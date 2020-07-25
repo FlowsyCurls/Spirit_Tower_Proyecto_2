@@ -155,12 +155,12 @@ void Spectre::moveBacktracking(){
     if(queueBackTracking != nullptr && !queueBackTracking->empty()){
 
 
-        //if (queueBackTracking->size() == 1 && queueBackTracking->back()->compare(teleportToPos)) {
-        //    moveToPos(teleportFromPos);
-        //    queueBackTracking->pop_back();
-        //    teleportFrom = true;
-        //}
-        //else {
+        if (queueBackTracking->size() == 1 && queueBackTracking->back()->compare(teleportToPos)) {
+            moveToPos(teleportFromPos);
+            queueBackTracking->pop_back();
+            teleportFrom = true;
+        }
+        else {
 
 
             moveToPos(queueBackTracking->back());
@@ -168,7 +168,7 @@ void Spectre::moveBacktracking(){
 
 
 
-        //}
+        }
     }else{
         backtracking = false;
     }
@@ -188,10 +188,6 @@ void Spectre::moveNext() {
         if(queueBackTracking != nullptr && backtracking && !queueBackTracking->empty()){
             this_thread::sleep_for(chrono::milliseconds(routeVelocity));
             moveBacktracking();
-//        }
-//        else if(teleportFrom){
-//            sleep(1);
-//            moveToPos(teleportFromPos);
         }else{
             if(!isOnPersuit){
                 this_thread::sleep_for(chrono::milliseconds(routeVelocity));
@@ -479,7 +475,6 @@ void Spectre::setTeleportToPos(Position *pTeleportPos) {
     Spectre::teleportFromPos = getPosition();
     Spectre::teleportToPos = pTeleportPos;
     moveToPos(teleportToPos);
-    calculateAStar();
 }
 
 void Spectre::setPauseEntity(bool pPause) {

@@ -69,7 +69,7 @@ void SpectralEye::setEyeGraph()
             eyeGraph->nodes->push_back(n);
         }
     }
-    cout << " size : " << eyeGraph->nodes->size() << "  |.. for: " << getEntityId() << endl;
+//    cout << " size : " << eyeGraph->nodes->size() << "  |.. for: " << getEntityId() << endl;
     setEyeEdge();
 //    printGraph(eyeGraph);
 }
@@ -129,7 +129,7 @@ void SpectralEye::setEyeEdge()
  */
 void SpectralEye::checkVisionRange()
 {
-//    cout << ">> Breadth First Search << " <<endl;
+//    cout << "\n>> Breadth First Search << " <<endl;
     queue<node *> frontier;
     auto *visited = new vector<node *>;
 
@@ -141,22 +141,22 @@ void SpectralEye::checkVisionRange()
         auto *current = frontier.front();
 
         frontier.pop();
-//        cout << "pop() : "; current->print(); cout<<endl; SimpleEnemy::showQueue(frontier);
+//        cout << "pop() : "; current->print(); cout<<endl;
 
         for (auto &neighbour : *current->neighbours) {
             // signal
             if (Board::matriz[neighbour->row][neighbour->col] != nullptr && Board::matriz[neighbour->row][neighbour->col]->getEntity() == "ju01") {
 //                cout << "Eye: " + getEntityId() + " just saw the player!" << endl;
 //                cout  << "EYE : " << getEntityId() << " | "; getEntityPosition()->printPosition();
-//                cout  << "\nSAW IN : " << neighbour->row << ", " << neighbour->col << endl;
+                cout  << "\nSAW IN : " << neighbour->row << ", " << neighbour->col << endl;
                 callSpectres();
-                frontier.empty();
+                frontier = queue<node *>();
                 break;
             } else {
                 if (!SimpleEnemy::exist(neighbour->row, neighbour->col, visited)) {
                     frontier.push(neighbour);
                     visited->push_back(neighbour);
-//                    cout << "push() : "; neighbour->print();  cout<< endl;
+//                    cout << "push() : "; neighbour->print();  cout<< endl; SimpleEnemy::showQueue(frontier);
                 }
             }
         }
@@ -178,8 +178,8 @@ void SpectralEye::callSpectres() {
         for (auto &spectre : *Spectre::listOfSpectres) {
             // search for the blue spectre welcome to teleportTo.
             if (spectre->getSpectreType() == "spectre_blue") {
-                spectre->setTeleportTo(true);
                 spectre->setTeleportToPos(tpSpot);
+                spectre->setTeleportTo(true);
                 sendSignalToPersuit(spectre);
                 break;
             }
@@ -187,15 +187,17 @@ void SpectralEye::callSpectres() {
     }
 }
 
-void SpectralEye::sendSignalToPersuit(Spectre* spectre){
+void SpectralEye::sendSignalToPersuit(Spectre* pSpectre){
     if(!Spectre::isOnPersuit){
-        spectre->backtracking = false;
+        pSpectre->backtracking = false;
         Spectre::isOnPersuit = true;
-        spectre->queueBackTracking = new deque<Position*>();
-        for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
-            Spectre::listOfSpectres->at(i)->queueAStar = nullptr;
-            Spectre::listOfSpectres->at(i)->queueBackTracking = new deque<Position*>();
+        pSpectre->queueBackTracking = new deque<Position*>();
+        for(auto & spectre : *Spectre::listOfSpectres){
+            spectre->queueAStar = nullptr;
+            spectre->queueBackTracking = new deque<Position*>();
         }
+        pSpectre->moveAStar();
+
         cout << "* Signal sent!" << endl;
     }
 }
@@ -215,7 +217,7 @@ void SpectralEye::clear() {
     if(listOfSpectralEyes != nullptr){
         for(int i = 0; i < listOfSpectralEyes->size();i++){
             listOfSpectralEyes->at(i)->setEntityPause(true);
-//            listOfSpectralEyes->at(i)->eyeGraph = new graph();
+            listOfSpectralEyes->at(i)->eyeGraph = new graph();
         }
         listOfSpectralEyes->clear();
     }
