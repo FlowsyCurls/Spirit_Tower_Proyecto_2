@@ -60,7 +60,7 @@ void SpectralEye::setEyeGraph()
 {
     int row = getStartPos()->at(0);
     int col = getStartPos()->at(1);
-    cout << ">> Eye Graph <<";
+//    cout << ">> Eye Graph <<";
 //    cout << " R >>  [" << row <<" -> " << getEntityPosition()->getRow() + visionRange<< "]" <<endl;
 //    cout << " C >>  [" << col <<" -> " << getEntityPosition()->getColumn() + visionRange<< "]" <<endl;
     for (int r = row; r <= getEntityPosition()->getRow() + visionRange; r++) {
@@ -179,8 +179,8 @@ void SpectralEye::callSpectres() {
             // search for the blue spectre welcome to teleportTo.
             if (spectre->getSpectreType() == "spectre_blue") {
                 spectre->setTeleportToPos(tpSpot);
-                spectre->setTeleportTo(true);
                 sendSignalToPersuit(spectre);
+                spectre->setTeleportTo(true);
                 break;
             }
         }

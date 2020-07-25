@@ -40,8 +40,8 @@ private:
 
     bool teleportTo = false;
     bool teleportFrom = false;
-    Position* teleportToPos = new Position();
-    Position* teleportFromPos = new Position();
+    Position* teleportToPos = nullptr;
+    Position* teleportFromPos = nullptr;
 
     bool paralize = false;
 

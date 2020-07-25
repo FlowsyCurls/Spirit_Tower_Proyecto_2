@@ -204,7 +204,7 @@ void GameManager::initialEntitiesFunctions() {
     }
     if(Chuchu::listOfChuchus != nullptr){
         for(auto & chuchu : *Chuchu::listOfChuchus){
-//            chuchu->startMovement();
+            chuchu->startMovement();
         }
     }
 }
@@ -403,6 +403,10 @@ void GameManager::generateEntityLastStatusJSON() {
                     j2["position"][0] = blue->getTeleportFromPos()->getRow();
                     j2["position"][1] = blue->getTeleportFromPos()->getColumn();
                     blue->setTeleportFrom(false);
+                    cout << "En controller, el mensaje ha sido enviado > ";
+                    blue->getTeleportFromPos()->printPosition();
+                    blue->setTeleportToPos(nullptr);
+                    blue->setTeleportFromPos(nullptr);
                 }
             }
             j["listOfEntitys"][i-1] = j2;

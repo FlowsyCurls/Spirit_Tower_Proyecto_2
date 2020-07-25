@@ -155,25 +155,38 @@ void Spectre::moveAStar(){
 
 void Spectre::moveBacktracking(){
     if(queueBackTracking != nullptr && !queueBackTracking->empty()){
-
+        if (getId() == "sp01") {
+            cout << "\nCurrent Pos : "; getPosition()->printPosition(); cout << endl;
+            cout << "\nSize Backtrack : " << queueBackTracking->size() << endl;
+            cout << "Teleport to :"; teleportToPos->printPosition();
+        }
 
         if (queueBackTracking->size() == 1 && queueBackTracking->back()->compare(teleportToPos)) {
+
+            cout << "En backtracking  Posicion ultima de la cola es : ";
+            queueBackTracking->back()->printPosition();
+            cout << endl;
+
+            cout << "En backtracking  Posicion actual es : ";
+            getPosition()->printPosition();
+            cout << endl;
+
+            cout << "En backtracking  Posicion donde me debo tp es : ";
+            getPosition()->printPosition();
+            cout << endl;
+
             moveToPos(teleportFromPos);
+
+            cout << "En backtracking  Posicion actual es : ";
+            getPosition()->printPosition();
+            cout << endl;
+
             queueBackTracking->pop_back();
             teleportFrom = true;
         }
         else {
-
-            if(getId() == "sp01"){
-                queueBackTracking->back()->printPosition();
-                //cout << "tamaño backtracking " << queueBackTracking->size() << endl;
-            }
-
             moveToPos(queueBackTracking->back());
             queueBackTracking->pop_back();
-
-
-
         }
     }else{
         backtracking = false;
@@ -485,8 +498,20 @@ void Spectre::setTeleportFromPos(Position *pTeleportPos) {
 
 void Spectre::setTeleportToPos(Position *pTeleportPos) {
     Spectre::teleportFromPos = getPosition();
+    cout << "Posicion antes del tp : ";
+    teleportFromPos->printPosition();
+    cout << endl;
+
     Spectre::teleportToPos = pTeleportPos;
+    cout << "Posicion a la que tp : ";
+    teleportToPos->printPosition();
+    cout << endl;
+
     moveToPos(teleportToPos);
+
+    cout << "Posicion actual es : ";
+    getPosition()->printPosition();
+    cout << endl;
 }
 
 void Spectre::setPauseEntity(bool pPause) {

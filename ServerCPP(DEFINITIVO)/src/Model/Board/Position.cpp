@@ -31,11 +31,11 @@ Position::Position() {
 }
 
 void Position::printPosition() {
-
     cout << "(" << row << "," << column << ")";
 
 }
 
 bool Position::compare(Position *position) {
+    if (position == nullptr) return false;
     return position->getRow() == row && position->getColumn() == column;
 }
