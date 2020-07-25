@@ -486,20 +486,7 @@ void Spectre::setTeleportFromPos(Position *pTeleportPos) {
 
 void Spectre::setTeleportToPos(Position *pTeleportPos) {
     Spectre::teleportFromPos = getPosition();
-    cout << "Posicion antes del tp : ";
-    teleportFromPos->printPosition();
-    cout << endl;
-
-    Spectre::teleportToPos = pTeleportPos;
-    cout << "Posicion a la que tp : ";
-    teleportToPos->printPosition();
-    cout << endl;
-
     moveToPos(teleportToPos);
-
-    cout << "Posicion actual es : ";
-    getPosition()->printPosition();
-    cout << endl;
 }
 
 void Spectre::setPauseEntity(bool pPause) {

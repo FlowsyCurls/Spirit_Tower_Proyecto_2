@@ -27,7 +27,7 @@
   },
   "spectres":[
     {"id":"sp01",
-    "type":"spectre_blue",
+    "type":"spectre_gray",
     "position":[17,19],
     "direction": "west",
     "routeVelocity": 1500,
