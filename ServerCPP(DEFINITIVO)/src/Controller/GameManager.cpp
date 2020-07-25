@@ -83,7 +83,7 @@ void GameManager::loadGame(int pLevel) {
     loadGameFromJSON(JSON);
     Board::printBoardCellType();
     Board::printBoardEntity();
-    //geneticManager->setlistOfPopulation();
+    geneticManager->setlistOfPopulation();
     //GameManager::setGraphs();
     generateEntityLastStatusJSON();
     cout << "Lista de entidades: " << endl;
@@ -166,9 +166,6 @@ void GameManager::clearAll() {
     Board::resetMatrizAstar();
     if(Board::queueBreadCrumbingPlayer != nullptr){
         Board::queueBreadCrumbingPlayer->clear();
-    }
-    if(board->listOfEntitys != nullptr){
-        board->listOfEntitys->clear();
     }
     SpectralEye::lastSeen = "";
     SpectralEye::tpSpot = new Position();

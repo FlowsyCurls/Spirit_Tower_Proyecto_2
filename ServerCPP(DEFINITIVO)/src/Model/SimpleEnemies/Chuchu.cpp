@@ -31,11 +31,12 @@ void Chuchu::findPlayer() {
 
     while(!pause){
         sleep(1);
+        /*
         if(Board::playerHasMoved || queueBresenham == nullptr || queueBresenham->empty()){
             calculateBresenham();
         }
         if(queueBresenham != nullptr && !queueBresenham->empty()){
-            if(queueBresenham->front()->compare(getEntityPosition())){
+            while(queueBresenham->front()->compare(getEntityPosition())){
                 queueBresenham->pop();
             }
             if(queueBresenham != nullptr && !queueBresenham->empty()){
@@ -43,6 +44,8 @@ void Chuchu::findPlayer() {
                 queueBresenham->pop();
             }
         }
+        */
+        moveTo(getPlayerPosition());
 
     }
 

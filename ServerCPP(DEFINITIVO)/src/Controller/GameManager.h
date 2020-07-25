@@ -25,7 +25,7 @@ class GameManager {
 private:
     //const unsigned int updateLapse = static_cast<unsigned int>(0.4);
     static GameManager* instance;
-//    GeneticManager* geneticManager = GeneticManager::getInstance();
+    GeneticManager* geneticManager = GeneticManager::getInstance();
     Board * board;
     int score = 0;
     int lifes = 5;

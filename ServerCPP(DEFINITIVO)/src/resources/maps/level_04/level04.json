@@ -23,7 +23,7 @@
   "jugador":{
     "id": "ju01",
     "type": "jugador",
-    "position": [0,19]
+    "position": [0,0]
   },
   "spectres":[
     {"id":"sp01",
