@@ -84,7 +84,7 @@ void GameManager::loadGame(int pLevel) {
     Board::printBoardCellType();
     Board::printBoardEntity();
     geneticManager->setlistOfPopulation();
-    //GameManager::setGraphs();
+    GameManager::setGraphs();
     generateEntityLastStatusJSON();
     cout << "Lista de entidades: " << endl;
     Entity::printEntitys();
@@ -400,6 +400,10 @@ void GameManager::generateEntityLastStatusJSON() {
                     j2["position"][0] = blue->getTeleportFromPos()->getRow();
                     j2["position"][1] = blue->getTeleportFromPos()->getColumn();
                     blue->setTeleportFrom(false);
+                    cout << "En controller, el mensaje ha sido enviado > ";
+                    blue->getTeleportFromPos()->printPosition();
+                    blue->setTeleportToPos(nullptr);
+                    blue->setTeleportFromPos(nullptr);
                 }
             }
             j["listOfEntitys"][i-1] = j2;
@@ -494,7 +498,7 @@ void GameManager::updatePlayerPosition(const string& pJson) {
             // Spectral Eyes CheckVision.
             if(SpectralEye::listOfSpectralEyes != nullptr){
                 for(auto & spectralEye : *SpectralEye::listOfSpectralEyes){
-                    //spectralEye->checkVisionRange();
+                    spectralEye->checkVisionRange();
                 }
             }
 

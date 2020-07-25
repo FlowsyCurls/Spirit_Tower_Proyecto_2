@@ -33,7 +33,7 @@ public:
     //METHODS
     void setEyeGraph();
     void checkVisionRange();
-    static void sendSignalToPersuit(Spectre* spectre);
+    static void sendSignalToPersuit(Spectre* pSpectre);
     static void clear();
 
     //SETTER & GETTERS
