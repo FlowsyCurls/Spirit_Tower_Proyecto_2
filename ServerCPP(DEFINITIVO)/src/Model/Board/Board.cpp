@@ -147,3 +147,11 @@ int Board::getRows() {
 int Board::getColumns() {
     return columns;
 }
+
+void Board::resetMatrizAstar() {
+    for(int i = 0; i < 20; i++){
+        for(int e = 0; e <20; e++){
+            matrizStar[i][e] = 0;
+        }
+    }
+}

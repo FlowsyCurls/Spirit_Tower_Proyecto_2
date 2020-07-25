@@ -56,8 +56,8 @@ public:
     static void printBoardCellType();
     static void printBoardEntity();
     static void printMatrizStar();
-
     static int getColumns();
+    static void resetMatrizAstar();
 
 };
 

@@ -86,6 +86,10 @@ void GameManager::loadGame(int pLevel) {
     //geneticManager->setlistOfPopulation();
     GameManager::setGraphs();
     generateEntityLastStatusJSON();
+    cout << "Lista de entidades: " << endl;
+    Entity::printEntitys();
+    cout << "Lista de espectros: " << endl;
+    Spectre::printAllSpectres();
 
 }
 /**
@@ -121,6 +125,8 @@ void GameManager::updateGame() {
     while(!pause){
         this_thread::sleep_for(chrono::milliseconds(500));
         generateEntityLastStatusJSON();
+        //Board::printBoardEntity();
+        //cout << endl;
     }
 
 
@@ -157,6 +163,7 @@ void GameManager::checkSafeZone(Entity * player) {
 void GameManager::clearAll() {
     Spectre::isOnPersuit = false;
     Board::playerHasMoved = false;
+    Board::resetMatrizAstar();
     if(Board::queueBreadCrumbingPlayer != nullptr){
         Board::queueBreadCrumbingPlayer->clear();
     }
@@ -436,8 +443,12 @@ void GameManager::updatePlayerPosition(const string& pJson) {
                 for(int e = 0; e < Spectre::listOfSpectres->size(); e++){
 
                     if(Spectre::listOfSpectres->at(e) != nullptr && Spectre::listOfSpectres->at(e)->getSpectreId() == jsonObj["spectresDied"].at(i)){
+
                         Spectre::listOfSpectres->at(e)->setPauseEntity(true);
                         Spectre::listOfSpectres->erase(Spectre::listOfSpectres->begin() + e);
+
+
+
                     }
                 }
             }
@@ -446,11 +457,15 @@ void GameManager::updatePlayerPosition(const string& pJson) {
                 for(int e = 0; e < Entity::listOfEntitys->size(); e++){
 
                     if(Entity::listOfEntitys->at(e) != nullptr && Entity::listOfEntitys->at(e)->getId() == jsonObj["spectresDied"].at(i)){
+                        Board::matriz[Entity::listOfEntitys->at(e)->getPosition()->getRow()][Entity::listOfEntitys->at(e)->getPosition()->getColumn()]->setEntity("");
                         Entity::listOfEntitys->erase(Entity::listOfEntitys->begin() + e);
                     }
 
                 }
             }
+
+
+
 
         }
 

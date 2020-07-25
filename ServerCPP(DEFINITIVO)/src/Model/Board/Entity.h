@@ -40,7 +40,8 @@ public:
     string getDirection();
     static void clearAll();
     bool getPause();
-
+    static void printEntitys();
+    void print();
     void setPause(bool pPause);
 };
 
