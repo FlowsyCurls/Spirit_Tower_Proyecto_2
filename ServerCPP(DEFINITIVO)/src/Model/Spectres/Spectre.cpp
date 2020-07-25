@@ -153,15 +153,22 @@ void Spectre::moveAStar(){
 
 void Spectre::moveBacktracking(){
     if(queueBackTracking != nullptr && !queueBackTracking->empty()){
-        if (queueBackTracking->size() == 1 && queueBackTracking->back()->compare(teleportToPos)) {
-            moveToPos(teleportFromPos);
-            queueBackTracking->pop_back();
-            teleportFrom = true;
-        }
-        else {
+
+
+        //if (queueBackTracking->size() == 1 && queueBackTracking->back()->compare(teleportToPos)) {
+        //    moveToPos(teleportFromPos);
+        //    queueBackTracking->pop_back();
+        //    teleportFrom = true;
+        //}
+        //else {
+
+
             moveToPos(queueBackTracking->back());
             queueBackTracking->pop_back();
-        }
+
+
+
+        //}
     }else{
         backtracking = false;
     }
@@ -255,16 +262,20 @@ void Spectre::sendSignalToStopPersuit() {
  */
 void Spectre::sendSignalToPersuit() {
 
-    if(queueBackTracking != nullptr){
-        if(queueBackTracking->empty()){
-            backtracking = false;
-            isOnPersuit = true;
-            useBreadcrumbing = true;
-            Board::queueBreadCrumbingPlayer = new deque<Position*>();
-            queueBackTracking = new deque<Position*>();
-            cout << "* Signal sent!" << endl;
+    if(!isOnPersuit){
+        backtracking = false;
+        isOnPersuit = true;
+        useBreadcrumbing = true;
+        Board::queueBreadCrumbingPlayer = new deque<Position*>();
+        for(int i = 0; i < listOfSpectres->size(); i++){
+            listOfSpectres->at(i)->queueAStar = nullptr;
+            listOfSpectres->at(i)->queueBackTracking = new deque<Position*>();
         }
+
+        cout << "* Signal sent!" << endl;
     }
+
+
 
 }
 /**

@@ -83,8 +83,8 @@ void GameManager::loadGame(int pLevel) {
     loadGameFromJSON(JSON);
     Board::printBoardCellType();
     Board::printBoardEntity();
-    geneticManager->setlistOfPopulation();
-    GameManager::setGraphs();
+    //geneticManager->setlistOfPopulation();
+    //GameManager::setGraphs();
     generateEntityLastStatusJSON();
 
 }
@@ -461,7 +461,7 @@ void GameManager::updatePlayerPosition(const string& pJson) {
             // Spectral Eyes CheckVision.
             if(SpectralEye::listOfSpectralEyes != nullptr){
                 for(auto & spectralEye : *SpectralEye::listOfSpectralEyes){
-                    spectralEye->checkVisionRange();
+                    //spectralEye->checkVisionRange();
                 }
             }
 

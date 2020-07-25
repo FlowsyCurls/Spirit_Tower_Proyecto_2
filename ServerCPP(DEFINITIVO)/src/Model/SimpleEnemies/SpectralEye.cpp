@@ -188,10 +188,14 @@ void SpectralEye::callSpectres() {
 }
 
 void SpectralEye::sendSignalToPersuit(Spectre* spectre){
-    if(spectre->queueBackTracking != nullptr && spectre->queueBackTracking->empty()){
+    if(!Spectre::isOnPersuit){
         spectre->backtracking = false;
         Spectre::isOnPersuit = true;
         spectre->queueBackTracking = new deque<Position*>();
+        for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
+            Spectre::listOfSpectres->at(i)->queueAStar = nullptr;
+            Spectre::listOfSpectres->at(i)->queueBackTracking = new deque<Position*>();
+        }
         cout << "* Signal sent!" << endl;
     }
 }
