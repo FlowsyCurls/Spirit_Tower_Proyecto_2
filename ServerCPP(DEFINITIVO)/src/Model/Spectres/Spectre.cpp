@@ -155,14 +155,15 @@ void Spectre::moveAStar(){
 
 void Spectre::moveBacktracking(){
     if(queueBackTracking != nullptr && !queueBackTracking->empty()){
-        if (getId() == "sp01") {
-            cout << "\nCurrent Pos : "; getPosition()->printPosition(); cout << endl;
-            cout << "\nSize Backtrack : " << queueBackTracking->size() << endl;
-            cout << "Teleport to :"; teleportToPos->printPosition();
-        }
+//        if (getId() == "sp01") {
+//            cout << "\n\n\nCurrent Pos : "; getPosition()->printPosition();
+//            cout << "\nSize Backtrack : " << queueBackTracking->size();
+//            cout << "\nBack Backtrack : "; queueBackTracking->back()->printPosition();
+//            cout << "\nTeleport to :"; teleportToPos->printPosition();
+//        }
 
-        if (queueBackTracking->size() == 1 && queueBackTracking->back()->compare(teleportToPos)) {
-
+//        cout << "OCURRE : " << (queueBackTracking->size() == 1 && queueBackTracking->back()->compare(teleportToPos)) << endl;
+        if (!Spectre::isOnPersuit && queueBackTracking->size() == 1 && queueBackTracking->back()->compare(teleportToPos)) {
             cout << "En backtracking  Posicion ultima de la cola es : ";
             queueBackTracking->back()->printPosition();
             cout << endl;
@@ -172,7 +173,7 @@ void Spectre::moveBacktracking(){
             cout << endl;
 
             cout << "En backtracking  Posicion donde me debo tp es : ";
-            getPosition()->printPosition();
+            teleportFromPos->printPosition();
             cout << endl;
 
             moveToPos(teleportFromPos);
@@ -280,6 +281,7 @@ void Spectre::sendSignalToStopPersuit() {
         }
         cout << "********************Se ha enviado una senal para dejar de seguir al jugador********************" << endl;
     }
+    SpectralEye::lastSeen = "";
 }
 /**
  * Envia una senal a todos los espectros para que empiecen la persecucion y ademas activa la flag useBreadcrumbing para

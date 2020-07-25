@@ -148,7 +148,7 @@ void SpectralEye::checkVisionRange()
             if (Board::matriz[neighbour->row][neighbour->col] != nullptr && Board::matriz[neighbour->row][neighbour->col]->getEntity() == "ju01") {
 //                cout << "Eye: " + getEntityId() + " just saw the player!" << endl;
 //                cout  << "EYE : " << getEntityId() << " | "; getEntityPosition()->printPosition();
-                cout  << "\nSAW IN : " << neighbour->row << ", " << neighbour->col << endl;
+//                cout  << "\nSAW IN : " << neighbour->row << ", " << neighbour->col << endl;
                 callSpectres();
                 frontier = queue<node *>();
                 break;
@@ -178,9 +178,9 @@ void SpectralEye::callSpectres() {
         for (auto &spectre : *Spectre::listOfSpectres) {
             // search for the blue spectre welcome to teleportTo.
             if (spectre->getSpectreType() == "spectre_blue") {
+                spectre->setTeleportTo(true);
                 spectre->setTeleportToPos(tpSpot);
                 sendSignalToPersuit(spectre);
-                spectre->setTeleportTo(true);
                 break;
             }
         }
@@ -196,6 +196,7 @@ void SpectralEye::sendSignalToPersuit(Spectre* pSpectre){
             spectre->queueAStar = nullptr;
             spectre->queueBackTracking = new deque<Position*>();
         }
+        pSpectre->queueBackTracking->push_back(tpSpot);
         pSpectre->moveAStar();
 
         cout << "* Signal sent!" << endl;
