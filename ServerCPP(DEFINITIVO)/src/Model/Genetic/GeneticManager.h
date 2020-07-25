@@ -24,6 +24,8 @@ private:
     //CONSTRUCTOR
     GeneticManager();
 
+    //ATTRIBUTES
+    int genMarker = 0;
     bool isFirst = true;
     vector<Population *> *listOfPopulation = new vector<Population *>;
     vector<Spectrum *> *testList = new vector<Spectrum *>;
@@ -70,8 +72,6 @@ public:
     void setlistOfPopulation(); // Generation.
     void setTestList(vector<Spectrum *> *pTestList);
 
-//ATTRIBUTES
-static int genMarker;
 };
 
 
