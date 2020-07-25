@@ -13,8 +13,7 @@ class SpectralEye: public SimpleEnemy {
 private:
     //ATTRIBUTES
     int visionRange = 0;
-    static Position *tpSpot;
-    static string lastSeen;
+
 
     //METHODS
     vector<int> *getStartPos();
@@ -24,6 +23,8 @@ private:
 
 public:
 
+    static Position *tpSpot;
+    static string lastSeen;
     SpectralEye(const string &pId, const string &pType, int pVisionRange, Position *pPosition);
 
     //ATTRIBUTES

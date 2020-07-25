@@ -129,7 +129,7 @@ void GameManager::updateGame() {
 void GameManager::checkSafeZone(Entity * player) {
     if(Board::checkPlayerOfSafeZone(player)){
         Board::queueBreadCrumbingPlayer = nullptr;
-        Spectre::sendSignalToStopPersuit();
+
         if(Spectre::listOfSpectres != nullptr){
             for(int i = 0; i < Spectre::listOfSpectres->size(); i++){
                 if(Spectre::listOfSpectres->at(i)->getDequeBackTracking()->empty()){
@@ -139,6 +139,7 @@ void GameManager::checkSafeZone(Entity * player) {
                 }
             }
         }
+        Spectre::sendSignalToStopPersuit();
     }else{
         if(Board::queueBreadCrumbingPlayer == nullptr){
             Board::queueBreadCrumbingPlayer = new deque<Position*>();
@@ -161,6 +162,16 @@ void GameManager::clearAll() {
     Mouse::clear();
     Chuchu::clear();
     Entity::clearAll();
+
+    /*
+    Spectre::isOnPersuit = false;
+     Board::playerHasMoved = false;
+    Board::queueBreadCrumbingPlayer->clear();
+    board->listOfEntitys->clear();
+    SpectralEye::lastSeen = "";
+    SpectralEye::tpSpot = new Position();
+    */
+
 }
 
 void GameManager::initialEntitiesFunctions() {
@@ -414,7 +425,7 @@ void GameManager::updatePlayerPosition(const string& pJson) {
             if(Spectre::listOfSpectres != nullptr){
                 for(int e = 0; e < Spectre::listOfSpectres->size(); e++){
 
-                    if(Spectre::listOfSpectres->at(e)->getSpectreId() == jsonObj["spectresDied"].at(i)){
+                    if(Spectre::listOfSpectres->at(e) != nullptr && Spectre::listOfSpectres->at(e)->getSpectreId() == jsonObj["spectresDied"].at(i)){
                         Spectre::listOfSpectres->at(e)->setPauseEntity(true);
                         Spectre::listOfSpectres->erase(Spectre::listOfSpectres->begin() + e);
                     }
@@ -424,7 +435,7 @@ void GameManager::updatePlayerPosition(const string& pJson) {
             if(Entity::listOfEntitys != nullptr){
                 for(int e = 0; e < Entity::listOfEntitys->size(); e++){
 
-                    if(Entity::listOfEntitys->at(e)->getId() == jsonObj["spectresDied"].at(i)){
+                    if(Entity::listOfEntitys->at(e) != nullptr && Entity::listOfEntitys->at(e)->getId() == jsonObj["spectresDied"].at(i)){
                         Entity::listOfEntitys->erase(Entity::listOfEntitys->begin() + e);
                     }
 
