@@ -4,6 +4,7 @@
 
 
 #include "Spectrum.h"
+#include "GeneticManager.h"
 
 Spectrum::Spectrum(const string& pId, int pRouteSpeed, int pChaseSpeed, int pSightRange) {
     id = pId;
@@ -59,12 +60,18 @@ void Spectrum::toString() {
 int Spectrum::sum() const {
     int sum;
     sum = routeSpeed + chaseSpeed + sightRange;
+    if (routeSpeed <= GeneticManager::genMarker) sum-=3;
+    if (chaseSpeed <= GeneticManager::genMarker) sum-=5;
+    if (sightRange <= GeneticManager::genMarker) sum-=4;
+
+    if (routeSpeed > GeneticManager::genMarker+3) sum+=3;
+    if (chaseSpeed > GeneticManager::genMarker+3) sum+=5;
+    if (sightRange > GeneticManager::genMarker+3) sum+=4;
     return sum;
 }
 
 bool Spectrum::compareStats(Spectrum *&pSpectrum) const {
     return (this->sum() < pSpectrum->sum());
-    return (pSpectrum->getChaseSpeed() > this->chaseSpeed) && (pSpectrum->getRouteSpeed() > this->routeSpeed ) ;
 }
 
 bool Spectrum::compareVision(Spectrum *&pSpectrum) const {

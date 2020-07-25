@@ -5,6 +5,7 @@
 #include "GeneticManager.h"
 
 GeneticManager* GeneticManager::instance = nullptr;
+int GeneticManager::genMarker = 0;
 
 GeneticManager* GeneticManager::getInstance(){
     if (instance == nullptr)
@@ -43,23 +44,24 @@ void GeneticManager::printListOfSpectres() {
 
 void GeneticManager::setlistOfPopulation() {
     cout << "\n\n~~~~~~~~~~~~~~> \' GEN " << ++genMarker << " \'<~~~~~~~~~~~~~~"<< endl;
-
     if (isFirst){
-//        // Por cada Spectre (interfaz), genero una poblacion.
-//        for (auto* spectre : *Spectre::listOfSpectres){
-//            auto* population =  new Population();
-//            population->generatePopulation();
-//            listOfPopulation->push_back(population);
-//        }
-
-        //pruebas con spectrum.
-        for (int i=0; i < 3; i++) {
-            if(listOfPopulation != nullptr){
-                auto* population =  new Population();
+        // Por cada Spectre (interfaz), genero una poblacion.
+        for (auto* spectre : *Spectre::listOfSpectres){
+            if(spectre != nullptr) {
+                auto *population = new Population();
                 population->generatePopulation();
                 listOfPopulation->push_back(population);
             }
         }
+//        //pruebas con spectrum.
+//        for (int i=0; i < 3; i++) {
+//            if(listOfPopulation != nullptr){
+//                auto* population =  new Population();
+//                population->generatePopulation();
+//                listOfPopulation->push_back(population);
+//            }
+//        }
+
         isFirst = false;
     }
     else {
