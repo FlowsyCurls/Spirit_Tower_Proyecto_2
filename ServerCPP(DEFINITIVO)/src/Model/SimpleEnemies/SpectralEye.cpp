@@ -178,9 +178,12 @@ void SpectralEye::callSpectres() {
         for (auto &spectre : *Spectre::listOfSpectres) {
             // search for the blue spectre welcome to teleportTo.
             if (spectre->getSpectreType() == "spectre_blue") {
+                spectre->setPauseEntity(true);
+                spectre->queueAStar = nullptr;
                 spectre->setTeleportTo(true);
                 spectre->setTeleportToPos(tpSpot);
                 sendSignalToPersuit(spectre);
+                spectre->setPauseEntity(false);
                 break;
             }
         }
